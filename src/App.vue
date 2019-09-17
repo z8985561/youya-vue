@@ -5,4 +5,7 @@
 </template>
 
 <style lang="less">
+#app{
+  padding-bottom: 60px;
+}
 </style>

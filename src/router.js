@@ -9,17 +9,62 @@ export default new Router({
   base: process.env.BASE_URL,
   routes: [
     {
+      // 首页
       path: '/',
       name: 'index',
-      component: Index
+      component: Index,
+      meta:{
+        title:"首页"
+      }
     },
-    // {
-    //   path: '/about',
-    //   name: 'about',
-    //   // route level code-splitting
-    //   // this generates a separate chunk (about.[hash].js) for this route
-    //   // which is lazy-loaded when the route is visited.
-    //   component: () => import(/* webpackChunkName: "about" */ './views/About.vue')
-    // }
+    {
+      // 课程
+      path: '/video',
+      name: 'video',
+      // route level code-splitting
+      // this generates a separate chunk (about.[hash].js) for this route
+      // which is lazy-loaded when the route is visited.
+      component: () => import(/* webpackChunkName: "about" */ './views/Video.vue'),
+      meta:{
+        title:"课程"
+      }
+    },
+    {
+      // 视频课程详情
+      path: '/video_detail/:id',
+      name: 'video_detail',
+      component: () => import(/* webpackChunkName: "about" */ './views/VideoDetail.vue'),
+      meta:{
+        title:"课程详情"
+      }
+    },
+    {
+      // 文章
+      path: '/article/:id',
+      name: 'article',
+      component: () => import('./views/Article.vue'),
+      meta:{
+        title:"文章"
+      }
+    },
+    {
+      // 体验课程
+      path: '/experience/:id',
+      name: 'experience',
+      component: () => import('./views/Experience.vue'),
+      meta:{
+        title:"体验课程"
+      }
+    },
+    // ArticleList.vue
+    {
+      // 优雅美文
+      path: '/article_list',
+      name: 'article_list',
+      component: () => import('./views/ArticleList.vue'),
+      meta:{
+        title:"优雅美文"
+      }
+    },
   ]
 })
