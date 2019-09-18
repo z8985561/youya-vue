@@ -18,7 +18,7 @@
           :src="props.active ? icons[1].active : icons[1].normal"
         >
       </van-tabbar-item>
-      <van-tabbar-item>
+      <van-tabbar-item replace to="/subscribe_list">
         <span>预约</span>
         <img
           slot="icon"
@@ -59,7 +59,7 @@ export default {
     }
   },
   mounted() {
-    this.index = this.active
+    this.index = this.active || 0 ;
 
   },
 }

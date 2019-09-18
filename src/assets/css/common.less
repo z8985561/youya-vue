@@ -5,9 +5,14 @@ i{font-style:normal;display:block;}
 input,select,textarea{border-radius:0;-webkit-appearance:none;outline:none;resize: none;}
 a{text-decoration:none;-webkit-tap-highlight-color:transparent;-ms-tap-highlight-color:transparent;tap-highlight-color:transparent;}
 img{width:100%;height:auto;display: block;}
-
-
-
+.bar-10{
+  height: 10px;
+  background-color: #f8f8f8;
+}
+.bar-1{
+  height: 1px;
+  background-color: #f0f0f0;
+}
 /* flex布局 */
 .flex{
   display: flex;
@@ -83,7 +88,7 @@ img{width:100%;height:auto;display: block;}
 .text-right{text-align: right !important;}
 .text-center{text-align: center;}
 .text-line{text-decoration: line-through}
-
+.text-underline{text-decoration: underline;}
 
 /* 外边距 */
 .ml-10{margin-left: 10px;}
@@ -110,6 +115,7 @@ img{width:100%;height:auto;display: block;}
 /* 内边距 */
 .p-10{padding: 10px;}
 .p-15{padding: 15px;}
+.plr-5{padding-left: 5px;padding-right: 5px;}
 .plr-10{padding-left: 10px;padding-right: 10px;}
 .plr-15{padding-left: 15px;padding-right: 15px;}
 .ptb-10{padding-top: 10px;padding-bottom: 10px;}
@@ -125,5 +131,25 @@ img{width:100%;height:auto;display: block;}
   bottom: 0;
   width: 375px;
   min-height: 50px;
+  background-color: #fff;
   box-sizing: border-box;
+}
+
+.cell-group{
+  background-color: #fff;
+  .cell{
+    margin-bottom: 10px;
+    display: flex;
+    box-sizing: border-box;
+    width: 100%;
+    overflow: hidden;
+    font-size: 13px;
+    .cell__title{
+      flex: 1;
+      color: #999;
+    }
+    .cell__value{
+      color: #666;
+    }
+  }
 }

@@ -66,5 +66,35 @@ export default new Router({
         title:"优雅美文"
       }
     },
+    // CreateOrder.vue
+    {
+      // 确认购买
+      path: '/create_order/:id',
+      name: 'create_order',
+      component: () => import('./views/CreateOrder.vue'),
+      meta:{
+        title:"确认购买"
+      }
+    },
+    // SubscribeList.vue
+    {
+      // 预约
+      path: '/subscribe_list',
+      name: 'subscribe_list',
+      component: () => import('./views/SubscribeList.vue'),
+      meta:{
+        title:"预约"
+      }
+    },
+    // SubscribeDetail
+    {
+      // 预约
+      path: '/subscribe_detail/:id',
+      name: 'subscribe_detail',
+      component: () => import('./views/SubscribeDetail.vue'),
+      meta:{
+        title:"预约详情"
+      }
+    },
   ]
 })

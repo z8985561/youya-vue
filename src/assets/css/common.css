@@ -39,6 +39,14 @@ img {
   height: auto;
   display: block;
 }
+.bar-10 {
+  height: 10px;
+  background-color: #f8f8f8;
+}
+.bar-1 {
+  height: 1px;
+  background-color: #f0f0f0;
+}
 /* flex布局 */
 .flex {
   display: flex;
@@ -168,6 +176,9 @@ img {
 .text-line {
   text-decoration: line-through;
 }
+.text-underline {
+  text-decoration: underline;
+}
 /* 外边距 */
 .ml-10 {
   margin-left: 10px;
@@ -233,6 +244,10 @@ img {
 .p-15 {
   padding: 15px;
 }
+.plr-5 {
+  padding-left: 5px;
+  padding-right: 5px;
+}
 .plr-10 {
   padding-left: 10px;
   padding-right: 10px;
@@ -264,5 +279,24 @@ img {
   bottom: 0;
   width: 375px;
   min-height: 50px;
+  background-color: #fff;
   box-sizing: border-box;
+}
+.cell-group {
+  background-color: #fff;
+}
+.cell-group .cell {
+  margin-bottom: 10px;
+  display: flex;
+  box-sizing: border-box;
+  width: 100%;
+  overflow: hidden;
+  font-size: 13px;
+}
+.cell-group .cell .cell__title {
+  flex: 1;
+  color: #999;
+}
+.cell-group .cell .cell__value {
+  color: #666;
 }

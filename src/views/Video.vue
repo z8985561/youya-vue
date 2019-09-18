@@ -24,7 +24,7 @@
       </van-tab>
       <van-tab title="课程音频">内容 2</van-tab>
     </van-tabs>
-    <FooterNav :active="active" />
+    <FooterNav :active="1" />
   </div>
 </template>
 <script>
@@ -33,7 +33,7 @@
   export default {
     data() {
       return {
-        active: 0,
+        active:0,
         list: []
       }
     },
