@@ -62,7 +62,9 @@
       </div>
     </div>
     <footer class="footer-bar flex flex-center flex-align-center">
-      <div class="btn-youya">立即预约</div>
+      <router-link to="/authentication">
+        <div class="btn-youya">立即预约</div>
+      </router-link>
     </footer>
   </div>
 </template>
@@ -171,12 +173,14 @@
   .footer-bar {
     box-shadow: 0px 0px 5px 0px rgba(238, 238, 238, 1);
   }
-  .count2{
+
+  .count2 {
     display: flex;
-    margin-left:10px;
-    padding-left:15px;
+    margin-left: 10px;
+    padding-left: 15px;
     border-left: 1px solid #eee;
   }
+
   .btn-youya {
     width: 260px;
     height: 40px;
@@ -188,17 +192,21 @@
     text-align: center;
     box-shadow: 1px 5px 6px rgba(131, 179, 219, .2);
   }
-  .detail{
+
+  .detail {
     display: flex;
     align-items: flex-start;
-    >img{
+
+    >img {
       width: 90px;
     }
-    >div{
-      flex:1;
+
+    >div {
+      flex: 1;
       margin-left: 10px;
     }
-    p{
+
+    p {
       line-height: 22px;
     }
   }

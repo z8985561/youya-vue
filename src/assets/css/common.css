@@ -47,6 +47,9 @@ img {
   height: 1px;
   background-color: #f0f0f0;
 }
+.van-icon {
+  vertical-align: middle;
+}
 /* flex布局 */
 .flex {
   display: flex;
@@ -208,7 +211,7 @@ img {
   margin-bottom: 20px;
 }
 .mb-40 {
-  margin-bottom: 20px;
+  margin-bottom: 40px;
 }
 .mb-60 {
   margin-bottom: 60px;
@@ -256,6 +259,10 @@ img {
   padding-left: 15px;
   padding-right: 15px;
 }
+.plr-20 {
+  padding-left: 20px;
+  padding-right: 20px;
+}
 .ptb-10 {
   padding-top: 10px;
   padding-bottom: 10px;
@@ -286,6 +293,7 @@ img {
   background-color: #fff;
 }
 .cell-group .cell {
+  position: relative;
   margin-bottom: 10px;
   display: flex;
   box-sizing: border-box;
@@ -299,4 +307,13 @@ img {
 }
 .cell-group .cell .cell__value {
   color: #666;
+}
+.cell-group .cell .cell__image {
+  position: relative;
+  width: 90px;
+  height: 51px;
+  border-radius: 5px;
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
 }

@@ -96,5 +96,75 @@ export default new Router({
         title:"预约详情"
       }
     },
+    // Authentication
+    {
+      // 身份验证
+      path: '/authentication',
+      name: 'authentication',
+      component: () => import('./views/Authentication.vue'),
+      meta:{
+        title:"身份验证"
+      }
+    },
+    // Authentication
+    {
+      // 个人中心
+      path: '/member/index',
+      name: 'member_index',
+      component: () => import('./views/member/Index.vue'),
+      meta:{
+        title:"个人中心"
+      }
+    },
+    // Withdraw.vue
+    {
+      // 提现
+      path: '/member/withdraw',
+      name: 'member_withdraw',
+      component: () => import('./views/member/Withdraw.vue'),
+      meta:{
+        title:"提现"
+      }
+    },
+    // MyCoursesList.vue
+    {
+      // 我的课次
+      path: '/member/my_courses_list',
+      name: 'my_courses_list',
+      component: () => import('./views/member/MyCoursesList.vue'),
+      meta:{
+        title:"我的课次"
+      }
+    },
+    // DonationCourses.vue
+    {
+      // 转赠课程
+      path: '/member/donation_courses',
+      name: 'donation_courses',
+      component: () => import('./views/member/DonationCourses.vue'),
+      meta:{
+        title:"转赠课程"
+      }
+    },
+    // MyReservation.vue
+    {
+      // 我的预约
+      path: '/member/my_reservation_list',
+      name: 'my_reservation_list',
+      component: () => import('./views/member/MyReservationList.vue'),
+      meta:{
+        title:"我的预约"
+      }
+    },
+    // MyVideoList.vue
+    {
+      // 我的视频
+      path: '/member/my_video_list',
+      name: 'my_video_list',
+      component: () => import('./views/member/MyVideoList.vue'),
+      meta:{
+        title:"我的视频"
+      }
+    },
   ]
 })

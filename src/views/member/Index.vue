@@ -1,0 +1,116 @@
+<template>
+  <div class="plr-15">
+    <div class="user-info">
+      <div class="username">
+        <div class="fz-17 c3 fw-700 text-hide mb-5">
+          绿与旅Green
+        </div>
+        <div class="fz-12 c9">代理商</div>
+      </div>
+      <img class="avatar" src="/img/noface.png" alt="">
+    </div>
+
+    <div class="earnings">
+      <div class="flex flex-align-center">
+        <img src="/img/icon-wallet2.png" alt="">
+        <div class="fz-17 fw-700 ml-10 text-brown">246.21</div>
+      </div>
+      <router-link to="/member/withdraw">
+        <span class="fz-12 text-brown">收益提现</span>
+        <van-icon name="arrow" size="14" />
+      </router-link>
+    </div>
+
+    <van-grid :column-num="4" :border="false">
+      <van-grid-item icon="/img/menu2-01.png" text="我的课次" to="/member/my_courses_list" />
+      <van-grid-item icon="/img/menu2-02.png" text="我的预约" to="/member/my_reservation_list" />
+      <van-grid-item icon="/img/menu2-03.png" text="我的视频" to="/member/my_video_list" />
+      <van-grid-item icon="/img/menu2-04.png" text="我的兑换码" :to="{ name: 'article', params: { id: 4 }}" />
+    </van-grid>
+
+    <van-cell-group :border="false">
+      <van-cell title="我的订单" icon="/img/icon-member-01.png" is-link />
+      <van-cell title="我的购物车" icon="/img/icon-member-02.png" is-link />
+      <van-cell title="收益明细" icon="/img/icon-member-03.png" is-link />
+      <van-cell title="提现明细" icon="/img/icon-member-04.png" is-link />
+      <van-cell title="个人资料" icon="/img/icon-member-05.png" is-link />
+      <van-cell title="关于我们" icon="/img/icon-member-06.png" is-link />
+    </van-cell-group>
+
+    <FooterNav :active="3" />
+  </div>
+</template>
+
+<script>
+  import FooterNav from "@/components/FooterNav"
+  export default {
+    components: {
+      FooterNav
+    },
+    props: {},
+    data() {
+      return {};
+    },
+    watch: {},
+    computed: {},
+    methods: {},
+    created() {},
+    mounted() {}
+  };
+</script>
+<style lang="less">
+  .text-brown {
+    color: #695745
+  }
+
+  .user-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 22px;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-bottom: 20px;
+
+    .username {
+      flex: 1;
+    }
+
+    .avatar {
+      width: 60px;
+      height: 60px;
+      box-shadow: 0px 0px 10px 0px rgba(199, 199, 206, 0.4);
+      border: 2px solid rgba(255, 255, 255, 1);
+      border-radius: 50%;
+    }
+  }
+
+  .earnings {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+    width: 100%;
+    height: 73px;
+    border-radius: 10px;
+    background-image: url(/img/earnings-bg.png);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    box-sizing: border-box;
+
+    img {
+      width: 30px;
+      height: 30px;
+    }
+  }
+
+  .van-cell.van-cell--clickable {
+    padding: 18px 0;
+
+    .van-image.van-icon__image {
+      width: 24px !important;
+      height: 24px !important;
+    }
+  }
+</style>

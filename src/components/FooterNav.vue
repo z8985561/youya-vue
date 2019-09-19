@@ -26,7 +26,7 @@
           :src="props.active ? icons[2].active : icons[2].normal"
         >
       </van-tabbar-item>
-      <van-tabbar-item>
+      <van-tabbar-item replace to="/member/index">
         <span>我的</span>
         <img
           slot="icon"
