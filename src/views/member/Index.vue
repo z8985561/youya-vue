@@ -25,15 +25,15 @@
       <van-grid-item icon="/img/menu2-01.png" text="我的课次" to="/member/my_courses_list" />
       <van-grid-item icon="/img/menu2-02.png" text="我的预约" to="/member/my_reservation_list" />
       <van-grid-item icon="/img/menu2-03.png" text="我的视频" to="/member/my_video_list" />
-      <van-grid-item icon="/img/menu2-04.png" text="我的兑换码" :to="{ name: 'article', params: { id: 4 }}" />
+      <van-grid-item icon="/img/menu2-04.png" text="我的兑换码" to="/member/my_redeem_code" />
     </van-grid>
 
     <van-cell-group :border="false">
       <van-cell title="我的订单" icon="/img/icon-member-01.png" is-link />
       <van-cell title="我的购物车" icon="/img/icon-member-02.png" is-link />
-      <van-cell title="收益明细" icon="/img/icon-member-03.png" is-link />
-      <van-cell title="提现明细" icon="/img/icon-member-04.png" is-link />
-      <van-cell title="个人资料" icon="/img/icon-member-05.png" is-link />
+      <van-cell title="收益明细" icon="/img/icon-member-03.png" is-link to='/member/earnings_record'/>
+      <van-cell title="提现明细" icon="/img/icon-member-04.png" is-link to="/member/withdraw_record" />
+      <van-cell title="个人资料" icon="/img/icon-member-05.png" is-link to="/member/personal_info" />
       <van-cell title="关于我们" icon="/img/icon-member-06.png" is-link />
     </van-cell-group>
 

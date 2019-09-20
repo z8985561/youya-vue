@@ -166,5 +166,64 @@ export default new Router({
         title:"我的视频"
       }
     },
+    // MyRedeemCode.vue
+    {
+      // 我的兑换码
+      path: '/member/my_redeem_code',
+      name: 'my_redeem_code',
+      component: () => import('./views/member/MyRedeemCode.vue'),
+      meta:{
+        title:"我的兑换码"
+      }
+    },
+    //WithdrawRecord.vue
+    {
+      // 提现记录
+      path: '/member/withdraw_record',
+      name: 'withdraw_record',
+      component: () => import('./views/member/WithdrawRecord.vue'),
+      meta:{
+        title:"提现记录"
+      }
+    },
+    //EarningsRecord.vue
+    {
+      // 收益记录
+      path: '/member/earnings_record',
+      name: 'earnings_record',
+      component: () => import('./views/member/EarningsRecord.vue'),
+      meta:{
+        title:"收益记录"
+      }
+    },
+    // PersonalInfo.vue
+    {
+      // 个人资料
+      path: '/member/personal_info',
+      name: 'personal_info',
+      component: () => import('./views/member/PersonalInfo.vue'),
+      meta:{
+        title:"个人资料"
+      }
+    },
+    {
+      // 核销单首页
+      path: '/verification/index',
+      name: 'verification_index',
+      component: () => import('./views/verification/Index.vue'),
+      meta:{
+        title:"香港皇家优雅女子学堂"
+      }
+    },
+    // OrderManage.vue
+    {
+      // 订单管理
+      path: '/verification/order_manage',
+      name: 'order_manage',
+      component: () => import('./views/verification/OrderManage.vue'),
+      meta:{
+        title:"订单管理"
+      }
+    },
   ]
 })
