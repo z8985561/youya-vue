@@ -73,7 +73,10 @@ var Mock = require('mockjs')
         }, 1000);
       }
     },
-    created() {},
+    created() {
+      axios.get("/article/banner")
+      axios.get("/article")
+    },
     mounted() {
       this.list = Mock.mock({
           'list|10': [{

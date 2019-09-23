@@ -21,9 +21,6 @@ export default new Router({
       // 课程
       path: '/video',
       name: 'video',
-      // route level code-splitting
-      // this generates a separate chunk (about.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
       component: () => import(/* webpackChunkName: "about" */ './views/Video.vue'),
       meta:{
         title:"课程"
@@ -206,6 +203,26 @@ export default new Router({
         title:"个人资料"
       }
     },
+    // AddressList.vue
+    {
+      // 地址管理
+      path: '/member/address_list',
+      name: 'address_list',
+      component: () => import('./views/member/AddressList.vue'),
+      meta:{
+        title:"地址管理"
+      }
+    },
+    // AddressEdit.vue
+    {
+      // 地址编辑
+      path: '/member/address_edit',
+      name: 'address_edit',
+      component: () => import('./views/member/AddressEdit.vue'),
+      meta:{
+        title:"地址编辑"
+      }
+    },
     {
       // 核销单首页
       path: '/verification/index',
@@ -253,6 +270,16 @@ export default new Router({
       component: () => import('./views/goods/Detail.vue'),
       meta:{
         title:"商品详情"
+      }
+    },
+    // 商品创建订单 CreateOrder.vue
+    {
+      // 确认订单
+      path: '/goods/create_order',
+      name: 'goods_create_order',
+      component: () => import('./views/goods/CreateOrder.vue'),
+      meta:{
+        title:"确认订单"
       }
     },
   ]

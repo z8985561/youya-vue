@@ -36,7 +36,9 @@
     watch: {},
     computed: {},
     methods: {},
-    created() {},
+    created() {
+      axios.get(`/article/detail?id=${this.$route.params.id}`)
+    },
     mounted() {
       console.log(this.$route.params.id);
 
