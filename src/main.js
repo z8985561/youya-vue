@@ -9,6 +9,10 @@ import 'lib-flexible/flexible.js';
 // 公共样式
 import './assets/css/common.css';
 
+import VueLazyload from 'vue-lazyload'
+
+Vue.use(VueLazyload)
+
 // 引入 vant-ui
 import Vant from 'vant';
 import 'vant/lib/index.css';

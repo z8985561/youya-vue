@@ -170,6 +170,9 @@ img {
   color: #8DB9DF;
 }
 /* 字体横线 */
+.text-left {
+  text-align: left !important;
+}
 .text-right {
   text-align: right !important;
 }

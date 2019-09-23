@@ -225,5 +225,35 @@ export default new Router({
         title:"订单管理"
       }
     },
+    // Feedback.vue
+    {
+      // 反馈页面
+      path: '/verification/feedback',
+      name: 'feedback',
+      component: () => import('./views/verification/Feedback.vue'),
+      meta:{
+        title:"反馈页面"
+      }
+    },
+    // 产品列表
+    {
+      // 产品列表
+      path: '/goods/index',
+      name: 'goods_index',
+      component: () => import('./views/goods/Index.vue'),
+      meta:{
+        title:"商品列表"
+      }
+    },
+    // 产品详情
+    {
+      // 产品详情
+      path: '/goods/detail/:id',
+      name: 'goods_detail',
+      component: () => import('./views/goods/Detail.vue'),
+      meta:{
+        title:"商品详情"
+      }
+    },
   ]
 })
