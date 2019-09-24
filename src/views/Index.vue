@@ -3,10 +3,10 @@
     <!-- 轮播图 -->
     <div class="mb-10">
       <van-swipe :autoplay="3000" :show-indicators="false">
-        <van-swipe-item v-for="(item, index) in indexData.ad" :key="index">
+        <van-swipe-item v-for="item in ad" :key="item.id">
           <router-link to="video">
-            <img src="/img/index-banner-01.png" width="100%" alt="">
-            <!-- <img :src="item.image" width="100%" alt=""> -->
+            <!-- <img src="/img/index-banner-01.png" width="100%" alt=""> -->
+            <img  v-lazy="item.image" width="100%" alt="">
           </router-link>
         </van-swipe-item>
       </van-swipe>
@@ -14,9 +14,9 @@
     <!-- 轮播图 -->
     <!-- banner -->
     <div class="flex flex-jus">
-      <div v-for="item in indexData.banner" :key="item.id" class="banner2">
+      <div v-for="item in banner" :key="item.id" class="banner2">
         <router-link to="/goods/index">
-          <img src="/img/banner2-01.png" width="100%" alt="">
+          <img :src="item.image" width="100%" alt="">
         </router-link>
       </div>
       <!-- <div class="banner2">
@@ -28,11 +28,11 @@
     <!-- banner -->
     <!-- 菜单 -->
     <van-grid :column-num="5" :border="false">
-      <van-grid-item icon="/img/menu-01.png" text="企业简介" :to="{ name: 'article', params: { id: 1 }}" />
-      <van-grid-item icon="/img/menu-02.png" text="品牌故事" :to="{ name: 'article', params: { id: 2 }}" />
+      <van-grid-item v-for="item in tool" :icon="item.image" :text="item.title" :to="{ name: 'article', params: { id: item.id }}" />
+      <!-- <van-grid-item icon="/img/menu-02.png" text="品牌故事" :to="{ name: 'article', params: { id: 2 }}" />
       <van-grid-item icon="/img/menu-03.png" text="课程介绍" :to="{ name: 'article', params: { id: 3 }}" />
       <van-grid-item icon="/img/menu-04.png" text="师资介绍" :to="{ name: 'article', params: { id: 4 }}" />
-      <van-grid-item icon="/img/menu-05.png" text="成功案例" :to="{ name: 'article', params: { id: 5 }}" />
+      <van-grid-item icon="/img/menu-05.png" text="成功案例" :to="{ name: 'article', params: { id: 5 }}" /> -->
     </van-grid>
     <!-- 菜单 -->
 
@@ -40,22 +40,22 @@
     <div class="flex flex-wrap flex-jus mb-10">
       <div class="course-item">
         <router-link to="/video">
-          <img src="/img/course-01.png" width="100%" alt="">
+          <img v-lazy="tool_parameter.HOME_SOURSE_IMAGE" width="100%" alt="">
         </router-link>
       </div>
       <div class="course-item">
         <router-link to="/subscribe_list">
-          <img src="/img/course-02.png" width="100%" alt="">
+          <img v-lazy="tool_parameter.HOME_BOOKING_IMAGE" width="100%" alt="">
         </router-link>
       </div>
       <div class="course-item">
         <router-link to="/article_list">
-          <img src="/img/course-03.png" width="100%" alt="">
+          <img v-lazy="tool_parameter.HOME_ARTICLE_IMAGE" width="100%" alt="">
         </router-link>
       </div>
       <div class="course-item">
         <router-link to="">
-          <img src="/img/course-04.png" width="100%" alt="">
+          <img v-lazy="tool_parameter.HOME_OFFSOURSE_IMAGE" width="100%" alt="">
         </router-link>
       </div>
     </div>
@@ -80,12 +80,12 @@
     <!-- banner3 -->
     <div class="mb-10">
       <router-link :to="{name:'experience',params:{id:1}}">
-        <img src="/img/banner3-01.png" width="100%" alt="">
+        <img v-lazy="tool_parameter.HOME_EXPERIENCE_IMAGE" width="100%" alt="">
       </router-link>
     </div>
     <div style="margin-bottom:2.666667rem;">
-      <router-link to="">
-        <img src="/img/banner3-02.png" width="100%" alt="">
+      <router-link to="/branch">
+        <img v-lazy="tool_parameter.HOME_BRANCH_IMAGE" width="100%" alt="">
       </router-link>
     </div>
     <!-- banner3 -->
@@ -95,7 +95,7 @@
       <div class="logo">
         <img src="/img/logo.png" alt="">
       </div>
-      <div v-html="indexData.tool_parameter.HOME_BOTTOM_TEXT"></div>
+      <div v-html="tool_parameter.HOME_BOTTOM_TEXT"></div>
       <!-- <p>欢迎您的加入！</p>
       <p>香港皇家优雅女子学堂提供的不仅是一个课程，也是一种优雅的生活方式更是一个精神的殿堂！</p>
       <p>联系方式：020-38868921 · 020-38847236</p>
@@ -120,7 +120,10 @@
           "../assets/img/index-banner-01.png",
           "../assets/img/index-banner-01.png",
         ],
-        indexData:null,
+        ad:"",
+        banner:"",
+        tool:"",
+        tool_parameter:"",
         CourseHot:[]
       }
     },
@@ -128,16 +131,33 @@
       FooterNav
     },
     created(){
-      this.getData()
-      this.getCourseHot()
+      this.getData();
+      this.getCourseHot();
+      this.login()
+
     },
+
     methods:{
+      async login(){
+        let userinfo = JSON.parse(localStorage.getItem("userinfo"));
+        if(!userinfo){
+          let {code,data,message} = await axios.get("/user/login?id=1");
+          if(code==0){
+            data = JSON.stringify(data)
+            localStorage.setItem("userinfo",data)
+          }
+
+        }
+      },
       async getData(){
         this.$toast.loading({message: '加载中...'});
         let {code,data,message} = await axios.get("/home");
         if(code == 0){
           this.$toast.clear()
-          this.indexData = data;
+          this.ad= data.ad;
+          this.banner = data.banner;
+          this.tool = data.tool;
+          this.tool_parameter = data.tool_parameter
         }else{
           this.$toast.fail(message)
         }

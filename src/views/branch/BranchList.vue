@@ -13,11 +13,9 @@
     </div>
     <!-- 轮播图 -->
 
-    <!-- 美文列表 -->
+    <!-- 分院列表 -->
     <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad">
-      <!-- <van-cell v-for="item in list" :key="item.id" :title="item.title" /> -->
-
-      <router-link v-for="(item,index) in list" :key="index" :to="{ name: 'article', params: { id: item.id }}">
+      <router-link v-for="(item,index) in list" :key="index" :to="{ name: 'branch_detail', params: { id: item.id }}">
         <div class="article-item">
           <img v-lazy="item.image"  alt="">
           <div>
@@ -28,7 +26,7 @@
       </router-link>
 
     </van-list>
-    <!-- 美文列表 -->
+    <!-- 分院列表 -->
   </div>
 </template>
 
@@ -53,7 +51,7 @@ var Mock = require('mockjs')
     methods: {
       async getList(){
         this.$toast.loading({message:"加载中..."})
-        let {code,data,messege} = await axios.get(`/article?page=${this.page++}`);
+        let {code,data,messege} = await axios.get(`/branch?page=${this.page++}`);
         if(code==0){
           this.$toast.clear()
           this.list = [
@@ -70,31 +68,10 @@ var Mock = require('mockjs')
       },
       onLoad() {
         // this.getList()
-        // 异步更新数据
-        // setTimeout(() => {
-        //   let list2 = Mock.mock({
-        //       'list|10': [{
-        //         "id|+1":1,
-        //         title:Mock.Random.cparagraph(2),
-        //         subTitle:Mock.Random.cparagraph(2),
-        //         thumb:Mock.Random.image('150x150', '#D8C7AF', '美文'),
-        //       }]
-        //   }).list;
-        //   this.list = [
-        //     ...this.list,
-        //     ...list2
-        //   ]
-        //   // 加载状态结束
-        //   this.loading = false;
-        //   // 数据全部加载完成
-        //   if (this.list.length >= 40) {
-        //     this.finished = true;
-        //   }
-        // }, 1000);
       }
     },
     created() {
-      axios.get("/article/banner").then(res=>{
+      axios.get("/branch/banner").then(res=>{
         if(res.code==0){
           this.banner = res.data;
         }else{
@@ -104,14 +81,6 @@ var Mock = require('mockjs')
       this.getList()
     },
     mounted() {
-      // this.list = Mock.mock({
-      //     'list|10': [{
-      //       "id|+1":1,
-      //       title:Mock.Random.cparagraph(2),
-      //       subTitle:Mock.Random.cparagraph(2),
-      //       thumb:Mock.Random.image('150x150', '#D8C7AF', '美文'),
-      //     }]
-      // }).list;
     }
   };
 </script>

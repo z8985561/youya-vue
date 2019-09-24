@@ -8,11 +8,11 @@
     <!-- 课程信息 -->
     <div class="p-15 flex mb-10">
       <div class="course-info">
-        <h2 class="fz-17 c3 mb-5">五年美丽同行班五年美丽同行班五年美丽同行班</h2>
-        <div class="fz-12 c9 mb-5">全部14集</div>
+        <h2 class="fz-17 c3 mb-5">{{detail.name}}</h2>
+        <div class="fz-12 c9 mb-5">全部{{detail.period}}集</div>
         <div>
-          <span class="fz-15 text-price">¥99.00 </span>
-          <span class="fz-12 c9 text-line">原价¥199.00</span>
+          <span class="fz-15 text-price">¥{{detail.price}} </span>
+          <span class="fz-12 c9 text-line">原价¥{{detail.original_price}}</span>
         </div>
       </div>
       <div class="course-share flex flex-align-start">
@@ -28,7 +28,7 @@
     <!-- 课程详情和目录 -->
     <van-tabs v-model="active" title-active-color="#8DB9DF" title-inactive-color="#999999" color="#8DB9DF">
       <van-tab title="课程详情">
-
+        <div v-html="detail.detail"></div>
       </van-tab>
       <van-tab title="目录">
         <ul class="catalogue-list">
@@ -74,6 +74,7 @@
         active: 1,
         current: 3,
         catalogue: [],
+        detail:"",
         playerOptions: {
           // videojs options
           muted: true,
@@ -85,7 +86,6 @@
           }],
           width: document.documentElement.clientWidth,
           poster: "/video/1.jpg",
-
         }
       };
     },
@@ -124,9 +124,21 @@
         this.$router.push({
           path: `/create_order/1`
         })
-      }
+      },
+      async getData(){
+        this.$toast.loading({message: '加载中...'});
+        let {code,data,message} = await axios.get("/course/detail",{params:{id:this.$route.params.id}})
+        if(code == 0){
+          this.$toast.clear()
+          this.detail = data
+        }else{
+          this.$toast.fail(message)
+        }
+      },
     },
-    created() {},
+    created() {
+      this.getData()
+    },
     mounted() {
       this.catalogue = Mock.mock({
         "list|8-10": [{

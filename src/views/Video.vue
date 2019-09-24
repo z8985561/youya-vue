@@ -1,20 +1,20 @@
 <template>
   <div>
-    <van-tabs v-model="active" title-active-color="#8DB9DF" title-inactive-color="#999999" color="#8DB9DF" :sticky="true">
+    <van-tabs v-model="active" line-width="45" title-active-color="#8DB9DF" title-inactive-color="#999999" color="#8DB9DF" :sticky="true">
       <van-tab title="课程视频">
         <div class="p-15">
-          <div class="curriculum-box" v-for="(cateItem,index) in list" :key="index">
-            <div class="fz-16 c3 fw-700 mb-15">{{cateItem.cateName}}</div>
+          <div class="curriculum-box" v-for="(cateItem,index) in videoList" :key="index">
+            <div class="fz-16 c3 fw-700 mb-15">{{cateItem.name}}</div>
             <div class="curriculum-list">
-              <router-link v-for="(item,idx) in cateItem.videoList" :key="idx"  :to="{ name: 'video_detail', params: { id: item.id }}">
+              <router-link v-for="(item,idx) in cateItem.with_course" :key="idx"  :to="{ name: 'video_detail', params: { id: item.id }}">
                 <div class="curriculum-item">
-                  <div class="thumb" :style="{backgroundImage:'url('+item.thumb+')'}">
-                    <div class="count">更新至{{item.count}}集</div>
+                  <div class="thumb" :style="{backgroundImage:'url('+item.image+')'}">
+                    <div class="count">更新至{{item.period}}集</div>
                   </div>
-                  <div class="fz-14 c3 text-hide mb-5">{{item.title}}</div>
+                  <div class="fz-14 c3 text-hide mb-5">{{item.name}}</div>
                   <div>
-                    <span class="fz-14 text-price">￥{{item.newPrice}} </span>
-                    <span class="fz-12 c9 text-line">￥{{item.oldPrice}}</span>
+                    <span class="fz-14 text-price">￥{{item.price}} </span>
+                    <span class="fz-12 c9 text-line">￥{{item.original_price}}</span>
                   </div>
                 </div>
               </router-link>
@@ -22,7 +22,27 @@
           </div>
         </div>
       </van-tab>
-      <van-tab title="课程音频">内容 2</van-tab>
+      <van-tab title="课程音频">
+        <div class="p-15">
+          <div class="curriculum-box" v-for="(cateItem,index) in aideoList" :key="index">
+            <div class="fz-16 c3 fw-700 mb-15">{{cateItem.name}}</div>
+            <div class="curriculum-list">
+              <router-link v-for="(item,idx) in cateItem.with_course" :key="idx"  :to="{ name: 'video_detail', params: { id: item.id }}">
+                <div class="curriculum-item">
+                  <div class="thumb" :style="{backgroundImage:'url('+item.image+')'}">
+                    <div class="count">更新至{{item.period}}集</div>
+                  </div>
+                  <div class="fz-14 c3 text-hide mb-5">{{item.name}}</div>
+                  <div>
+                    <span class="fz-14 text-price">￥{{item.price}} </span>
+                    <span class="fz-12 c9 text-line">￥{{item.original_price}}</span>
+                  </div>
+                </div>
+              </router-link>
+            </div>
+          </div>
+        </div>
+      </van-tab>
     </van-tabs>
     <FooterNav :active="1" />
   </div>
@@ -34,27 +54,41 @@
     data() {
       return {
         active:0,
-        list: []
+        videoList:[],
+        aideoList:[]
       }
     },
     components: {
       FooterNav
     },
+    created(){
+      this.getVideo()
+      this.getAideo()
+    },
+    methods:{
+      async getVideo(){
+        this.$toast.loading({message: '加载中...'});
+        let {code,data,message} = await axios.get("/course/class",{params:{type:1}})
+        if(code == 0){
+          this.$toast.clear()
+          this.videoList = data.data
+        }else{
+          this.$toast.fail(message)
+        }
+      },
+      async getAideo(){
+        this.$toast.loading({message: '加载中...'});
+        let {code,data,message} = await axios.get("/course/class",{params:{type:2}})
+        if(code == 0){
+          this.$toast.clear()
+          this.aideoList = data.data
+        }else{
+          this.$toast.fail(message)
+        }
+      }
+    },
     mounted() {
-      this.list = Mock.mock({
-        "list|1-5": [{
-          "id|+1": 1,
-          "cateName|1": ["形体课程", "礼仪课程"],
-          "videoList|4": [{
-            "id|+1": 1,
-            "title": Mock.Random.cparagraph(1),
-            "newPrice|50-100.2": 75,
-            "oldPrice|100-200.2": 150,
-            "thumb": Mock.Random.image('168x94', '#D8C7AF', 'video'),
-            "count|8-15": 8
-          }]
-        }]
-      }).list;
+
     },
   }
 </script>

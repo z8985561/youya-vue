@@ -282,5 +282,25 @@ export default new Router({
         title:"确认订单"
       }
     },
+    // BranchList.vue
+    {
+      // 全国分院列表
+      path: '/branch',
+      name: 'branch_list',
+      component: () => import('./views/branch/BranchList.vue'),
+      meta:{
+        title:"全国分院列表"
+      }
+    },
+    // BranchDetail.vue
+    {
+      // 分院详情
+      path: '/branch/detail',
+      name: 'branch_detail',
+      component: () => import('./views/branch/BranchDetail.vue'),
+      meta:{
+        title:"分院详情"
+      }
+    },
   ]
 })
