@@ -23,6 +23,7 @@ Vue.config.productionTip = false
 
 // Axios 请求
 Axios.defaults.timeout = 30000;
+Axios.defaults.withCredentials = true;
 Axios.interceptors.response.use( response => {
   if (response.status === 200) {
     return Promise.resolve(response.data);

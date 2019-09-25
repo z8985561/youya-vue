@@ -61,17 +61,14 @@
           this.$toast("手机号码输入有误")
           return
         }
-        let {code,data,message} = await axios.post("/user/verify",{
-          phone:phone,
-          name:name,
-          code:sms
+        let {code,data,message} = await axios.post("/reservation/add",{
+          course_id:this.$route.params.course_id
           })
         if(code==0){
           console.log(data);
-          console.log(this.$route.query);
-          this.$router.push({ name:this.$route.query.path, params: { id: this.$route.query.id }})
         }else{
           this.$toast(message)
+          setTimeout(()=>{this.$router.go(-1)},2000)
         }
       },
       reset(){

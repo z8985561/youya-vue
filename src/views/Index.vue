@@ -139,14 +139,19 @@
 
     methods:{
       async login(){
-        let userinfo = JSON.parse(localStorage.getItem("userinfo"));
-        if(!userinfo){
-          let {code,data,message} = await axios.get("/user/login?id=1");
-          if(code==0){
-            data = JSON.stringify(data)
-            localStorage.setItem("userinfo",data)
-          }
+        // let userinfo = JSON.parse(localStorage.getItem("userinfo"));
+        // if(!userinfo){
+        //   let {code,data,message} = await axios.get("/user/login?id=2");
+        //   if(code==0){
+        //     data = JSON.stringify(data)
+        //     localStorage.setItem("userinfo",data)
+        //   }
 
+        // }
+        let {code,data,message} = await axios.get("/user/login?id=2");
+        if(code==0){
+          data = JSON.stringify(data)
+          localStorage.setItem("userinfo",data)
         }
       },
       async getData(){

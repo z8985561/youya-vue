@@ -93,6 +93,16 @@ export default new Router({
         title:"预约详情"
       }
     },
+    // SubscribeAuth.vue
+    {
+      // 预约
+      path: '/subscribe_auth/:course_id',
+      name: 'subscribe_auth',
+      component: () => import('./views/SubscribeAuth.vue'),
+      meta:{
+        title:"预约详情"
+      }
+    },
     // Authentication
     {
       // 身份验证

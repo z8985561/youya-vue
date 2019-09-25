@@ -2,18 +2,18 @@
   <div>
     <van-sticky>
       <div style="background:#fff;">
-        <van-search placeholder="请输入搜索关键词" v-model="keyword" />
+        <van-search placeholder="请输入搜索关键词" v-model="word" />
         <van-dropdown-menu active-color="#8DB9DF">
-          <van-dropdown-item title="选择课程分类" v-model="cateIndex" :options="cate" />
-          <van-dropdown-item title="选择开课时间" v-model="timeIndex" :options="time" />
+          <van-dropdown-item title="选择课程分类" v-model="class_id" :options="cate" />
+          <van-dropdown-item title="选择开课时间" v-model="time_type" :options="time" />
         </van-dropdown-menu>
       </div>
     </van-sticky>
-    <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad">
+    <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="getList">
       <ul class="subscribe-list">
         <li class="subscribe-item" v-for="(item,index) in list" :key="index">
           <router-link :to="{ name: 'subscribe_detail', params: { id: item.id }}">
-            <div class="cover" :style="{backgroundImage:'url('+item.cover+')'}">
+            <div class="cover" :style="{backgroundImage:'url('+item.image+')'}">
               <div class="cate">{{item.cateName}}</div>
               <div class="count">
                 <div class="avatar">
@@ -21,16 +21,16 @@
                     <img :src="img" alt="">
                   </div>
                 </div>
-                <div class="ml-10">{{item.count}} 人预约</div>
+                <div class="ml-10">{{item.number_booking}} 人预约</div>
               </div>
-              <div class="time">{{item.time}} 开课</div>
+              <div class="time">{{item.start_time}} 开课</div>
             </div>
           </router-link>
           <div class="flex plr-5">
             <div style="flex:1;">
               <div class="title mb-5">{{item.title}}</div>
               <div class="address">
-                <van-icon name="location-o" /> {{item.address}}</div>
+                <van-icon name="location-o" /> {{item.subtitle}}</div>
             </div>
             <div class="youya-btn-o">预约</div>
           </div>
@@ -51,29 +51,17 @@
     props: {},
     data() {
       return {
-        keyword: "",
-        cateIndex: 0,
-        timeIndex: 0,
+        word: "",
+        class_id: "",
+        time_type: "",
         cate: [{
             text: '全部',
-            value: 0
-          },
-          {
-            text: '高级班',
-            value: 1
-          },
-          {
-            text: '初级班',
-            value: 2
-          },
-          {
-            text: '五年同行培训班',
-            value: 3
+            value: ""
           }
         ],
         time: [{
             text: '全部',
-            value: 0
+            value: ""
           },
           {
             text: '七天内',
@@ -85,56 +73,78 @@
           },
         ],
         list: [],
+        page:1,
         loading: false,
         finished: false
       };
     },
-    watch: {},
+    watch: {
+      class_id(n,o){
+        this.changeSearch(n,o)
+      },
+      time_type(n,o){
+        this.changeSearch(n,o)
+      },
+      word(n,o){
+        this.changeSearch(n,o)
+      }
+    },
     computed: {},
     methods: {
-      onLoad() {
-        // 异步更新数据
-        setTimeout(() => {
-          let list = Mock.mock({
-            "list|10": [{
-              "id|+1": 1,
-              "cover": Mock.Random.image('345x194', '#a5a6a0', '345x194'),
-              "cateName|1": ["高级班", "初级班", "五年同行培训班"],
-              "count|20-40": 30,
-              "title": Mock.Random.cparagraph(1),
-              "address": Mock.Random.county(true),
-              "time": Mock.mock('@date("yyyy-MM-dd")'),
-              "avatar|4": [Mock.Random.image('15x15')]
-            }]
-          }).list;
+      changeSearch(n,o){
+        if(n==o){
+          return;
+        }
+        this.page = 1;
+        this.list = [];
+        this.finished = false;
+      },
+      async getList(){
+        let params = {};
+        if(this.class_id){
+          params.class_id = this.class_id
+        }
+        if(this.word){
+          params.word = this.word
+        }
+        if(this.time_type){
+          params.time_type = this.time_type
+        }
+        let {code,data,message} = await axios.get(`/reservation?page=${this.page++}`,{params})
+        if(code == 0){
+          let list = data.data;
           this.list = [
             ...this.list,
             ...list
           ]
           // 加载状态结束
           this.loading = false;
-
           // 数据全部加载完成
-          if (this.list.length >= 40) {
+          if (this.page > data.last_page) {
             this.finished = true;
           }
-        }, 500);
+        }else{
+          this.$toast.fail(message)
+        }
+      },
+      async getCate(){
+        let {code,data,message} = await axios.get("/reservation/class")
+        if(code == 0){
+          data.forEach(item=>{
+            this.cate.push({
+              text:item.name,
+              value:item.id
+            })
+          })
+        }else{
+          this.$toast.fail(message)
+        }
       }
     },
     created() {},
     mounted() {
-      this.list = Mock.mock({
-        "list|10": [{
-          "id|+1": 1,
-          "cover": Mock.Random.image('345x194', '#a5a6a0', '345x194'),
-          "cateName|1": ["高级班", "初级班", "五年同行培训班"],
-          "count|20-40": 30,
-          "title": Mock.Random.cparagraph(1),
-          "address": Mock.Random.county(true),
-          "time": Mock.mock('@date("yyyy-MM-dd")'),
-          "avatar|4": [Mock.Random.image('15x15')]
-        }]
-      }).list;
+      this.getCate()
+      // this.getList()
     }
   };
 </script>

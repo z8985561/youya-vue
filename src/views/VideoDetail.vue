@@ -20,7 +20,7 @@
           <img src="/img/icon-wallet.png" alt="">
           <div class="fz-11 c9">分享获得</div>
         </div>
-        <div class="award-tips">46元奖励</div>
+        <div class="award-tips">{{parseInt(detail.share_amount)}}元奖励</div>
       </div>
     </div>
     <!-- 课程信息 -->
@@ -44,7 +44,7 @@
     <!-- 课程详情和目录 -->
 
     <!-- footer -->
-    <div class="footer-bar plr-15 flex flex-align-center">
+    <div v-if="!isbought" class="footer-bar plr-15 flex flex-align-center">
       <router-link to="/">
         <div class="back-home">
           <img src="/img/icon-home.png" alt="">
@@ -71,6 +71,8 @@
     props: {},
     data() {
       return {
+        // 是否购买该教程
+        isbought:false,
         active: 1,
         current: 3,
         catalogue: [],
@@ -99,6 +101,7 @@
       // listen event
       onPlayerPlay(player) {
         console.log('player play!', player)
+
       },
       onPlayerPause(player) {
         console.log('player pause!', player)
@@ -122,7 +125,7 @@
       // 购买事件
       buying(){
         this.$router.push({
-          path: `/create_order/1`
+          path:`/authentication?path=create_order&id=${this.$route.params.id}`
         })
       },
       async getData(){
@@ -135,9 +138,19 @@
           this.$toast.fail(message)
         }
       },
+      // 检查用户是否购买了该教程
+      async checkIsBought(){
+        let {code,data,message} = await axios.get("/user/course-order/bought",{params:{course_id:this.$route.params.id}})
+        if(code == 0){
+          this.isbought = data
+        }else{
+          this.$toast.fail(message)
+        }
+      }
     },
     created() {
-      this.getData()
+      this.getData();
+      this.checkIsBought();
     },
     mounted() {
       this.catalogue = Mock.mock({

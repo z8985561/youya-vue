@@ -1,4 +1,5 @@
 module.exports = {
+  publicPath: '/youya-h5/',
   devServer: {
     proxy: {
         '/': {
