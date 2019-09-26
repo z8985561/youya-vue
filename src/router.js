@@ -35,6 +35,26 @@ export default new Router({
         title:"课程详情"
       }
     },
+    // SharePosters.vue
+    {
+      // 分享海报
+      path: '/share_posters/:id',
+      name: 'share_posters',
+      component: () => import(/* webpackChunkName: "about" */ './views/SharePosters.vue'),
+      meta:{
+        title:"课程详情"
+      }
+    },
+    // ToolDetail.vue
+    {
+      // 功能单页面详情
+      path: '/tool_detail/:id',
+      name: 'tool_detail',
+      component: () => import('./views/ToolDetail.vue'),
+      meta:{
+        title:""
+      }
+    },
     {
       // 文章
       path: '/article/:id',
@@ -310,6 +330,35 @@ export default new Router({
       component: () => import('./views/branch/BranchDetail.vue'),
       meta:{
         title:"分院详情"
+      }
+    },
+    // 订单列表
+    // OrderList.vue.vue
+    {
+      // 订单列表
+      path: '/order/order_list',
+      name: 'order_list',
+      component: () => import('./views/order/OrderList.vue'),
+      meta:{
+        title:"订单列表"
+      }
+    },
+    {
+      // 订单详情
+      path: '/order/order_detail/:id',
+      name: 'order_detail',
+      component: () => import('./views/order/OrderDetail.vue'),
+      meta:{
+        title:"订单详情"
+      }
+    },
+    {
+      // 申请退款
+      path: '/order/refund/:id',
+      name: 'order_refund',
+      component: () => import('./views/order/Refund.vue'),
+      meta:{
+        title:"申请退款"
       }
     },
   ]

@@ -28,7 +28,7 @@
     <!-- banner -->
     <!-- 菜单 -->
     <van-grid :column-num="5" :border="false">
-      <van-grid-item v-for="item in tool" :icon="item.image" :text="item.title" :to="{ name: 'article', params: { id: item.id }}" />
+      <van-grid-item v-for="item in tool" :icon="item.image" :text="item.title" :to="{ name: 'tool_detail', params: { id: item.id }}" />
       <!-- <van-grid-item icon="/img/menu-02.png" text="品牌故事" :to="{ name: 'article', params: { id: 2 }}" />
       <van-grid-item icon="/img/menu-03.png" text="课程介绍" :to="{ name: 'article', params: { id: 3 }}" />
       <van-grid-item icon="/img/menu-04.png" text="师资介绍" :to="{ name: 'article', params: { id: 4 }}" />

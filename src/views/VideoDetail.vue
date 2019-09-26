@@ -16,11 +16,13 @@
         </div>
       </div>
       <div class="course-share flex flex-align-start">
-        <div class="flex flex-column flex-jus flex-align-center">
-          <img src="/img/icon-wallet.png" alt="">
-          <div class="fz-11 c9">分享获得</div>
-        </div>
-        <div class="award-tips">{{parseInt(detail.share_amount)}}元奖励</div>
+        <router-link :to="{name:'share_posters',params:{id:detail.id}}">
+          <div class="flex flex-column flex-jus flex-align-center">
+            <img src="/img/icon-wallet.png" alt="">
+            <div class="fz-11 c9">分享获得</div>
+          </div>
+        </router-link>
+        <div class="award-tips">{{parseInt(detail.share_amount||0)}}元奖励</div>
       </div>
     </div>
     <!-- 课程信息 -->
@@ -33,8 +35,8 @@
       <van-tab title="目录">
         <ul class="catalogue-list">
           <li class="catalogue-item" v-for="item in catalogue" :key="item.id" :data-id="item.id">
-            <div class="thumb" :style="{backgroundImage:'url('+item.thumb+')'}">
-              <div class="duration">{{item.duration}}</div>
+            <div class="thumb" :style="{backgroundImage:'url('+item.image+')'}">
+              <div class="duration">{{item.minute}}分钟</div>
             </div>
             <div class="fz-14 tilte" :class="item.id== current?'text-primary':'c3'">{{item.title}}</div>
           </li>
@@ -74,7 +76,7 @@
         // 是否购买该教程
         isbought:false,
         active: 1,
-        current: 3,
+        current: 4,
         catalogue: [],
         detail:"",
         playerOptions: {
@@ -138,6 +140,15 @@
           this.$toast.fail(message)
         }
       },
+      // 获取目录
+      async getCatalog(){
+        let {code,data,message} = await axios.get("/course/catalog",{params:{id:this.$route.params.id}})
+        if(code == 0){
+          this.catalogue = data
+        }else{
+          this.$toast.fail(message)
+        }
+      },
       // 检查用户是否购买了该教程
       async checkIsBought(){
         let {code,data,message} = await axios.get("/user/course-order/bought",{params:{course_id:this.$route.params.id}})
@@ -150,17 +161,11 @@
     },
     created() {
       this.getData();
+      this.getCatalog()
       this.checkIsBought();
     },
     mounted() {
-      this.catalogue = Mock.mock({
-        "list|8-10": [{
-          "id|+1": 1,
-          "thumb": Mock.Random.image('180x100', '#D8C7AF', 'video'),
-          "title": Mock.Random.cparagraph(1,2),
-          "duration": Mock.Random.time('H:m:s')
-        }]
-      }).list;
+
     }
   };
 </script>
