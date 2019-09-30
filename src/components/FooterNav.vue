@@ -26,7 +26,7 @@
           :src="props.active ? icons[2].active : icons[2].normal"
         >
       </van-tabbar-item>
-      <van-tabbar-item replace to="/member/index">
+      <van-tabbar-item replace to="/member">
         <span>我的</span>
         <img
           slot="icon"
@@ -44,17 +44,17 @@ export default {
     return{
       index:0,
       icons:[{
-        normal: '/img/home-normal.png',
-        active: '/img/home-active.png'
+        normal: 'img/home-normal.png',
+        active: 'img/home-active.png'
       },{
-        normal: '/img/video-normal.png',
-        active: '/img/video-active.png'
+        normal: 'img/video-normal.png',
+        active: 'img/video-active.png'
       },{
-        normal: '/img/clock-normal.png',
-        active: '/img/clock-active.png'
+        normal: 'img/clock-normal.png',
+        active: 'img/clock-active.png'
       },{
-        normal: '/img/user-normal.png',
-        active: '/img/user-active.png'
+        normal: 'img/user-normal.png',
+        active: 'img/user-active.png'
       }]
     }
   },

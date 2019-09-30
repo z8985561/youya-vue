@@ -5,7 +5,7 @@
         <span>暂无地址，请去</span>
         <span class="text-price">添加地址</span>
       </div>
-      <img src="/img/icon-dingwei.png" alt="">
+      <img src="img/icon-dingwei.png" alt="">
       <div class="fz-15 ml-10" style="width:80%;">
         <div>熊娟  13445677888</div>
         <div class="text-hide">中国浙江省宁波市江北区市民路98号4楼区市民路98号4楼</div>
@@ -16,7 +16,7 @@
 
     <!-- 产品列表 -->
     <div class="goods-item">
-      <img src="/img/goods-01.jpg" alt="">
+      <img src="img/goods-01.jpg" alt="">
       <div class="ml-10 flex flex-column flex-jus">
         <div class="fz-15 c3">完美日记（PERFECT DIARY）无痕持妆粉底液B21 黄调自然偏白…</div>
         <div class="fz-11 c9">颜色：色号#3</div>

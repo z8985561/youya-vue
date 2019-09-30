@@ -13,7 +13,7 @@
       <div class="goods-list">
         <router-link v-for="item in list" :key="item" :to="{ name: 'goods_detail', params: { id: item }}">
           <div class="goods-item">
-            <img class="thumb" src="/img/goods-01.jpg" alt="">
+            <img class="thumb" src="img/goods-01.jpg" alt="">
             <div class="flex flex-column flex-jus">
               <div class="fz-15 c3">21天优雅训练营第三期 | 你有多优秀，连你自己都不知道</div>
               <div>

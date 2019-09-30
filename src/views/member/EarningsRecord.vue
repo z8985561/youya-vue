@@ -5,7 +5,7 @@
         <li class="earning-item" v-for="item in list" :key="item">
           <div class="flex flex-jus">
             <div class="flex flex-align-center mb-10">
-              <img src="/img/noface.png" alt="">
+              <img src="../../assets/img/noface.png" alt="">
               <div class="ml-10 fz-13 c3">吃猫的鱼</div>
             </div>
             <div class="fz-15 text-price">+19</div>

@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="header">
-      <img class="mb-10" src="/img/icon-money.png" alt="">
+      <img class="mb-10" src="../../assets/img/icon-money.png" alt="">
       <div class="fz-15 c3">提现到微信钱包</div>
     </div>
     <div class="plr-20">

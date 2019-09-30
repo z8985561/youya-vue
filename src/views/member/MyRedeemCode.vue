@@ -11,7 +11,7 @@
                   <div class="fz-13 c9">课次：10</div>
                 </div>
                 <div class="redeem-code">
-                  <img src="/img/redeem-code.png" alt="">
+                  <img src="../../assets/img/redeem-code.png" alt="">
                 </div>
               </div>
               <div class="redeem-line"></div>
@@ -33,7 +33,7 @@
                   <div class="fz-13 c9">课次：10</div>
                 </div>
                 <div class="redeem-code">
-                  <img src="/img/redeem-code.png" alt="">
+                  <img src="../../assets/img/redeem-code.png" alt="">
                 </div>
               </div>
               <div class="redeem-line"></div>
@@ -41,7 +41,7 @@
                 <div>赠送时间：2019.09.18 12:34:54</div>
                 <div>赠送者：Luyese</div>
               </div>
-              <img class="used" src="/img/used.png" alt="">
+              <img class="used" src="../../assets/img/used.png" alt="">
             </li>
           </ul>
         </van-list>

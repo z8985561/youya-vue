@@ -4,7 +4,7 @@
       <div class="cell-group">
         <router-link v-for="item in list" :key="item" :to="{ name: 'video_detail', params: { id: item }}">
           <div class="cell">
-            <div class="cell__image" style="background-image:url(/img/banner2-01.png)">
+            <div class="cell__image" style="background-image:url(../../assets/img/banner2-01.png)">
               <div class="sets">全12集</div>
             </div>
             <div class="ml-10 fz-14 c3">香港皇家优雅形体礼仪初级课程</div>

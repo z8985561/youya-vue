@@ -16,7 +16,7 @@
       </div>
       <div class="course-share flex flex-align-start">
         <div class="flex flex-column flex-jus flex-align-center">
-          <img src="/img/icon-wallet.png" alt="">
+          <img src="img/icon-wallet.png" alt="">
           <div class="fz-11 c9">分享获得</div>
         </div>
         <div class="award-tips">46元奖励</div>
@@ -36,7 +36,7 @@
     <div class="footer-bar plr-15 flex flex-align-center">
       <router-link to="/">
         <div class="back-home">
-          <img src="/img/icon-home.png" alt="">
+          <img src="img/icon-home.png" alt="">
           <div class="fz-11 c9">首页</div>
         </div>
       </router-link>
@@ -46,8 +46,8 @@
 
     <!-- 侧边客服购物车按钮 -->
     <div class="side-btn">
-      <img class="mb-5" src="/img/btn-service.png" alt="">
-      <img src="/img/btn-cart.png" alt="">
+      <img class="mb-5" src="img/btn-service.png" alt="">
+      <img src="img/btn-cart.png" alt="">
     </div>
     <!-- 侧边客服购物车按钮 -->
 

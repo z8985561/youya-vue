@@ -2,13 +2,13 @@
   <div>
     <ul class="courses-header">
       <li>
-        <img src="/img/icon-calendar.png" alt="">
+        <img src="../../assets/img/icon-calendar.png" alt="">
         <router-link to="/member/my_reservation_list">
           <div class="fz-12 c3">预约记录</div>
         </router-link>
       </li>
       <li @click="showCounselorModel">
-        <img src="/img/icon-service.png" alt="">
+        <img src="../../assets/img/icon-service.png" alt="">
         <div class="fz-12 c3">我的课程顾问</div>
       </li>
     </ul>
@@ -18,7 +18,7 @@
           <ul class="courses-list">
             <li class="courses-item" v-for="item in list" :key="item">
               <div>
-                <img src="/img/icon-doctoria.png" alt="">
+                <img src="../../assets/img/icon-doctoria.png" alt="">
               </div>
               <div class="courses-info">
                 <div class="fz-15 c3 mb-5">香港皇家优雅形体礼仪初级课程</div>
@@ -41,7 +41,7 @@
           <ul class="courses-list">
             <li class="courses-item" v-for="item in list" :key="item">
               <div>
-                <img src="/img/icon-doctoria.png" alt="">
+                <img src="../../assets/img/icon-doctoria.png" alt="">
               </div>
               <div class="courses-info">
                 <div class="fz-15 c3 mb-5">香港皇家优雅形体礼仪初级课程</div>
@@ -64,7 +64,7 @@
           <ul class="courses-list">
             <li class="courses-item" v-for="item in list" :key="item">
               <div>
-                <img src="/img/icon-doctoria.png" alt="">
+                <img src="../../assets/img/icon-doctoria.png" alt="">
               </div>
               <div class="courses-info">
                 <div class="fz-15 c3 mb-5">香港皇家优雅形体礼仪初级课程</div>
@@ -87,15 +87,15 @@
     <van-popup v-model="isShowCounselor" :closeable="true">
       <div class="counselor">
         <div class="flex mb-15">
-          <img class="avatar" src="/img/noface.png" alt="">
+          <img class="avatar" src="../../assets/img/noface.png" alt="">
           <div class="ml-10">
             <div class="fz-17 c3 mb-10">温壁瑜老师</div>
             <div class="fz-14 c9">13789738274 <a class="btn-youya-o plr-5" href="tel:13789738274">一键拨打</a></div>
           </div>
         </div>
         <div class="flex flex-center mb-5">
-          <div class="erweima">
-            <img src="/img/erweima.png" alt="">
+          <div class="erweima" style="background-image: url(../../assets/img/erweima-bg.png);">
+            <img src="../../assets/img/erweima.png" alt="">
           </div>
         </div>
         <div class="fz-12 c9 text-center">识别二维码咨询详情</div>
@@ -215,7 +215,6 @@
     align-items: center;
     width: 173px;
     height: 165px;
-    background-image: url(/img/erweima-bg.png);
     background-position: center;
     background-size: cover;
     img{

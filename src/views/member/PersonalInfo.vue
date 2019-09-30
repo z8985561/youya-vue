@@ -3,7 +3,7 @@
     <van-cell-group :border="false">
       <van-cell title-class="flex flex-align-center c9" title="修改头像" value="内容">
         <div class="flex flex-end" slot="default">
-          <img class="avatar" src="/img/noface.png" alt="">
+          <img class="avatar" src="../../assets/img/noface.png" alt="">
         </div>
       </van-cell>
       <van-cell title-class="c9" value-class="c3" title="二维码名片" value="上传" />

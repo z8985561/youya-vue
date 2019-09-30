@@ -30,7 +30,7 @@
       <ul class="order-list">
         <li class="order-item" v-for="item in list" :key="item">
           <div class="flex flex-align-center mb-15">
-            <img class="thumb" src="/img/banner2-02.png" alt="">
+            <img class="thumb" src="img/banner2-02.png" alt="">
             <div class="fz-15 c3 ml-10">广东广州第10期优雅形态课程</div>
           </div>
           <div class="bar-1 mb-10"></div>

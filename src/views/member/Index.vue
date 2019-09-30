@@ -7,12 +7,12 @@
         </div>
         <div class="fz-12 c9">代理商</div>
       </div>
-      <img class="avatar" src="/img/noface.png" alt="">
+      <img class="avatar" src="img/noface.png" alt="">
     </div>
 
-    <div class="earnings">
+    <div class="earnings" style="background-image: url(img/earnings-bg.png);">
       <div class="flex flex-align-center">
-        <img src="/img/icon-wallet2.png" alt="">
+        <img src="img/icon-wallet2.png" alt="">
         <div class="fz-17 fw-700 ml-10 text-brown">246.21</div>
       </div>
       <router-link to="/member/withdraw">
@@ -22,20 +22,20 @@
     </div>
 
     <van-grid :column-num="4" :border="false">
-      <van-grid-item icon="/img/menu2-01.png" text="我的课次" to="/member/my_courses_list" />
-      <van-grid-item icon="/img/menu2-02.png" text="我的预约" to="/member/my_reservation_list" />
-      <van-grid-item icon="/img/menu2-03.png" text="我的视频" to="/member/my_video_list" />
-      <van-grid-item icon="/img/menu2-04.png" text="我的兑换码" to="/member/my_redeem_code" />
+      <van-grid-item icon="img/menu2-01.png" text="我的课次" to="/member/my_courses_list" />
+      <van-grid-item icon="img/menu2-02.png" text="我的预约" to="/member/my_reservation_list" />
+      <van-grid-item icon="img/menu2-03.png" text="我的视频" to="/member/my_video_list" />
+      <van-grid-item icon="img/menu2-04.png" text="我的兑换码" to="/member/my_redeem_code" />
     </van-grid>
 
     <van-cell-group :border="false">
-      <van-cell title="我的订单" icon="/img/icon-member-01.png" is-link to='/order/order_list'/>
-      <!-- <van-cell title="我的购物车" icon="/img/icon-member-02.png" is-link /> -->
-      <van-cell title="收益明细" icon="/img/icon-member-03.png" is-link to='/member/earnings_record'/>
-      <van-cell title="提现明细" icon="/img/icon-member-04.png" is-link to="/member/withdraw_record" />
-      <van-cell title="个人资料" icon="/img/icon-member-05.png" is-link to="/member/personal_info" />
-      <van-cell title="地址管理" icon="/img/icon-member-07.png" is-link to="/member/address_list" />
-      <van-cell title="关于我们" icon="/img/icon-member-06.png" is-link />
+      <van-cell title="我的订单" icon="img/icon-member-01.png" is-link to='/order/order_list'/>
+      <van-cell title="我的购物车" icon="img/icon-member-02.png" is-link to='/member/my_cart'/>
+      <van-cell title="收益明细" icon="img/icon-member-03.png" is-link to='/member/earnings_record'/>
+      <van-cell title="提现明细" icon="img/icon-member-04.png" is-link to="/member/withdraw_record" />
+      <van-cell title="个人资料" icon="img/icon-member-05.png" is-link to="/member/personal_info" />
+      <van-cell title="地址管理" icon="img/icon-member-07.png" is-link to="/member/address_list" />
+      <van-cell title="关于我们" icon="img/icon-member-06.png" is-link />
     </van-cell-group>
 
     <FooterNav :active="3" />
@@ -94,7 +94,6 @@
     width: 100%;
     height: 73px;
     border-radius: 10px;
-    background-image: url(/img/earnings-bg.png);
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;

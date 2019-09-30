@@ -10,7 +10,7 @@
                 <div class="fz-13 text-price">待消课</div>
               </div>
               <div class="flex mb-10">
-                <img src="/img/banner2-02.png" alt="">
+                <img src="../../assets/img/banner2-02.png" alt="">
                 <div class="ml-10 flex flex-column flex-jus">
                   <div class="fz-15 c3">香港皇家优雅形体礼仪初级课程</div>
                   <div class="fz-13 c9">讲师：杨晓妮</div>

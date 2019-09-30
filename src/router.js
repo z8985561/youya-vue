@@ -136,7 +136,7 @@ export default new Router({
     // Authentication
     {
       // 个人中心
-      path: '/member/index',
+      path: '/member',
       name: 'member_index',
       component: () => import('./views/member/Index.vue'),
       meta:{
@@ -253,6 +253,16 @@ export default new Router({
         title:"地址编辑"
       }
     },
+    // MyCart.vue
+    {
+      // 我的购物车
+      path: '/member/my_cart',
+      name: 'my_cart',
+      component: () => import('./views/member/MyCart.vue'),
+      meta:{
+        title:"我的购物车"
+      }
+    },
     {
       // 核销单首页
       path: '/verification/index',
@@ -359,6 +369,16 @@ export default new Router({
       component: () => import('./views/order/Refund.vue'),
       meta:{
         title:"申请退款"
+      }
+    },
+    // RefundDetail.vue
+    {
+      // 退款详情
+      path: '/order/refund_detail/:id',
+      name: 'order_refund_detail',
+      component: () => import('./views/order/RefundDetail.vue'),
+      meta:{
+        title:"退款详情"
       }
     },
   ]

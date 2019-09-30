@@ -19,7 +19,7 @@
           </div>
           <router-link :to="{name:'order_detail',params:{id:item}}">
             <div class="flex p-10">
-              <img class="thumb" src="/img/goods-01.jpg" alt="">
+              <img class="thumb" src="../../assets/img/goods-01.jpg" alt="">
               <div class="ml-10 flex flex-column flex-jus" style="flex:1;">
                 <div class="fz-15 c3 text-hide2">艾戈勒（agelocer）布达佩斯系列瑞士进口手表男士 时尚休闲多功能商功能商功能商功能商时尚休闲多功能商功能商功能商功能商</div>
                 <div class="fz-11 c9">银色黑皮带</div>

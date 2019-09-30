@@ -18,7 +18,7 @@
       <div class="course-share flex flex-align-start">
         <router-link :to="{name:'share_posters',params:{id:detail.id}}">
           <div class="flex flex-column flex-jus flex-align-center">
-            <img src="/img/icon-wallet.png" alt="">
+            <img src="../assets/img/icon-wallet.png" alt="">
             <div class="fz-11 c9">分享获得</div>
           </div>
         </router-link>
@@ -49,7 +49,7 @@
     <div v-if="!isbought" class="footer-bar plr-15 flex flex-align-center">
       <router-link to="/">
         <div class="back-home">
-          <img src="/img/icon-home.png" alt="">
+          <img src="../assets/img/icon-home.png" alt="">
           <div class="fz-11 c9">首页</div>
         </div>
       </router-link>

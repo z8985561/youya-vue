@@ -1,9 +1,9 @@
 <template>
   <div>
-    <div class="header">
-      <img src="/img/noface.png" alt="">
+    <div class="header" style="background-image: url(img/verification-index-bg.png);">
+      <img src="img/noface.png" alt="">
     </div>
-    <van-cell title="订单管理" icon="/img/icon-member-01.png" is-link to="/verification/order_manage" />
+    <van-cell title="订单管理" icon="img/icon-member-01.png" is-link to="/verification/order_manage" />
   </div>
 </template>
 
@@ -24,7 +24,7 @@
 <style lang="less" scoped>
   .header {
     height: 240px;
-    background-image: url(/img/verification-index-bg.png);
+    
     background-size: contain;
     background-repeat: no-repeat;
     background-position: top center;

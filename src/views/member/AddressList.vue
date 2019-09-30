@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="address-item">
-      <img src="/img/icon-dingwei.png" alt="">
+      <img src="../../assets/img/icon-dingwei.png" alt="">
       <div class="info fz-15 c3 plr-10">
         <div class="flex flex-jus flex-align-center">
           <div>熊娟  13445677888</div>
@@ -10,11 +10,11 @@
         <div class="fz-14 c9">中国浙江省宁波市江北区市民路大道街198号腾辉大厦4楼39号</div>
       </div>
       <div class="edit">
-        <img src="/img/icon-edit.png" alt="">
+        <img src="../../assets/img/icon-edit.png" alt="">
       </div>
     </div>
     <div class="address-item">
-      <img src="/img/icon-dingwei2.png" alt="">
+      <img src="../../assets/img/icon-dingwei2.png" alt="">
       <div class="info fz-15 c3 plr-10">
         <div class="flex flex-jus flex-align-center">
           <div>熊娟  13445677888</div>
@@ -23,7 +23,7 @@
         <div class="fz-14 c9">中国浙江省宁波市江北区市民路大道街198号腾辉大厦4楼39号</div>
       </div>
       <div class="edit">
-        <img src="/img/icon-edit.png" alt="">
+        <img src="../../assets/img/icon-edit.png" alt="">
       </div>
     </div>
 

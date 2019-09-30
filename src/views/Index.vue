@@ -67,7 +67,7 @@
       <div class="video-item" v-for="(item,index) in CourseHot" :v-key="index">
         <router-link :to="{name:'subscribe_detail',params:{id:item.id}}">
           <div class="video-img">
-            <img src="/img/banner2-01.png" width="100%" alt="">
+            <img :src="item.image" width="100%" alt="">
             <div class="sets">更新至{{item.period}}级</div>
           </div>
           <div class="fz-14 c3">{{item.name}}</div>
@@ -93,7 +93,7 @@
     <!-- 联系我们 -->
     <div class="contact-us">
       <div class="logo">
-        <img src="/img/logo.png" alt="">
+        <img src="img/logo.png" alt="">
       </div>
       <div v-html="tool_parameter.HOME_BOTTOM_TEXT"></div>
       <!-- <p>欢迎您的加入！</p>
