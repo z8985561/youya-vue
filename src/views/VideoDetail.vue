@@ -30,7 +30,7 @@
     <!-- 课程详情和目录 -->
     <van-tabs v-model="active" title-active-color="#8DB9DF" title-inactive-color="#999999" color="#8DB9DF">
       <van-tab title="课程详情">
-        <div v-html="detail.detail"></div>
+        <div class="p-15" v-html="detail.detail"></div>
       </van-tab>
       <van-tab title="目录">
         <ul class="catalogue-list">
@@ -65,7 +65,6 @@
   import {
     videoPlayer
   } from 'vue-video-player'
-  var Mock = require("mockjs");
   export default {
     components: {
       videoPlayer
@@ -136,6 +135,7 @@
         if(code == 0){
           this.$toast.clear()
           this.detail = data
+          this.playerOptions.poster = data.image
         }else{
           this.$toast.fail(message)
         }

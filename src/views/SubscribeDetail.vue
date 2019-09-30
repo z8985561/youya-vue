@@ -3,16 +3,16 @@
     <div class="plr-15 ptb-10">
       <div class="subscribe-item">
         <div class="cover" :style="{backgroundImage:'url('+course.image+')'}">
-          <div class="cate">{{course.cateName}}</div>
+          <div class="cate">{{course.with_class.name}}</div>
           <div class="count">
             <div class="avatar">
-              <div v-for="(img,idx) in course.avatar" :key="idx">
+              <div v-for="(img,idx) in course.with_booked_user" :key="idx">
                 <img :src="img" alt="">
               </div>
             </div>
             <div class="ml-10">{{course.count}} 人预约</div>
           </div>
-          <div class="time">{{course.time}} 开课</div>
+          <div class="time">{{course.start_time}} 开课</div>
         </div>
         <div class="flex plr-5">
           <div style="flex:1;">

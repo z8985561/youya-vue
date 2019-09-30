@@ -14,10 +14,10 @@
         <li class="subscribe-item" v-for="(item,index) in list" :key="index">
           <router-link :to="{ name: 'subscribe_detail', params: { id: item.id }}">
             <div class="cover" :style="{backgroundImage:'url('+item.image+')'}">
-              <div class="cate">{{item.cateName}}</div>
+              <div class="cate">{{item.with_class.name}}</div>
               <div class="count">
                 <div class="avatar">
-                  <div v-for="(img,idx) in item.avatar" :key="idx">
+                  <div v-for="(img,idx) in item.with_booked_user" :key="idx">
                     <img :src="img" alt="">
                   </div>
                 </div>
@@ -30,9 +30,11 @@
             <div style="flex:1;">
               <div class="title mb-5">{{item.title}}</div>
               <div class="address">
-                <van-icon name="location-o" /> {{item.subtitle}}</div>
+                <van-icon name="location-o" /> {{item.address}}</div>
             </div>
-            <div class="youya-btn-o">预约</div>
+            <router-link :to="{name:'subscribe_auth',params:{course_id:item.id}}">
+              <div class="youya-btn-o">预约</div>
+            </router-link>
           </div>
         </li>
       </ul>
@@ -237,5 +239,8 @@
     border-radius: 3px;
     border: 1px solid rgba(141, 185, 223, 1);
     color: rgba(141, 185, 223, 1);
+  }
+  .van-search .van-cell{
+    padding:5px 8px 5px 0;
   }
 </style>

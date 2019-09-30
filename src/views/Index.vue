@@ -6,7 +6,7 @@
         <van-swipe-item v-for="item in ad" :key="item.id">
           <router-link to="video">
             <!-- <img src="/img/index-banner-01.png" width="100%" alt=""> -->
-            <img  v-lazy="item.image" width="100%" alt="">
+            <img  :src="item.image" width="100%" alt="">
           </router-link>
         </van-swipe-item>
       </van-swipe>
