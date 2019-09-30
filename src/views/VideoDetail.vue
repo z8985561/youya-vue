@@ -85,7 +85,7 @@
           playbackRates: [0.5, 1.0, 1.5, 2.0],
           sources: [{
             type: "video/mp4",
-            src: "/video/1.mp4"
+            src: "../../video/1.mp4"
           }],
           width: document.documentElement.clientWidth,
           poster: "/video/1.jpg",
