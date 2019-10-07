@@ -68,9 +68,9 @@
         <router-link :to="{name:'subscribe_detail',params:{id:item.id}}">
           <div class="video-img">
             <img :src="item.image" width="100%" alt="">
-            <div class="sets">更新至{{item.period}}级</div>
+            <div class="sets">更新至{{item.period}}集</div>
           </div>
-          <div class="fz-14 c3">{{item.name}}</div>
+          <div class="fz-14 c3 text-hide">{{item.name}}</div>
           <div class="fz-14 text-price">¥{{item.price}}</div>
         </router-link>
       </div>
