@@ -28,7 +28,7 @@ export default new Router({
     },
     {
       // 视频课程详情
-      path: '/video_detail/:id',
+      path: '/video_detail',
       name: 'video_detail',
       component: () => import(/* webpackChunkName: "about" */ './views/VideoDetail.vue'),
       meta:{
@@ -320,6 +320,16 @@ export default new Router({
       component: () => import('./views/goods/CreateOrder.vue'),
       meta:{
         title:"确认订单"
+      }
+    },
+    // 订单支付反馈页面
+    {
+      // 订单支付反馈页面
+      path: '/goods/pay_feedback',
+      name: 'goods_pay_feedback',
+      component: () => import('./views/goods/Feedback.vue'),
+      meta:{
+        title:""
       }
     },
     // BranchList.vue

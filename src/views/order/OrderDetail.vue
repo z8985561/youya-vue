@@ -1,56 +1,46 @@
 <template>
   <div>
-    <div class="header" style="background-image: url(../../assets/img/order-status-bg.png);">
+    <div class="header" style="background-image: url(../../img/order-status-bg.png);">
       <div>
-        <div class="fz-17 cf fw-700">等待买家付款</div>
+        <div v-if="detail.status==0" class="fz-17 cf fw-700">等待买家付款</div>
+        <div v-if="detail.status==1" class="fz-17 cf fw-700">等待卖家发货</div>
+        <div v-if="detail.status==2" class="fz-17 cf fw-700">等待买家收货</div>
+        <div v-if="detail.status==3" class="fz-17 cf fw-700">已完成</div>
       </div>
       <img class="status" src="../../assets/img/icon-status-0.png" alt="">
     </div>
-    <div class="address-item">
+    <!-- <div class="address-item">
       <img src="../../assets/img/icon-dingwei.png" alt="">
       <div class="info fz-15 c3 plr-10">
         <div class="flex flex-jus flex-align-center">
           <div>熊娟 13445677888</div>
-          <!-- <van-tag color="#D7736D" plain>默认</van-tag> -->
         </div>
         <div class="fz-14 c9">中国浙江省宁波市江北区市民路大道街198号腾辉大厦4楼39号</div>
       </div>
-    </div>
+    </div> -->
     <div class="bar-10"></div>
     <!-- 商品列表 -->
     <div class="p-10 mb-10">
-      <div class="goods-item">
-        <img class="thumb" src="../../assets/img/goods-01.jpg" alt="">
+      <div class="goods-item" v-for="item in detail.with_detail" :key="item.goods_id">
+        <img class="thumb" :src="item.goods_image" alt="">
         <div class="ml-10 flex flex-column flex-jus" style="flex:1;">
-          <div class="fz-15 c3 text-hide2">艾戈勒（agelocer）布达佩斯系列瑞士进口手表男士 时尚休闲多功能商功能商功能商功能商时尚休闲多功能商功能商功能商功能商</div>
-          <div class="fz-11 c9">银色黑皮带</div>
+          <div class="fz-15 c3 text-hide2">{{item.goods_title}}</div>
           <div class="flex flex-jus">
-            <div class="fz-15 c3">¥159.00</div>
-            <div class="fz-14 c9">x1</div>
-          </div>
-        </div>
-      </div>
-      <div class="goods-item">
-        <img class="thumb" src="../../assets/img/goods-01.jpg" alt="">
-        <div class="ml-10 flex flex-column flex-jus" style="flex:1;">
-          <div class="fz-15 c3 text-hide2">艾戈勒（agelocer）布达佩斯系列瑞士进口手表男士 时尚休闲多功能商功能商功能商功能商时尚休闲多功能商功能商功能商功能商</div>
-          <div class="fz-11 c9">银色黑皮带</div>
-          <div class="flex flex-jus">
-            <div class="fz-15 c3">¥159.00</div>
-            <div class="fz-14 c9">x1</div>
+            <div class="fz-15 c3">¥{{item.goods_price}}</div>
+            <div class="fz-14 c9">x{{item.quantity}}</div>
           </div>
         </div>
       </div>
     </div>
     <div class="bar-1 mb-10"></div>
     <!-- 商品列表 -->
-    <div class="plr-10 flex flex-jus mb-10">
+    <!-- <div class="plr-10 flex flex-jus mb-10">
       <div class="fz-13 c9">运费</div>
       <div class="fz-13 c3">¥10</div>
-    </div>
+    </div> -->
     <div class="plr-10 flex flex-jus mb-10">
       <div class="fz-14 c3">实付款</div>
-      <div class="fz-14 text-price">¥147.00</div>
+      <div class="fz-14 text-price">¥{{detail.pay_price}}</div>
     </div>
     <div class="bar-10"></div>
     <div class="p-10 fz-15 c3">订单信息</div>
@@ -58,15 +48,15 @@
 
     <div class="plr-10 flex flex-jus mb-10">
       <div class="fz-13 c9">订单编号</div>
-      <div class="fz-13 c6">456788909867556</div>
+      <div class="fz-13 c6">{{detail.number}}</div>
     </div>
     <div class="plr-10 flex flex-jus mb-10">
       <div class="fz-13 c9">创建时间</div>
-      <div class="fz-13 c6">2019-04-21  12:34:45</div>
+      <div class="fz-13 c6">{{detail.created_at}}</div>
     </div>
     <div class="plr-10 flex flex-jus mb-10">
-      <div class="fz-13 c9">成交时间</div>
-      <div class="fz-13 c6">2019-04-23  13:34:45</div>
+      <div class="fz-13 c9">支付时间</div>
+      <div class="fz-13 c6">{{detail.updated_at}}</div>
     </div>
 
 
@@ -91,12 +81,27 @@
     components: {},
     props: {},
     data() {
-      return {};
+      return {
+        detail:{}
+      };
     },
     watch: {},
     computed: {},
-    methods: {},
-    created() {},
+    methods: {
+      async getData(){
+        this.$toast.loading({message:"加载中..."})
+        let {code,data,messege} = await axios.get(`/user/mall-order/detail?id=${this.$route.params.id}`);
+        if (code == 0) {
+          this.$toast.clear()
+          this.detail = data
+        } else {
+          this.$toast.fail(message)
+        }
+      }
+    },
+    created() {
+      this.getData()
+    },
     mounted() {}
   };
 </script>

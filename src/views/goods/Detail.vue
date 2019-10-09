@@ -51,25 +51,25 @@
       <img src="img/btn-cart.png" alt="">
     </div>
     <!-- 侧边客服购物车按钮 -->
-
-    <!-- SKU 商品规格 -->
-    <van-sku v-model="show" :sku="sku" :goods="goods" :goods-id="goodsId" :quota="quota" :hide-stock="sku.hide_stock" @buy-clicked="onBuyClicked" @add-cart="onAddCartClicked">
-      <!-- 自定义 sku actions -->
-  <template slot="sku-actions" slot-scope="props">
-    <div class="van-sku-actions">
-      <!-- 直接触发 sku 内部事件，通过内部事件执行 onBuyClicked 回调 -->
-      <van-button
-        square
-        size="large"
-        type="danger"
-        @click="props.skuEventBus.$emit('sku:buy')"
-      >
-        加入购物车
-      </van-button>
-    </div>
-  </template>
-    </van-sku>
-    <!-- SKU 商品规格 -->
+    <van-popup v-model="show" round closeable close-icon="close" position="bottom" :style="{ height: '42%' }">
+      <div class="p-15">
+        <div class="p-10 mb-10">
+          <div class="goods-item">
+            <img class="thumb" :src="detail.image" alt="">
+            <div class="ml-20 flex flex-column flex-jus" style="flex:1;">
+              <div class="fz-17 text-price">￥{{detail.price}}</div>
+              <div class="fz-15 c6">库存{{detail.price}}</div>
+            </div>
+          </div>
+        </div>
+        <van-cell-group>
+          <van-cell title="购买数量">
+            <van-stepper v-model="quantity" />
+          </van-cell>
+        </van-cell-group>
+        <div class="btn-youya bottom" @click="onBuyClicked">立即购买</div>
+      </div>
+    </van-popup>
   </div>
 </template>
 
@@ -79,61 +79,27 @@
     props: {},
     data() {
       return {
-        detail:{},
+        detail: {},
+        quantity:1,
         images: [
           'https://img.yzcdn.cn/vant/apple-1.jpg',
           'https://img.yzcdn.cn/vant/apple-2.jpg'
         ],
-        show: false,
-        sku: {
-          // 所有sku规格类目与其值的从属关系，比如商品有颜色和尺码两大类规格，颜色下面又有红色和蓝色两个规格值。
-          // 可以理解为一个商品可以有多个规格类目，一个规格类目下可以有多个规格值。
-          tree: [{
-            k: '颜色', // skuKeyName：规格类目名称
-            v: [{
-                id: '30349', // skuValueId：规格值 id
-                name: '红色', // skuValueName：规格值名称
-                imgUrl: 'https://img.yzcdn.cn/1.jpg' // 规格类目图片，只有第一个规格类目可以定义图片
-              },
-              {
-                id: '1215',
-                name: '蓝色',
-                imgUrl: 'https://img.yzcdn.cn/2.jpg'
-              }
-            ],
-            k_s: 's1' // skuKeyStr：sku 组合列表（下方 list）中当前类目对应的 key 值，value 值会是从属于当前类目的一个规格值 id
-          }],
-          // 所有 sku 的组合列表，比如红色、M 码为一个 sku 组合，红色、S 码为另一个组合
-          list: [{
-            id: 2259, // skuId，下单时后端需要
-            price: 100, // 价格（单位分）
-            s1: '1215', // 规格类目 k_s 为 s1 的对应规格值 id
-            s2: '1193', // 规格类目 k_s 为 s2 的对应规格值 id
-            s3: '0', // 最多包含3个规格值，为0表示不存在该规格
-            stock_num: 110 // 当前 sku 组合对应的库存
-          }],
-          price: '1.00', // 默认价格（单位元）
-          stock_num: 227, // 商品总库存
-          collection_id: 2261, // 无规格商品 skuId 取 collection_id，否则取所选 sku 组合对应的 id
-          none_sku: false, // 是否无规格商品
-          hide_stock: false // 是否隐藏剩余库存
-        },
-        goodsId:1212,
-        quota:5,
-        goods: {
-          // 商品标题
-          title: '测试商品',
-          // 默认商品 sku 缩略图
-          picture: 'https://img.yzcdn.cn/1.jpg'
-        },
+        show: false
       };
     },
     watch: {},
     computed: {},
     methods: {
-      async getData(){
-        this.$toast.loading({message: '加载中...'});
-        let {code,data,message} = await axios.get(`/mall/detail?id=${this.$route.query.id}`)
+      async getData() {
+        this.$toast.loading({
+          message: '加载中...'
+        });
+        let {
+          code,
+          data,
+          message
+        } = await axios.get(`/mall/detail?id=${this.$route.query.id}`)
         if (code == 0) {
           this.$toast.clear()
           this.detail = data
@@ -144,10 +110,14 @@
       buying() {
         this.show = true
       },
-      onBuyClicked(data) {
-        console.log(data)
+      onBuyClicked() {
         this.$router.push({
-          path: "/goods/create_order"
+          name: "goods_create_order",
+          query:{
+            type:this.detail.type,
+            goods_id:this.detail.id,
+            quantity:this.quantity
+          }
         })
       },
       onAddCartClicked() {}
@@ -222,7 +192,21 @@
       height: 45px;
     }
   }
-  .van-sku-actions .van-button--danger{
-    background:linear-gradient(143deg,rgba(157,195,230,1) 0%,rgba(131,179,219,1) 100%);
+
+  .goods-item {
+    margin-bottom: 10px;
+    display: flex;
+
+    .thumb {
+      width: 90px;
+      height: 90px;
+    }
+  }
+  .btn-youya.bottom{
+    position: absolute;
+    bottom: 10px;
+    width: auto;
+    left: 30px;
+    right: 30px;
   }
 </style>

@@ -62,8 +62,10 @@ var Mock = require('mockjs')
           ];
           // 加载状态结束
           this.loading = false;
-          // 如果没有更多数据停止加载
-          this.finished = true;
+          if(data.current_page==data.last_page){
+            // 如果没有更多数据停止加载
+            this.finished = true;
+          }
         }else{
           this.$toast.fail(messege)
         }

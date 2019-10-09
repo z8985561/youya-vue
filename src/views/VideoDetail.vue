@@ -126,12 +126,12 @@
       // 购买事件
       buying(){
         this.$router.push({
-          path:`/authentication?path=create_order&id=${this.$route.params.id}`
+          path:`/authentication?path=create_order&id=${this.$route.query.id}`
         })
       },
       async getData(){
         this.$toast.loading({message: '加载中...'});
-        let {code,data,message} = await axios.get("/course/detail",{params:{id:this.$route.params.id}})
+        let {code,data,message} = await axios.get("/course/detail",{params:{id:this.$route.query.id}})
         if(code == 0){
           this.$toast.clear()
           this.detail = data
@@ -142,7 +142,7 @@
       },
       // 获取目录
       async getCatalog(){
-        let {code,data,message} = await axios.get("/course/catalog",{params:{id:this.$route.params.id}})
+        let {code,data,message} = await axios.get("/course/catalog",{params:{id:this.$route.query.id}})
         if(code == 0){
           this.catalogue = data
         }else{
@@ -151,7 +151,7 @@
       },
       // 检查用户是否购买了该教程
       async checkIsBought(){
-        let {code,data,message} = await axios.get("/user/course-order/bought",{params:{course_id:this.$route.params.id}})
+        let {code,data,message} = await axios.get("/user/course-order/bought",{params:{course_id:this.$route.query.id}})
         if(code == 0){
           this.isbought = data
         }else{

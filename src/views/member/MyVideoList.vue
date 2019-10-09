@@ -2,7 +2,7 @@
   <div class="p-15">
     <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="getList">
       <div class="cell-group">
-        <router-link v-for="item in list" :key="item.id" :to="{ name: 'video_detail', params: { id: item.id }}">
+        <router-link v-for="item in list" :key="item.id" :to="{ name: 'video_detail', query: { id: item.id }}">
           <div class="cell">
             <div class="cell__image" :style="{backgroundImage: 'url('+item.image+')'}">
               <div class="sets">全{{item.period}}集</div>

@@ -9,32 +9,35 @@
         <van-tab title="已完成"></van-tab>
       </van-tabs>
     </van-sticky>
-    <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad">
+    <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="getList">
       <!-- <van-cell v-for="item in list" :key="item" :title="item" /> -->
       <ul class="order-list">
-        <li v-for="item in list" :key="item" :title="item" class="order-item">
+        <li v-for="item in list" :key="item.id" :title="item" class="order-item">
           <div class="p-10 flex flex-jus">
-            <div class="fz-13 c9">订单号：34636568364983</div>
-            <div class="fz-12 text-price">待发货</div>
+            <div class="fz-13 c9">订单号：{{item.number}}</div>
+            <div v-if="item.status==0" class="fz-12 text-price">待付款</div>
+            <div v-if="item.status==1" class="fz-12 text-price">待发货</div>
+            <div v-if="item.status==2" class="fz-12 text-price">待收货</div>
+            <div v-if="item.status==3" class="fz-12 text-price">已完成</div>
           </div>
-          <router-link :to="{name:'order_detail',params:{id:item}}">
+          <router-link v-for="goods in item.with_detail" :key="item.id" :to="{name:'order_detail',params:{id:item.id}}">
             <div class="flex p-10">
-              <img class="thumb" src="../../assets/img/goods-01.jpg" alt="">
+              <img class="thumb" :src="goods.goods_image" alt="">
               <div class="ml-10 flex flex-column flex-jus" style="flex:1;">
-                <div class="fz-15 c3 text-hide2">艾戈勒（agelocer）布达佩斯系列瑞士进口手表男士 时尚休闲多功能商功能商功能商功能商时尚休闲多功能商功能商功能商功能商</div>
-                <div class="fz-11 c9">银色黑皮带</div>
+                <div class="fz-15 c3 text-hide2">{{goods.goods_title}}</div>
                 <div class="flex flex-jus">
                   <div class="fz-15 c3">¥159.00</div>
-                  <div class="fz-14 c9">x1</div>
+                  <div class="fz-14 c9">x{{goods.quantity}}</div>
                 </div>
               </div>
             </div>
           </router-link>
-          <div class="plr-10 mb-10 fz-14 c3 text-right">共1件商品  合计<span class="text-price">¥159.00</span></div>
+          <div class="plr-10 mb-10 fz-14 c3 text-right">共1件商品  合计<span class="text-price">¥{{item.pay_price}}</span></div>
           <div class="bar-1"></div>
           <div class="flex flex-end p-10">
             <div class="btn-youya-o">申请退款</div>
-            <div class="btn-youya">去付款</div>
+            <div v-if="item.status==0" class="btn-youya">去付款</div>
+            <div v-if="item.status==2" class="btn-youya">确认收货</div>
           </div>
         </li>
       </ul>
@@ -51,26 +54,46 @@
         active: 0,
         list: [],
         loading: false,
-        finished: false
+        finished: false,
+        page:1
       };
     },
-    watch: {},
+    watch: {
+      active(n,o){
+        if(n!=o){
+          this.page = 1;
+          this.loading = false;
+          this.finished = false;
+          this.list = []
+        }
+      }
+    },
     computed: {},
     methods: {
-      onLoad() {
-        // 异步更新数据
-        setTimeout(() => {
-          for (let i = 0; i < 10; i++) {
-            this.list.push(this.list.length + 1);
-          }
+      async getList(){
+        this.$toast.loading({message:"加载中..."})
+
+
+        if(this.active - 1 >= 0){
+          var {code,data,messege} = await axios.get(`/user/mall-order/list?page=${this.page++}&status=${this.active}`);
+        }else{
+          var {code,data,messege} = await axios.get(`/user/mall-order/list?page=${this.page++}`);
+        }
+        if(code==0){
+          this.$toast.clear()
+          this.list = [
+            ...this.list,
+            ...data.data
+          ];
           // 加载状态结束
           this.loading = false;
-
-          // 数据全部加载完成
-          if (this.list.length >= 40) {
+          if(data.current_page==data.last_page){
+            // 如果没有更多数据停止加载
             this.finished = true;
           }
-        }, 500);
+        }else{
+          this.$toast.fail(messege)
+        }
       }
     },
     created() {},

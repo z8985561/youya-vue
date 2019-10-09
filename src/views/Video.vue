@@ -6,7 +6,7 @@
           <div class="curriculum-box" v-for="(cateItem,index) in videoList" :key="index">
             <div class="fz-16 c3 fw-700 mb-15">{{cateItem.name}}</div>
             <div class="curriculum-list">
-              <router-link v-for="(item,idx) in cateItem.with_course" :key="idx"  :to="{ name: 'video_detail', params: { id: item.id }}">
+              <router-link v-for="(item,idx) in cateItem.with_course" :key="idx"  :to="{ name: 'video_detail', query: { id: item.id }}">
                 <div class="curriculum-item">
                   <div class="thumb" :style="{backgroundImage:'url('+item.image+')'}">
                     <div class="count">更新至{{item.period}}集</div>
@@ -27,7 +27,7 @@
           <div class="curriculum-box" v-for="(cateItem,index) in aideoList" :key="index">
             <div class="fz-16 c3 fw-700 mb-15">{{cateItem.name}}</div>
             <div class="curriculum-list">
-              <router-link v-for="(item,idx) in cateItem.with_course" :key="idx"  :to="{ name: 'video_detail', params: { id: item.id }}">
+              <router-link v-for="(item,idx) in cateItem.with_course" :key="idx"  :to="{ name: 'video_detail', query: { id: item.id }}">
                 <div class="curriculum-item">
                   <div class="thumb" :style="{backgroundImage:'url('+item.image+')'}">
                     <div class="count">更新至{{item.period}}集</div>
