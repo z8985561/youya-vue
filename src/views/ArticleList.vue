@@ -17,7 +17,7 @@
     <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad">
       <!-- <van-cell v-for="item in list" :key="item.id" :title="item.title" /> -->
 
-      <router-link v-for="(item,index) in list" :key="index" :to="{ name: 'article', params: { id: item.id }}">
+      <router-link v-for="(item,index) in list" :key="index" :to="{ name: 'article', query: { id: item.id }}">
         <div class="article-item">
           <img v-lazy="item.image"  alt="">
           <div>

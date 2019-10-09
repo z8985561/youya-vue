@@ -57,7 +57,7 @@ export default new Router({
     },
     {
       // 文章
-      path: '/article/:id',
+      path: '/article',
       name: 'article',
       component: () => import('./views/Article.vue'),
       meta:{
@@ -305,7 +305,7 @@ export default new Router({
     // 产品详情
     {
       // 产品详情
-      path: '/goods/detail/:id',
+      path: '/goods/detail',
       name: 'goods_detail',
       component: () => import('./views/goods/Detail.vue'),
       meta:{

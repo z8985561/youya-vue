@@ -10,16 +10,16 @@
       <div class="course-info">
         <h2 class="fz-17 c3 mb-5">五年美丽同行班五年美丽同行班五年美丽同行班</h2>
         <div>
-          <span class="fz-15 text-price">¥99.00 </span>
+          <span class="fz-15 text-price">¥{{detail.price}} </span>
           <span class="fz-12 c9 text-line">原价¥199.00</span>
         </div>
       </div>
       <div class="course-share flex flex-align-start">
         <div class="flex flex-column flex-jus flex-align-center">
-          <img src="img/icon-wallet.png" alt="">
+          <img src="../../assets/img/icon-wallet.png" alt="">
           <div class="fz-11 c9">分享获得</div>
         </div>
-        <div class="award-tips">46元奖励</div>
+        <div class="award-tips">{{detail.share_amount}}元奖励</div>
       </div>
     </div>
     <!-- 课程信息 -->
@@ -29,6 +29,7 @@
     <div>
       <div class="p-10 fz-15 c3">商品详情</div>
       <div class="bar-1"></div>
+      <div class="p-10" v-html="detail.details"></div>
     </div>
     <!-- 商品详情 -->
 
@@ -36,7 +37,7 @@
     <div class="footer-bar plr-15 flex flex-align-center">
       <router-link to="/">
         <div class="back-home">
-          <img src="img/icon-home.png" alt="">
+          <img src="../../assets/img/icon-home.png" alt="">
           <div class="fz-11 c9">首页</div>
         </div>
       </router-link>
@@ -78,6 +79,7 @@
     props: {},
     data() {
       return {
+        detail:{},
         images: [
           'https://img.yzcdn.cn/vant/apple-1.jpg',
           'https://img.yzcdn.cn/vant/apple-2.jpg'
@@ -129,6 +131,16 @@
     watch: {},
     computed: {},
     methods: {
+      async getData(){
+        this.$toast.loading({message: '加载中...'});
+        let {code,data,message} = await axios.get(`/mall/detail?id=${this.$route.query.id}`)
+        if (code == 0) {
+          this.$toast.clear()
+          this.detail = data
+        } else {
+          this.$toast.fail(message)
+        }
+      },
       buying() {
         this.show = true
       },
@@ -140,7 +152,9 @@
       },
       onAddCartClicked() {}
     },
-    created() {},
+    created() {
+      this.getData()
+    },
     mounted() {}
   };
 </script>

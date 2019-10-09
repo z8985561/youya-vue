@@ -3,17 +3,17 @@
     <div class="user-info">
       <div class="username">
         <div class="fz-17 c3 fw-700 text-hide mb-5">
-          绿与旅Green
+          {{userInfo.nick_name}}
         </div>
         <div class="fz-12 c9">代理商</div>
       </div>
-      <img class="avatar" src="img/noface.png" alt="">
+      <img class="avatar" :src="userInfo.avatar || 'img/noface.png'" alt="">
     </div>
 
     <div class="earnings" style="background-image: url(img/earnings-bg.png);">
       <div class="flex flex-align-center">
         <img src="img/icon-wallet2.png" alt="">
-        <div class="fz-17 fw-700 ml-10 text-brown">246.21</div>
+        <div class="fz-17 fw-700 ml-10 text-brown">{{userInfo.total_revenue}}</div>
       </div>
       <router-link to="/member/withdraw">
         <span class="fz-12 text-brown">收益提现</span>
@@ -50,12 +50,27 @@
     },
     props: {},
     data() {
-      return {};
+      return {
+        userInfo:{}
+      };
     },
     watch: {},
     computed: {},
-    methods: {},
-    created() {},
+    methods: {
+      async getUserInfo(){
+        this.$toast.loading({message: '加载中...'});
+        let {code,data,message} = await axios.get("/user");
+        if(code == 0){
+          this.$toast.clear()
+          this.userInfo = data;
+        }else{
+          this.$toast.fail(message)
+        }
+      }
+    },
+    created() {
+      this.getUserInfo()
+    },
     mounted() {}
   };
 </script>

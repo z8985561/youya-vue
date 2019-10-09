@@ -43,7 +43,8 @@
     <div class="bar-10"></div>
     <div class="p-10">
       <div class="fz-14 c3 mb-10">上传凭证</div>
-      <van-uploader :max-count="3" v-model="fileList" multiple />
+      <van-uploader :max-count="3"  v-model="fileList" :before-read="beforeRead" multiple />
+      <!-- <input accept="image/*" type="file" @change="update($event)"> -->
     </div>
 
     <div class="footer-bar p-10">
@@ -73,16 +74,7 @@
         isShowReasonArr: false,
         rtypeText:"",
         reasonText:"",
-        fileList: [{
-            url: 'https:/img.yzcdn.cn/vant/cat.jpeg'
-          },
-          // Uploader 根据文件后缀来判断是否为图片文件
-          // 如果图片 URL 中不包含类型信息，可以添加 isImage 标记来声明
-          {
-            url: 'https://cloud-image',
-            isImage: true
-          }
-        ]
+        fileList: []
       };
     },
     watch: {},
@@ -114,7 +106,25 @@
       chooseReason(e){
         this.reasonText = e;
         this.hideReasonArr()
-      }
+      },
+      async update(file){
+          let param = new FormData();
+          param.append('image',file);
+          let config = {
+              headers:{'Content-Type':'multipart/form-data'}
+          };
+          this.$toast.loading({message: '加载中...'});
+          let {code,data,message} = await axios.post('/user/upload-image',param,config)
+          if (code == 0) {
+            this.$toast.clear()
+            this.fileList.push({url:data.image_url})
+          } else {
+            this.$toast.fail(message)
+          }
+      },
+      beforeRead(file) {
+        this.update(file)
+      },
     },
     created() {},
     mounted() {}

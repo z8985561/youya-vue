@@ -4,20 +4,20 @@
       <van-swipe :autoplay="3000" :show-indicators="false">
         <van-swipe-item v-for="(image, index) in images" :key="index">
           <router-link to="">
-            <img src="@/assets/img/index-banner-01.png" width="100%" alt="">
+            <img :src="image.image" width="100%" alt="">
           </router-link>
         </van-swipe-item>
       </van-swipe>
     </div>
-    <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad">
+    <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="getList">
       <div class="goods-list">
-        <router-link v-for="item in list" :key="item" :to="{ name: 'goods_detail', params: { id: item }}">
+        <router-link v-for="item in list" :key="item.id" :to="{ name: 'goods_detail', query: { id: item.id }}">
           <div class="goods-item">
-            <img class="thumb" src="img/goods-01.jpg" alt="">
+            <img class="thumb" :src="item.image" alt="">
             <div class="flex flex-column flex-jus">
-              <div class="fz-15 c3">21天优雅训练营第三期 | 你有多优秀，连你自己都不知道</div>
+              <div class="fz-15 c3">{{item.title}}</div>
               <div>
-                <span class="fz-15 text-price">￥169.00</span>
+                <span class="fz-15 text-price">￥{{item.price}}</span>
               </div>
             </div>
           </div>
@@ -33,32 +33,45 @@
     props: {},
     data() {
       return {
-        images: [0, 2, 3],
+        images: [],
         list: [],
         loading: false,
-        finished: false
+        finished: false,
+        page:1
       };
     },
     watch: {},
     computed: {},
     methods: {
-      onLoad() {
-        // 异步更新数据
-        setTimeout(() => {
-          for (let i = 0; i < 10; i++) {
-            this.list.push(this.list.length + 1);
+      async getBanner(){
+        let {code,data,messege} = await axios.get(`/mall/banner`);
+        if (code == 0) {
+            this.images = data
+          } else {
+            this.$toast.fail(message)
           }
+      },
+      async getList(){
+        this.$toast.loading({message:"加载中..."})
+        let {code,data,messege} = await axios.get(`/mall?page=${this.page++}`);
+        if(code==0){
+          this.$toast.clear()
+          this.list = [
+            ...this.list,
+            ...data.data
+          ];
           // 加载状态结束
           this.loading = false;
-
-          // 数据全部加载完成
-          if (this.list.length >= 40) {
-            this.finished = true;
-          }
-        }, 500);
+          // 如果没有更多数据停止加载
+          this.finished = true;
+        }else{
+          this.$toast.fail(messege)
+        }
       }
     },
-    created() {},
+    created() {
+      this.getBanner()
+    },
     mounted() {}
   };
 </script>

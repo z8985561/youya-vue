@@ -127,6 +127,22 @@
         if (code == 0) {
           this.$toast.clear()
           console.log(data)
+          this.payed(data.id)
+        } else {
+          this.$toast.fail(message)
+        }
+      },
+      //hedian 课程订单完成(测试)
+      async payed(order_id){
+        let {
+          code,
+          data,
+          message
+        } = await axios.post("/user/course-order/payed", {
+          order_id
+        })
+        if (code == 0) {
+          console.log(data)
         } else {
           this.$toast.fail(message)
         }
@@ -134,6 +150,7 @@
     },
     created() {
       this.getData()
+      this.payed(7)
     },
     mounted() {},
     filters:{

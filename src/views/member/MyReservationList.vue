@@ -2,23 +2,23 @@
   <div>
     <van-tabs v-model="active" :sticky="true" title-active-color="#8DB9DF" title-inactive-color="#999999" color="#8DB9DF" line-height="2" line-width="25">
       <van-tab title="全部">
-        <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad">
+        <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="getList">
           <ul class="reservation-list">
-            <li class="reservation-item" v-for="item in list" :key="item">
+            <li class="reservation-item" v-for="(item,index) in list" :key="item.id">
               <div class="flex flex-jus mb-10">
-                <div class="fz-13 c9">上课时间：9月16日 13:00-15:00</div>
+                <div class="fz-13 c9">上课时间：{{item.course_start_time}}</div>
                 <div class="fz-13 text-price">待消课</div>
               </div>
               <div class="flex mb-10">
-                <img src="../../assets/img/banner2-02.png" alt="">
+                <img :src="item.course_image" alt="">
                 <div class="ml-10 flex flex-column flex-jus">
-                  <div class="fz-15 c3">香港皇家优雅形体礼仪初级课程</div>
-                  <div class="fz-13 c9">讲师：杨晓妮</div>
+                  <div class="fz-15 c3">{{item.course_title}}</div>
+                  <div class="fz-13 c9">讲师：{{item.lecturer_name}}</div>
                 </div>
               </div>
               <div class="flex flex-end">
                 <div class="btn-youya">消课码</div>
-                <div class="btn-default">取消预约</div>
+                <div class="btn-default" :data-index="index" :data-id="item.id" @click="cancel">取消预约</div>
               </div>
             </li>
           </ul>
@@ -40,7 +40,8 @@
         active: 0,
         list: [],
         loading: false,
-        finished: false
+        finished: false,
+        page:1
       };
     },
     watch: {
@@ -51,20 +52,47 @@
     },
     computed: {},
     methods: {
-      onLoad() {
-        // 异步更新数据
-        setTimeout(() => {
-          for (let i = 0; i < 10; i++) {
-            this.list.push(this.list.length + 1);
-          }
+      async getList(){
+        this.$toast.loading({message: '加载中...'});
+        let {code,data,message} = await axios.get(`/reservation/list?page=${this.page++}`);
+        if(code == 0){
+          this.$toast.clear()
+          this.list = [
+            ...this.list,
+            ...data.data
+          ]
           // 加载状态结束
           this.loading = false;
-
           // 数据全部加载完成
-          if (this.list.length >= 40) {
+          if (data.current_page == data.last_page) {
             this.finished = true;
           }
-        }, 500);
+        }else{
+          this.$toast.fail(message)
+        }
+      },
+      async cancel(e){
+        let {id,index} = e.currentTarget.dataset;
+        this.$dialog.confirm({
+          title:"提示",
+          message: '是否确认取消该课程？'
+        })
+        .then(()=>{
+          return axios.post(`/reservation/cancel`,{id});
+        })
+        .then(res=>{
+          let {code,data,message} = res;
+          if(code == 0){
+            this.$toast({message:"取消成功"})
+            this.list.splice(index,1)
+          }else{
+            this.$toast.fail(message)
+          }
+        })
+        .catch(()=>{
+          console.log(333333);
+
+        })
       }
     },
     created() {},

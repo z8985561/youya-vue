@@ -27,7 +27,7 @@
     methods: {
       async getData(){
         this.$toast.loading({messages:"加载中..."})
-        let {code,data,messages} = await axios.get(`/article/detail?id=${this.$route.params.id}&share_id=${this.share_id}`);
+        let {code,data,messages} = await axios.get(`/article/detail?id=${this.$route.query.id}&share_id=${this.share_id}`);
         if(code==0){
             this.$toast.clear();
             this.content = data.text;
