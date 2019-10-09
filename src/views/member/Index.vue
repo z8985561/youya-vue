@@ -1,5 +1,6 @@
 <template>
   <div class="plr-15">
+    <van-pull-refresh v-model="isLoading" @refresh="onRefresh">
     <div class="user-info">
       <div class="username">
         <div class="fz-17 c3 fw-700 text-hide mb-5">
@@ -13,7 +14,7 @@
     <div class="earnings" style="background-image: url(img/earnings-bg.png);">
       <div class="flex flex-align-center">
         <img src="img/icon-wallet2.png" alt="">
-        <div class="fz-17 fw-700 ml-10 text-brown">{{userInfo.total_revenue}}</div>
+        <div class="fz-17 fw-700 ml-10 text-brown">{{userInfo.total_withdrawal}}</div>
       </div>
       <router-link to="/member/withdraw">
         <span class="fz-12 text-brown">收益提现</span>
@@ -36,8 +37,9 @@
       <van-cell title="个人资料" icon="img/icon-member-05.png" is-link to="/member/personal_info" />
       <van-cell title="地址管理" icon="img/icon-member-07.png" is-link to="/member/address_list" />
       <van-cell title="关于我们" icon="img/icon-member-06.png" is-link />
+      <van-cell title="核销端" icon="img/icon-member-06.png" is-link to="/verification/index"/>
     </van-cell-group>
-
+    </van-pull-refresh>
   </div>
 </template>
 
@@ -46,7 +48,8 @@
     props: {},
     data() {
       return {
-        userInfo:{}
+        userInfo:{},
+        isLoading:false
       };
     },
     watch: {},
@@ -58,10 +61,15 @@
         if(code == 0){
           this.$toast.clear()
           this.userInfo = data;
+          this.isLoading = false;
         }else{
           this.$toast.fail(message)
         }
-      }
+      },
+    onRefresh() {
+      this.getUserInfo()
+    }
+      
     },
     created() {
       this.getUserInfo()

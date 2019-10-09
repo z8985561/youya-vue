@@ -47,8 +47,8 @@
 
     <!-- 侧边客服购物车按钮 -->
     <div class="side-btn">
-      <img class="mb-5" src="img/btn-service.png" alt="">
-      <img src="img/btn-cart.png" alt="">
+      <img class="mb-5" src="../../assets/img/btn-service.png" alt="">
+      <img src="../../assets/img/btn-cart.png" alt="">
     </div>
     <!-- 侧边客服购物车按钮 -->
     <van-popup v-model="show" round closeable close-icon="close" position="bottom" :style="{ height: '42%' }">

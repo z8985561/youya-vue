@@ -12,10 +12,10 @@
       </div>
       <div class="bar-1 mb-5"></div>
       <div class="fz-13 c9 mb-40">
-        当前可提现金额<span class="text-price">2918.00</span>元
+        当前可提现金额<span class="text-price">{{withdrawal}}</span>元
       </div>
       <div class="flex flex-center">
-        <div class="btn-youya">确认</div>
+        <div class="btn-youya" @click="withdrawApply">确认</div>
       </div>
     </div>
 
@@ -28,13 +28,56 @@
     props: {},
     data() {
       return {
-        money: "",
+        money:0,
+        withdrawal: "",
       };
     },
-    watch: {},
+    watch: {
+      money(value){
+        value = parseInt(value) || 0;
+        let withdrawal = parseInt(this.withdrawal)
+        if(value > withdrawal){
+          this.money = withdrawal
+        }
+        if(value){
+          this.money = value
+        }
+      }
+    },
     computed: {},
-    methods: {},
-    created() {},
+    methods: {
+      async withdrawApply(){
+        let money = parseFloat(this.money)
+        if(money < 1){
+          this.$toast.fail("提现金额不能小于 1")
+          return;
+        }
+        this.$toast.loading({message: '提现申请中...'});
+        let {code,data,message} = await axios.post("/user/finance-apply",{
+          amount:money
+        });
+        if(code == 0){
+          this.$toast.success("申请成功")
+          this.$router.go(-1)
+        }else{
+          this.$toast.fail(message)
+        }
+      },
+      async getUserInfo(){
+        this.$toast.loading({message: '加载中...'});
+        let {code,data,message} = await axios.get("/user");
+        if(code == 0){
+          this.$toast.clear()
+          this.withdrawal = data.total_withdrawal;
+        }else{
+          this.$toast.fail(message)
+        }
+      }
+    },
+
+    created() {
+      this.getUserInfo()
+    },
     mounted() {}
   };
 </script>

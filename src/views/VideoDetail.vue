@@ -56,6 +56,11 @@
       <div class="btn-youya" @click="buying">购买专栏</div>
     </div>
     <!-- footer -->
+    <!-- 侧边客服购物车按钮 -->
+    <div class="side-btn">
+      <img src="../assets/img/btn-service.png" alt="">
+    </div>
+    <!-- 侧边客服购物车按钮 -->
   </div>
 </template>
 
@@ -261,6 +266,16 @@
         margin-left: 10px;
         flex: 1;
       }
+    }
+  }
+  .side-btn {
+    position: fixed;
+    top: 60%;
+    right: 5px;
+
+    img {
+      width: 45px;
+      height: 45px;
     }
   }
 </style>

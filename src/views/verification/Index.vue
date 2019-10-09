@@ -1,9 +1,10 @@
 <template>
   <div>
-    <div class="header" style="background-image: url(img/verification-index-bg.png);">
-      <img src="img/noface.png" alt="">
+    <div class="header" style="background-image: url(../../img/verification-index-bg.png);">
+      <img :src=" userInfo.avatar || 'img/noface.png'" alt="">
+      <div class="fz-15 c3 text-center">{{userInfo.real_name}}</div>
     </div>
-    <van-cell title="订单管理" icon="img/icon-member-01.png" is-link to="/verification/order_manage" />
+    <van-cell title="订单管理" icon="../../img/icon-member-01.png" is-link to="/verification/order_manage" />
   </div>
 </template>
 
@@ -12,26 +13,41 @@
     components: {},
     props: {},
     data() {
-      return {};
+      return {
+        userInfo:{}
+      };
     },
     watch: {},
     computed: {},
-    methods: {},
-    created() {},
+    methods: {
+      async getUserInfo(){
+        this.$toast.loading({message: '加载中...'});
+        let {code,data,message} = await axios.get("/user/off");
+        if(code == 0){
+          this.$toast.clear()
+          this.userInfo = data;
+        }else{
+          this.$toast.fail(message)
+        }
+      },
+    },
+    created() {
+      this.getUserInfo()
+    },
     mounted() {}
   };
 </script>
 <style lang="less" scoped>
   .header {
     height: 240px;
-    
+
     background-size: contain;
     background-repeat: no-repeat;
     background-position: top center;
     overflow: hidden;
 
     img {
-      margin: 80px auto 0;
+      margin: 80px auto 10px;
       width: 90px;
       height: 90px;
       border-radius: 50%;

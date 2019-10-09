@@ -26,7 +26,7 @@
               <div class="ml-10 flex flex-column flex-jus" style="flex:1;">
                 <div class="fz-15 c3 text-hide2">{{goods.goods_title}}</div>
                 <div class="flex flex-jus">
-                  <div class="fz-15 c3">¥159.00</div>
+                  <div class="fz-15 c3">¥{{goods.goods_price}}</div>
                   <div class="fz-14 c9">x{{goods.quantity}}</div>
                 </div>
               </div>
@@ -74,8 +74,6 @@
     methods: {
       async getList(){
         this.$toast.loading({message:"加载中..."})
-
-
         if(this.active - 1 >= 0){
           var {code,data,messege} = await axios.get(`/user/mall-order/list?page=${this.page++}&status=${this.active-1}`);
         }else{

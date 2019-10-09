@@ -1,7 +1,7 @@
 <template>
   <div class="page">
     <van-sticky>
-      <van-tabs v-model="active" title-active-color="#8DB9DF" title-inactive-color="#999" :line-width="0">
+      <van-tabs v-model="status" title-active-color="#8DB9DF" title-inactive-color="#999" :line-width="0">
         <van-tab title="全部订单"></van-tab>
         <van-tab title="待核销"></van-tab>
         <van-tab title="已核销"></van-tab>
@@ -9,29 +9,29 @@
       <div class="search-bar">
         <div class="search-input">
           <div class="condition" @click="showPicker" data-type="condition">
-            <span>{{condition[conditionActive]}}</span>
+            <span>{{condition[search_key]}}</span>
             <van-icon name="arrow-down" />
           </div>
-          <input type="text" v-model="keyword">
-          <van-icon name="search" size="20px" color="#ccc" />
+          <input type="text" v-model="search_value">
+          <van-icon @click="searchEvent" name="search" size="20px" color="#ccc" />
         </div>
-        <div class="btn-date" @click="showPicker" data-type="date">{{dateStr}}
+        <div class="btn-date" @click="showPicker" data-type="date">{{order_time}}
           <van-icon name="arrow-down" />
         </div>
       </div>
       <div class="order-count">
         <span class="fz-12 c9">订单总数：</span>
-        <span class="fz-12 text-price">20</span>
+        <span class="fz-12 text-price">{{orderCount}}</span>
       </div>
     </van-sticky>
 
     <!-- 订单列表 -->
-    <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad">
+    <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="getList">
       <ul class="order-list">
-        <li class="order-item" v-for="item in list" :key="item">
+        <li class="order-item" v-for="item in list" :key="item.id">
           <div class="flex flex-align-center mb-15">
-            <img class="thumb" src="img/banner2-02.png" alt="">
-            <div class="fz-15 c3 ml-10">广东广州第10期优雅形态课程</div>
+            <img class="thumb" :src="item.course_image" alt="">
+            <div class="fz-15 c3 ml-10">{{item.course_title}}</div>
           </div>
           <div class="bar-1 mb-10"></div>
           <van-cell :border="false" title-class="c9" value-class="text-price text-left" title="订单状态" value="待核销" />
@@ -39,9 +39,9 @@
           <van-cell :border="false" title-class="c9" value-class="c9 text-left" title="姓名" value="张扬" />
           <van-cell :border="false" title-class="c9" value-class="c9 text-left" title="手机号" value="13729834627" />
           <van-cell :border="false" title-class="c9" value-class="c9 text-left" title="订单编号" value="456788909867556" />
-          <van-cell :border="false" title-class="c9" value-class="c9 text-left" title="下单时间" value="2019-04-21  12:34:45" />
+          <van-cell :border="false" title-class="c9" value-class="c9 text-left" title="下单时间" :value="item.updated_at" />
           <div class="flex flex-end pt-10">
-            <div class="btn-youya" @click="verification">确认核销</div>
+            <div class="btn-youya" :data-id="item.id" @click="verification">确认核销</div>
             <div class="btn-youya-o ml-10">生成学员牌</div>
           </div>
         </li>
@@ -77,7 +77,7 @@
     str = str.replace(/yyyy|YYYY/, this.getFullYear());
     str = str.replace(/yy|YY/, (this.getYear() % 100) > 9 ? (this.getYear() % 100).toString() : '0' + (this.getYear() % 100));
 
-    str = str.replace(/MM/, this.getMonth() > 9 ? (this.getMonth() + 1).toString() : '0' + (this.getMonth() + 1));
+    str = str.replace(/MM/, this.getMonth() > 8 ? (this.getMonth() + 1).toString() : '0' + (this.getMonth() + 1));
     str = str.replace(/M/g, (this.getMonth() + 1));
 
     str = str.replace(/w|W/g, Week[this.getDay()]);
@@ -102,23 +102,26 @@
       return {
         isShowCondition: false,
         isShowDate: false,
-        keyword: "",
+        search_value: "",
         currentDate: new Date(),
         minDate: new Date("2019-01-01"),
-        active: 0,
-        condition: ["不限条件", "订单编号", "昵称", "姓名", "手机", "标题"],
-        conditionActive: 0,
-        dateStr: new Date().format("YYYY-MM-DD"),
+        status: 0,
+        condition: ["用户昵称", "用户姓名", "用户手机", "课程名称"],
+        search_key: 0,
+        order_time: new Date().format("YYYY-MM-DD"),
         list: [],
         loading: false,
-        finished: false
+        finished: false,
+        orderCount:"",
+        page:1
       };
     },
     watch: {
-      active(n, o) {
+      status(n, o) {
         if (n != 0) {
-          console.log(n);
-
+          this.list = []
+          this.page = 1;
+          this.getList()
         }
       }
     },
@@ -141,42 +144,82 @@
         }
       },
       selectCondition(value, index) {
-        this.conditionActive = index;
+        this.search_key = index;
         this.isShowCondition = false;
       },
       selectDate(date) {
-        this.dateStr = date.format("YYYY-MM-DD");
+        this.order_time = date.format("YYYY-MM-DD");
         this.isShowDate = false;
       },
-      onLoad() {
-        // 异步更新数据
-        setTimeout(() => {
-          for (let i = 0; i < 10; i++) {
-            this.list.push(this.list.length + 1);
-          }
+      searchEvent(){
+        console.log(1231232);
+
+      },
+      async getCount(){
+        let {code,data,message} = await axios.get("/user/off/reservation-order/statistics");
+        if(code == 0){
+          this.orderCount = data.count;
+        }else{
+          this.$toast.fail(message)
+        }
+      },
+      async getList(){
+        var option = {};
+        if(this.status > 0){
+          option.status = this.status
+        }
+        this.$toast.loading({message:"加载中..."})
+        let {code,data,message} = await axios.get("/user/off/reservation-order/",{params:{
+          ...option,
+          page:this.page++
+          }});
+        if(code==0){
+          this.$toast.clear()
+          this.list = [
+            ...this.list,
+            ...data.data
+          ];
           // 加载状态结束
           this.loading = false;
-
-          // 数据全部加载完成
-          if (this.list.length >= 40) {
+          if(data.current_page==data.last_page){
+            // 如果没有更多数据停止加载
             this.finished = true;
           }
-        }, 500);
+        }else{
+          this.$toast.fail(messege)
+        }
       },
       // 核销
-      verification(){
-        this.$dialog.confirm({
+      async verification(e){
+        let {id} = e.currentTarget.dataset;
+         var b = await this.$dialog.confirm({
           title: '提示',
           message: '确认核销？'
         }).then(() => {
-          console.log("确认核销");
-          this.$router.push('/verification/feedback')
+          return true;
+          // this.$router.push('/verification/feedback')
         }).catch(() => {
-          console.log("取消并关闭弹窗");
+          return false;
         });
+        if(b){
+          this.$toast.loading({message: '加载中...'});
+          let {code,data,message} = await axios.post("/user/off/reservation-order/off",{
+            order_id:id
+          });
+          if(code == 0){
+            this.$toast.clear()
+            this.$router.push('/verification/feedback')
+
+          }else{
+            this.$toast.fail(message)
+          }
+        }
       }
     },
-    created() {},
+    created() {
+      // this.getList()
+      this.getCount()
+    },
     mounted() {}
   };
 </script>
