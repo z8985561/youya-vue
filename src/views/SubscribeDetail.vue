@@ -7,7 +7,7 @@
           <div class="count">
             <div class="avatar">
               <div v-for="(img,idx) in course.with_booked_user" :key="idx">
-                <img :src="img" alt="">
+                <img :src="img.with_guest.avatar" alt="">
               </div>
             </div>
             <div class="ml-10">{{course.count}} 人预约</div>

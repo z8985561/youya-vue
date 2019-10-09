@@ -15,7 +15,7 @@
     <!-- banner -->
     <div class="flex flex-jus">
       <div v-for="item in banner" :key="item.id" class="banner2">
-        <router-link to="/goods/index">
+        <router-link to="">
           <img :src="item.image" width="100%" alt="">
         </router-link>
       </div>
@@ -29,10 +29,6 @@
     <!-- 菜单 -->
     <van-grid :column-num="5" :border="false">
       <van-grid-item v-for="item in tool" :icon="item.image" :text="item.title" :to="{ name: 'tool_detail', params: { id: item.id }}" />
-      <!-- <van-grid-item icon="/img/menu-02.png" text="品牌故事" :to="{ name: 'article', params: { id: 2 }}" />
-      <van-grid-item icon="/img/menu-03.png" text="课程介绍" :to="{ name: 'article', params: { id: 3 }}" />
-      <van-grid-item icon="/img/menu-04.png" text="师资介绍" :to="{ name: 'article', params: { id: 4 }}" />
-      <van-grid-item icon="/img/menu-05.png" text="成功案例" :to="{ name: 'article', params: { id: 5 }}" /> -->
     </van-grid>
     <!-- 菜单 -->
 
@@ -54,7 +50,7 @@
         </router-link>
       </div>
       <div class="course-item">
-        <router-link to="">
+        <router-link to="/goods/index">
           <img v-lazy="tool_parameter.HOME_OFFSOURSE_IMAGE" width="100%" alt="">
         </router-link>
       </div>
@@ -65,7 +61,7 @@
     <h2 class="fz-16 c3 mb-10">热门课程</h2>
     <div class="video-list mb-10">
       <div class="video-item" v-for="(item,index) in CourseHot" :v-key="index">
-        <router-link :to="{name:'subscribe_detail',params:{id:item.id}}">
+        <router-link :to="{ name: 'video_detail', query: { id: item.id }}">
           <div class="video-img">
             <img :src="item.image" width="100%" alt="">
             <div class="sets">更新至{{item.period}}集</div>
@@ -103,15 +99,10 @@
       <p>（万凌汇旁）西座三楼</p> -->
     </div>
     <!-- 联系我们 -->
-
-    <!-- 底部菜单 -->
-    <FooterNav :active="0"/>
-    <!-- 底部菜单 -->
   </div>
 </template>
 <script>
   import wx from "weixin-js-sdk";
-  import FooterNav from "../components/FooterNav"
   export default {
     data() {
       return {
@@ -126,9 +117,6 @@
         tool_parameter:"",
         CourseHot:[]
       }
-    },
-    components: {
-      FooterNav
     },
     created(){
       this.getData();

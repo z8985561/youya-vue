@@ -18,7 +18,7 @@
               <div class="count">
                 <div class="avatar">
                   <div v-for="(img,idx) in item.with_booked_user" :key="idx">
-                    <img :src="img" alt="">
+                    <img :src="img.with_guest.avatar" alt="">
                   </div>
                 </div>
                 <div class="ml-10">{{item.number_booking}} 人预约</div>
@@ -39,17 +39,12 @@
         </li>
       </ul>
     </van-list>
-    <FooterNav :active="2" />
   </div>
 </template>
 
 <script>
-  import FooterNav from "../components/FooterNav"
   const Mock = require("mockjs");
   export default {
-    components: {
-      FooterNav
-    },
     props: {},
     data() {
       return {

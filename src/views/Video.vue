@@ -44,11 +44,9 @@
         </div>
       </van-tab>
     </van-tabs>
-    <FooterNav :active="1" />
   </div>
 </template>
 <script>
-  import FooterNav from "../components/FooterNav"
   var Mock = require('mockjs')
   export default {
     data() {
@@ -57,9 +55,6 @@
         videoList:[],
         aideoList:[]
       }
-    },
-    components: {
-      FooterNav
     },
     created(){
       this.getVideo()

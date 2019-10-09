@@ -1,5 +1,5 @@
 <template>
-  <div v-html="content">
+  <div class="p-10" v-html="content">
   </div>
 </template>
 

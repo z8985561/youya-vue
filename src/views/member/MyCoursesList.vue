@@ -87,15 +87,15 @@
     <van-popup v-model="isShowCounselor" :closeable="true">
       <div class="counselor">
         <div class="flex mb-15">
-          <img class="avatar" src="../../assets/img/noface.png" alt="">
+          <img class="avatar" :src="teacher.avatar" alt="">
           <div class="ml-10">
-            <div class="fz-17 c3 mb-10">温壁瑜老师</div>
-            <div class="fz-14 c9">13789738274 <a class="btn-youya-o plr-5" href="tel:13789738274">一键拨打</a></div>
+            <div class="fz-17 c3 mb-10">{{teacher.name}}</div>
+            <div class="fz-14 c9">{{teacher.phone}} <a class="btn-youya-o plr-5" href="tel:13789738274">一键拨打</a></div>
           </div>
         </div>
         <div class="flex flex-center mb-5">
           <div class="erweima" style="background-image: url(../../assets/img/erweima-bg.png);">
-            <img src="../../assets/img/erweima.png" alt="">
+            <img :src="teacher.qr" alt="">
           </div>
         </div>
         <div class="fz-12 c9 text-center">识别二维码咨询详情</div>
@@ -115,7 +115,8 @@
         active: 0,
         list: [],
         loading: false,
-        finished: false
+        finished: false,
+        teacher:{}
       };
     },
     watch: {},
@@ -138,9 +139,19 @@
       },
       showCounselorModel(){
         this.isShowCounselor = true;
+      },
+      async getTeacher(){
+        let {code,data,message} = await axios.get("/user/package-teacher");
+        if(code==0){
+          this.teacher = data;
+        }else{
+
+        }
       }
     },
-    created() {},
+    created() {
+      this.getTeacher()
+    },
     mounted() {}
   };
 </script>

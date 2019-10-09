@@ -14,7 +14,8 @@ export default new Router({
       name: 'index',
       component: Index,
       meta:{
-        title:"首页"
+        title:"首页",
+        keepAlive:true
       }
     },
     {
@@ -23,7 +24,8 @@ export default new Router({
       name: 'video',
       component: () => import(/* webpackChunkName: "about" */ './views/Video.vue'),
       meta:{
-        title:"课程"
+        title:"课程",
+        keepAlive:true
       }
     },
     {
@@ -100,7 +102,8 @@ export default new Router({
       name: 'subscribe_list',
       component: () => import('./views/SubscribeList.vue'),
       meta:{
-        title:"预约"
+        title:"预约",
+        keepAlive:true
       }
     },
     // SubscribeDetail
@@ -140,7 +143,8 @@ export default new Router({
       name: 'member_index',
       component: () => import('./views/member/Index.vue'),
       meta:{
-        title:"个人中心"
+        title:"个人中心",
+        keepAlive:true
       }
     },
     // Withdraw.vue

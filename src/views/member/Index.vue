@@ -38,16 +38,11 @@
       <van-cell title="关于我们" icon="img/icon-member-06.png" is-link />
     </van-cell-group>
 
-    <FooterNav :active="3" />
   </div>
 </template>
 
 <script>
-  import FooterNav from "@/components/FooterNav"
   export default {
-    components: {
-      FooterNav
-    },
     props: {},
     data() {
       return {

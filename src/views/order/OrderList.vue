@@ -36,7 +36,9 @@
           <div class="bar-1"></div>
           <div class="flex flex-end p-10">
             <div class="btn-youya-o">申请退款</div>
-            <div v-if="item.status==0" class="btn-youya">去付款</div>
+            <router-link :to="{name:'order_detail',params:{id:item.id}}">
+              <div v-if="item.status==0" class="btn-youya">去付款</div>
+            </router-link>
             <div v-if="item.status==2" class="btn-youya">确认收货</div>
           </div>
         </li>
@@ -75,7 +77,7 @@
 
 
         if(this.active - 1 >= 0){
-          var {code,data,messege} = await axios.get(`/user/mall-order/list?page=${this.page++}&status=${this.active}`);
+          var {code,data,messege} = await axios.get(`/user/mall-order/list?page=${this.page++}&status=${this.active-1}`);
         }else{
           var {code,data,messege} = await axios.get(`/user/mall-order/list?page=${this.page++}`);
         }

@@ -70,30 +70,6 @@ var Mock = require('mockjs')
           this.$toast.fail(messege)
         }
       },
-      onLoad() {
-        // this.getList()
-        // 异步更新数据
-        // setTimeout(() => {
-        //   let list2 = Mock.mock({
-        //       'list|10': [{
-        //         "id|+1":1,
-        //         title:Mock.Random.cparagraph(2),
-        //         subTitle:Mock.Random.cparagraph(2),
-        //         thumb:Mock.Random.image('150x150', '#D8C7AF', '美文'),
-        //       }]
-        //   }).list;
-        //   this.list = [
-        //     ...this.list,
-        //     ...list2
-        //   ]
-        //   // 加载状态结束
-        //   this.loading = false;
-        //   // 数据全部加载完成
-        //   if (this.list.length >= 40) {
-        //     this.finished = true;
-        //   }
-        // }, 1000);
-      }
     },
     created() {
       axios.get("/article/banner").then(res=>{

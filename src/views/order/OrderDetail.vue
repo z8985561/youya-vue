@@ -61,17 +61,19 @@
 
 
     <div class="footer-bar">
-      <router-link :to="{name:'order_refund',params:{id:12}}">
+      <router-link v-if="detail.status!=0" :to="{name:'order_refund',params:{id:12}}">
         <div class="btn-youya-o">
             申请退款
         </div>
       </router-link>
-      <router-link :to="{name:'order_refund_detail',params:{id:12}}">
+      <router-link  v-if="false" :to="{name:'order_refund_detail',params:{id:12}}">
         <div class="btn-youya-o">
             退款详情
         </div>
       </router-link>
-      <div class="btn-youya">确认收货</div>
+      <div v-if="detail.status==0" class="btn-youya-o">取消订单</div>
+      <div v-if="detail.status==0" class="btn-youya" @click="payed">付款</div>
+      <div v-if="detail.status==2" class="btn-youya">确认收货</div>
     </div>
   </div>
 </template>
@@ -94,6 +96,24 @@
         if (code == 0) {
           this.$toast.clear()
           this.detail = data
+        } else {
+          this.$toast.fail(message)
+        }
+      },
+      async payed(){
+        this.$toast.loading({
+          message: '支付中...'
+        });
+        let {
+          code,
+          data,
+          message
+        } = await axios.post("/user/mall-order/payed", {
+          order_id: this.$route.params.id
+        })
+        if (code == 0) {
+          this.$toast.success("支付成功")
+          this.getData()
         } else {
           this.$toast.fail(message)
         }
