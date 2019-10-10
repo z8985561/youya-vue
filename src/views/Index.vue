@@ -124,6 +124,8 @@
       this.login()
       // this.checkLogin()
       this.getSDK()
+      this.getData();
+      this.getCourseHot();
     },
 
     methods: {
