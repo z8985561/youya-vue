@@ -146,14 +146,16 @@
           code
         } = await axios.get('/user')
         if (code == 0 && this.share_id == data.id) {
+          data = JSON.stringify(data)
+          localStorage.setItem("userinfo", data)
           this.getData();
           this.getCourseHot();
         } else if (code == 401 || this.share_id != data.id) {
-          if (this.share_id) {
-            window.location.href = 'http://youya.chuncom.com/user/authorization?activity_id=' + this.activity_id + '&share_id=' + this.share_id
-          } else {
-            window.location.href = 'http://youya.chuncom.com/user/authorization'
-          }
+          // if (this.share_id) {
+          //   window.location.href = 'http://youya.chuncom.com/user/authorization?activity_id=' + this.activity_id + '&share_id=' + this.share_id
+          // } else {
+          //   window.location.href = 'http://youya.chuncom.com/user/authorization'
+          // }
         }
       },
       async getSDK() {
