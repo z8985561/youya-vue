@@ -130,6 +130,14 @@
       },
       // 购买事件
       buying(){
+        var userinfo = JSON.parse(localStorage.getItem("userinfo"))
+        console.log(userinfo);
+        if(!userinfo.phone || !userinfo.real_name){
+          this.$router.push({
+            path:`/binding_information`
+          })
+          return;
+        }
         this.$router.push({
           path:`/authentication?path=create_order&id=${this.$route.query.id}`
         })

@@ -143,6 +143,8 @@
         })
         if (code == 0) {
           console.log(data)
+          this.$toast.success("支付成功");
+          this.$router.replace("/feedback")
         } else {
           this.$toast.fail(message)
         }
@@ -150,13 +152,11 @@
     },
     created() {
       this.getData()
-      this.payed(7)
     },
     mounted() {},
     filters:{
       toF(value){
         var num = Number(value)
-        console.log(Number(value));
         if(isNaN(num)){
           return "错误参数"
         }else{

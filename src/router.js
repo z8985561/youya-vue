@@ -95,6 +95,16 @@ export default new Router({
         title:"确认购买"
       }
     },
+    // Feedback.vue
+    {
+      // 确认购买
+      path: '/feedback',
+      name: 'video_feedback',
+      component: () => import('./views/Feedback.vue'),
+      meta:{
+        title:"确认购买"
+      }
+    },
     // SubscribeList.vue
     {
       // 预约
@@ -124,6 +134,16 @@ export default new Router({
       component: () => import('./views/SubscribeAuth.vue'),
       meta:{
         title:"预约详情"
+      }
+    },
+    // BindingInformation.vue
+    {
+      // 用户手机绑定
+      path: '/binding_information',
+      name: 'binding_information',
+      component: () => import('./views/BindingInformation.vue'),
+      meta:{
+        title:"用户手机绑定"
       }
     },
     // Authentication

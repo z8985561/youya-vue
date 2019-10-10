@@ -1,9 +1,9 @@
 <template>
   <div class="page">
-    <h1 class="fz-18 c3 fw-700">为了更好的体验，请先验证身份</h1>
+    <h1 class="fz-18 c3 fw-700">为了更好的体验，请先绑定用户信息</h1>
     <van-cell-group :border="false">
       <van-field v-model="name" placeholder="请输入您的真实姓名" />
-      <van-field v-model="phone" :disabled="true" placeholder="" />
+      <van-field v-model="phone" placeholder="请输入您的手机号码" />
       <van-field v-model="code" center type="number" clearable placeholder="请输入验证码">
         <van-button slot="button" @click="getSMS" size="small" :disabled="disabled" type="primary">
           <span v-if="!disabled">获取验证码</span>
@@ -61,26 +61,39 @@
           this.$toast("手机号码输入有误")
           return
         }
-        let {code,data,message} = await axios.post("/reservation/add",{
-          course_id:this.$route.params.course_id
+        this.$toast.loading({
+          message: '绑定中...'
+        });
+        let {code,data,message} = await axios.post("/user/bind",{
+          phone:phone,
+          name:name,
+          code:sms
           })
         if(code==0){
           console.log(data);
-          this.$toast("预约成功")
-          setTimeout(()=>{this.$router.go(-1)},2000)
+          this.getUserInfo()
         }else{
           this.$toast(message)
-          setTimeout(()=>{this.$router.go(-1)},2000)
+        }
+      },
+      async getUserInfo(){
+        let {
+          data,
+          code
+        } = await axios.get('/user')
+        if (code == 0) {
+          data = JSON.stringify(data)
+          localStorage.setItem("userinfo", data)
+          this.$router.go(-1);
+        }else{
+          this.$toast(message)
         }
       },
       reset(){
         this.disabled = false;
       }
     },
-    created() {
-      let userinfo = JSON.parse(localStorage.getItem("userinfo"))
-      this.phone = userinfo.phone
-    },
+    created() {},
     mounted() {}
   };
 </script>
