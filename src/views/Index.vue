@@ -124,8 +124,6 @@
       // this.login()
       this.checkLogin()
       this.getSDK()
-      // this.getData();
-      // this.getCourseHot();
     },
 
     methods: {
@@ -141,21 +139,21 @@
         }
       },
       async checkLogin() {
+        this.$toast.loading({
+          message: '加载中...'
+        });
         let {
           data,
           code
         } = await axios.get('/user')
-        if (code == 0 && this.share_id == data.id) {
+        this.$toast.clear()
+        if (code == 0) {
           data = JSON.stringify(data)
           localStorage.setItem("userinfo", data)
           this.getData();
           this.getCourseHot();
-        } else if (code == 401 || this.share_id != data.id) {
-          // if (this.share_id) {
-          //   window.location.href = 'http://youya.chuncom.com/user/authorization?activity_id=' + this.activity_id + '&share_id=' + this.share_id
-          // } else {
-          //   window.location.href = 'http://youya.chuncom.com/user/authorization'
-          // }
+        } else if (code == 401) {
+          window.location.href = 'http://youya.chuncom.com/user/authorization'
         }
       },
       async getSDK() {
