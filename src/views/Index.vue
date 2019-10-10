@@ -121,11 +121,9 @@
     created() {
       this.activity_id = this.$route.query.activity_id
       this.share_id = this.$route.query.share_id
-      // this.login()
-      this.checkLogin()
+      this.login()
+      // this.checkLogin()
       this.getSDK()
-      this.getData();
-      this.getCourseHot();
     },
 
     methods: {
@@ -146,7 +144,8 @@
           code
         } = await axios.get('/user')
         if (code == 0 && this.share_id == data.id) {
-          this.getData()
+          this.getData();
+          this.getCourseHot();
         } else if (code == 401 || this.share_id != data.id) {
           if (this.share_id) {
             window.location.href = 'http://youya.chuncom.com/user/authorization?activity_id=' + this.activity_id + '&share_id=' + this.share_id
