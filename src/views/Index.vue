@@ -121,7 +121,7 @@
     created() {
       this.activity_id = this.$route.query.activity_id
       this.share_id = this.$route.query.share_id
-      this.login()
+      // this.login()
       // this.checkLogin()
       this.getSDK()
       this.getData();
