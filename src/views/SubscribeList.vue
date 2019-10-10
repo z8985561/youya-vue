@@ -32,9 +32,7 @@
               <div class="address">
                 <van-icon name="location-o" /> {{item.address}}</div>
             </div>
-            <router-link :to="{name:'subscribe_auth',params:{course_id:item.id}}">
-              <div class="youya-btn-o">预约</div>
-            </router-link>
+              <div @click="jump" :data-id="item.id" class="youya-btn-o">预约</div>
           </div>
         </li>
       </ul>
@@ -136,6 +134,17 @@
         }else{
           this.$toast.fail(message)
         }
+      },
+      jump(e){
+        var userinfo = JSON.parse(localStorage.getItem("userinfo")) || {}
+        console.log(userinfo);
+        if(!userinfo.phone || !userinfo.real_name){
+          this.$router.push({
+            path:`/binding_information`
+          })
+          return;
+        }
+        this.$router.push({name:'subscribe_auth',params:{course_id:e.currentTarget.dataset.id}})
       }
     },
     created() {},

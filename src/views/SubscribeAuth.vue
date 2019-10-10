@@ -84,7 +84,7 @@
     mounted() {}
   };
 </script>
-<style lang="less">
+<style lang="less" scoped>
   .page {
     padding-top: 40px;
     padding-left: 30px;

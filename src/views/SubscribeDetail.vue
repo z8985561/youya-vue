@@ -54,15 +54,12 @@
       </div>
     </div>
     <footer class="footer-bar flex flex-center flex-align-center">
-      <router-link :to="{name:'subscribe_auth',params:{course_id:course.id}}">
-        <div class="btn-youya">立即预约</div>
-      </router-link>
+        <div @click="jump" :data-id="course.id" class="btn-youya">立即预约</div>
     </footer>
   </div>
 </template>
 
 <script>
-  const Mock = require("mockjs");
   export default {
     components: {},
     props: {},
@@ -83,6 +80,17 @@
         }else{
           this.$toast.fail(message)
         }
+      },
+      jump(e){
+        var userinfo = JSON.parse(localStorage.getItem("userinfo")) || {}
+        console.log(userinfo);
+        if(!userinfo.phone || !userinfo.real_name){
+          this.$router.push({
+            path:`/binding_information`
+          })
+          return;
+        }
+        this.$router.push({name:'subscribe_auth',params:{course_id:e.currentTarget.dataset.id}})
       }
     },
     created() {

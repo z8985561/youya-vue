@@ -130,7 +130,7 @@
       },
       // 购买事件
       buying(){
-        var userinfo = JSON.parse(localStorage.getItem("userinfo"))
+        var userinfo = JSON.parse(localStorage.getItem("userinfo")) || {}
         console.log(userinfo);
         if(!userinfo.phone || !userinfo.real_name){
           this.$router.push({

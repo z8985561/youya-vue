@@ -71,6 +71,7 @@
           })
         if(code==0){
           console.log(data);
+          alert(data)
           this.getUserInfo()
         }else{
           this.$toast(message)
@@ -97,7 +98,7 @@
     mounted() {}
   };
 </script>
-<style lang="less">
+<style lang="less" scoped>
   .page {
     padding-top: 40px;
     padding-left: 30px;
