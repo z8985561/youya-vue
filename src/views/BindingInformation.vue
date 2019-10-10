@@ -43,6 +43,7 @@
         this.disabled = true;
         let {code,data,messega} = await axios.post(`/user/verify-sms`,{phone:this.phone})
         console.log(data);
+        alert(data)
         this.time=60000
       },
       async confirm(){
@@ -71,7 +72,6 @@
           })
         if(code==0){
           console.log(data);
-          this.$toast(data)
           this.getUserInfo()
         }else{
           this.$toast(message)
