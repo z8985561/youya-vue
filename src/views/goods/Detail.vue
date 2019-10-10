@@ -1,8 +1,8 @@
 <template>
   <div>
     <van-swipe :autoplay="3000">
-      <van-swipe-item v-for="(image, index) in images" :key="index">
-        <img v-lazy="image" />
+      <van-swipe-item v-for="(image, index) in detail.images" :key="index">
+        <img :src="image" />
       </van-swipe-item>
     </van-swipe>
     <!-- 课程信息 -->
@@ -11,7 +11,7 @@
         <h2 class="fz-17 c3 mb-5">五年美丽同行班五年美丽同行班五年美丽同行班</h2>
         <div>
           <span class="fz-15 text-price">¥{{detail.price}} </span>
-          <span class="fz-12 c9 text-line">原价¥199.00</span>
+          <span class="fz-12 c9 text-line">原价¥{{detail.original_price}}</span>
         </div>
       </div>
       <div class="course-share flex flex-align-start">
@@ -58,13 +58,13 @@
             <img class="thumb" :src="detail.image" alt="">
             <div class="ml-20 flex flex-column flex-jus" style="flex:1;">
               <div class="fz-17 text-price">￥{{detail.price}}</div>
-              <div class="fz-15 c6">库存{{detail.price}}</div>
+              <div class="fz-15 c6">库存{{detail.inventory}}</div>
             </div>
           </div>
         </div>
         <van-cell-group>
           <van-cell title="购买数量">
-            <van-stepper v-model="quantity" />
+            <van-stepper :max="detail.inventory" v-model="quantity" />
           </van-cell>
         </van-cell-group>
         <div class="btn-youya bottom" @click="onBuyClicked">立即购买</div>

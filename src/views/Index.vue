@@ -6,7 +6,7 @@
         <van-swipe-item v-for="item in ad" :key="item.id">
           <router-link to="video">
             <!-- <img src="/img/index-banner-01.png" width="100%" alt=""> -->
-            <img  :src="item.image" width="100%" alt="">
+            <img :src="item.image" width="100%" alt="">
           </router-link>
         </van-swipe-item>
       </van-swipe>
@@ -106,60 +106,106 @@
   export default {
     data() {
       return {
-        active:1,
+        active: 1,
         images: [
           "../assets/img/index-banner-01.png",
           "../assets/img/index-banner-01.png",
         ],
-        ad:"",
-        banner:"",
-        tool:"",
-        tool_parameter:"",
-        CourseHot:[]
+        ad: "",
+        banner: "",
+        tool: "",
+        tool_parameter: "",
+        CourseHot: []
       }
     },
-    created(){
+    created() {
+      this.activity_id = this.$route.query.activity_id
+      this.share_id = this.$route.query.share_id
+      // this.login()
+      this.checkLogin()
+      this.getSDK()
       this.getData();
       this.getCourseHot();
-      this.login()
-
     },
 
-    methods:{
-      async login(){
-        // let userinfo = JSON.parse(localStorage.getItem("userinfo"));
-        // if(!userinfo){
-        //   let {code,data,message} = await axios.get("/user/login?id=2");
-        //   if(code==0){
-        //     data = JSON.stringify(data)
-        //     localStorage.setItem("userinfo",data)
-        //   }
-
-        // }
-        let {code,data,message} = await axios.get("/user/login?id=2");
-        if(code==0){
+    methods: {
+      async login() {
+        let {
+          code,
+          data,
+          message
+        } = await axios.get("/user/login?id=2");
+        if (code == 0) {
           data = JSON.stringify(data)
-          localStorage.setItem("userinfo",data)
+          localStorage.setItem("userinfo", data)
         }
       },
-      async getData(){
-        this.$toast.loading({message: '加载中...'});
-        let {code,data,message} = await axios.get("/home");
-        if(code == 0){
+      async checkLogin() {
+        let {
+          data,
+          code
+        } = await axios.get('/user')
+        if (code == 0 && this.share_id == data.id) {
+          this.getData()
+        } else if (code == 401 || this.share_id != data.id) {
+          if (this.share_id) {
+            window.location.href = 'http://youya.chuncom.com/user/authorization?activity_id=' + this.activity_id + '&share_id=' + this.share_id
+          } else {
+            window.location.href = 'http://youya.chuncom.com/user/authorization'
+          }
+        }
+      },
+      async getSDK() {
+      // alert(location.href)
+      let href = encodeURIComponent(window.location.href)
+      let { data, code, message } = await axios.get('/config/jsjdk?url=' + href)
+      if (code == 0) {
+        wx.config({
+          debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+          appId: data.appId, // 必填，公众号的唯一标识
+          timestamp: Number(data.timestamp), // 必填，生成签名的时间戳
+          nonceStr: data.nonceStr, // 必填，生成签名的随机串
+          signature: data.signature, // 必填，签名，见附录1
+          jsApiList: [
+            'chooseWXPay',
+            'onMenuShareTimeline',
+            'onMenuShareAppMessage', //1.0分享到朋友圈
+            'updateAppMessageShareData', //1.4 分享到朋友
+            'updateTimelineShareData'
+          ] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+        })
+      } else {
+        // $weui.topTips(message, 3000);
+      }
+    },
+      async getData() {
+        this.$toast.loading({
+          message: '加载中...'
+        });
+        let {
+          code,
+          data,
+          message
+        } = await axios.get("/home");
+        if (code == 0) {
           this.$toast.clear()
-          this.ad= data.ad;
+          this.ad = data.ad;
           this.banner = data.banner;
           this.tool = data.tool;
           this.tool_parameter = data.tool_parameter
-        }else{
+        } else {
           this.$toast.fail(message)
         }
       },
-      async getCourseHot(){
-        let {code,data,message} = await axios.get("/home/course-hot");
-        if(code == 0){
+      async getCourseHot() {
+        let {
+          code,
+          data,
+          message
+        } = await axios.get("/home/course-hot");
+        if (code == 0) {
           this.CourseHot = data;
-        }else{
+        } else {
           this.$toast.fail(message)
         }
       }

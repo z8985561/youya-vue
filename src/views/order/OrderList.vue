@@ -32,7 +32,7 @@
               </div>
             </div>
           </router-link>
-          <div class="plr-10 mb-10 fz-14 c3 text-right">共1件商品  合计<span class="text-price">¥{{item.pay_price}}</span></div>
+          <div class="plr-10 mb-10 fz-14 c3 text-right">共{{item.product_quantity}}件商品  合计<span class="text-price">¥{{item.pay_price}}</span></div>
           <div class="bar-1"></div>
           <div class="flex flex-end p-10">
             <div class="btn-youya-o">申请退款</div>
