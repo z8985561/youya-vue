@@ -122,10 +122,10 @@
       this.activity_id = this.$route.query.activity_id
       this.share_id = this.$route.query.share_id
       // this.login()
-      // this.checkLogin()
+      this.checkLogin()
       this.getSDK()
-      this.getData();
-      this.getCourseHot();
+      // this.getData();
+      // this.getCourseHot();
     },
 
     methods: {
