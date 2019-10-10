@@ -71,7 +71,7 @@
           })
         if(code==0){
           console.log(data);
-          alert(data)
+          this.$toast(data)
           this.getUserInfo()
         }else{
           this.$toast(message)
