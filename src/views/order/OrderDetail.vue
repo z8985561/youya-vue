@@ -79,7 +79,7 @@
 </template>
 
 <script>
-import wx from "weixin-js-sdk";
+  import wx from "weixin-js-sdk";
   export default {
     components: {},
     props: {},
@@ -124,57 +124,57 @@ import wx from "weixin-js-sdk";
         } else {
           this.$toast.fail(message)
         }
-      }
-    },
-    async getSDK() {
-      let href = encodeURIComponent(window.location.href)
-      let {
-        data,
-        code,
-        message
-      } = await axios.get('/config/jsjdk?url=' + href)
-      if (code == 0) {
-        wx.config({
-          debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
-          appId: data.appId, // 必填，公众号的唯一标识
-          timestamp: Number(data.timestamp), // 必填，生成签名的时间戳
-          nonceStr: data.nonceStr, // 必填，生成签名的随机串
-          signature: data.signature, // 必填，签名，见附录1
-          jsApiList: [
-            'chooseWXPay',
-            'onMenuShareTimeline',
-            'onMenuShareAppMessage', //1.0分享到朋友圈
-            'updateAppMessageShareData', //1.4 分享到朋友
-            'updateTimelineShareData'
-          ] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
-        })
-      } else {
-        // $weui.topTips(message, 3000);
-      }
-    },
-    async pay() {
-      let {
-        data,
-        code,
-        message
-      } = await axios.get("/user/mall-order/pay?order_id=" + this.$route.params.id)
-      if (code == 0) {
-        wx.chooseWXPay({
-          appId: data.appId,
-          timestamp: data.timeStamp, // 支付签名时间戳，注意微信jssdk中的所有使用timestamp字段均为小写。但最新版的支付后台生成签名使用的timeStamp字段名需大写其中的S字符
-          nonceStr: data.nonceStr, // 支付签名随机串，不长于 32 位
-          package: data.package, // 统一支付接口返回的prepay_id参数值，提交格式如：prepay_id=***）
-          signType: data.signType, // 签名方式，默认为'SHA1'，使用新版支付需传入'MD5'
-          paySign: data.paySign, // 支付签名
-          success: (res) => {
-            this.$toast.success("支付成功");
-            this.$router.replace("/feedback")
-          },
-          fail: (res) => {
-            this.$toast.fail('支付失败');
-            // alert(JSON.stringify(res))
-          }
-        })
+      },
+      async getSDK() {
+        let href = encodeURIComponent(window.location.href)
+        let {
+          data,
+          code,
+          message
+        } = await axios.get('/config/jsjdk?url=' + href)
+        if (code == 0) {
+          wx.config({
+            debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+            appId: data.appId, // 必填，公众号的唯一标识
+            timestamp: Number(data.timestamp), // 必填，生成签名的时间戳
+            nonceStr: data.nonceStr, // 必填，生成签名的随机串
+            signature: data.signature, // 必填，签名，见附录1
+            jsApiList: [
+              'chooseWXPay',
+              'onMenuShareTimeline',
+              'onMenuShareAppMessage', //1.0分享到朋友圈
+              'updateAppMessageShareData', //1.4 分享到朋友
+              'updateTimelineShareData'
+            ] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+          })
+        } else {
+          // $weui.topTips(message, 3000);
+        }
+      },
+      async pay() {
+        let {
+          data,
+          code,
+          message
+        } = await axios.get("/user/mall-order/pay?order_id=" + this.$route.params.id)
+        if (code == 0) {
+          wx.chooseWXPay({
+            appId: data.appId,
+            timestamp: data.timeStamp, // 支付签名时间戳，注意微信jssdk中的所有使用timestamp字段均为小写。但最新版的支付后台生成签名使用的timeStamp字段名需大写其中的S字符
+            nonceStr: data.nonceStr, // 支付签名随机串，不长于 32 位
+            package: data.package, // 统一支付接口返回的prepay_id参数值，提交格式如：prepay_id=***）
+            signType: data.signType, // 签名方式，默认为'SHA1'，使用新版支付需传入'MD5'
+            paySign: data.paySign, // 支付签名
+            success: (res) => {
+              this.$toast.success("支付成功");
+              this.$router.replace("/feedback")
+            },
+            fail: (res) => {
+              this.$toast.fail('支付失败');
+              // alert(JSON.stringify(res))
+            }
+          })
+        }
       }
     },
     created() {
