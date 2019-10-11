@@ -8,7 +8,7 @@
     <!-- 课程信息 -->
     <div class="p-15 flex mb-10">
       <div class="course-info">
-        <h2 class="fz-17 c3 mb-5">五年美丽同行班五年美丽同行班五年美丽同行班</h2>
+        <h2 class="fz-17 c3 mb-5">{{detail.title}}</h2>
         <div>
           <span class="fz-15 text-price">¥{{detail.price}} </span>
           <span class="fz-12 c9 text-line">原价¥{{detail.original_price}}</span>

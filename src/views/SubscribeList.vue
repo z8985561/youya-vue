@@ -21,7 +21,7 @@
                     <img :src="img.with_guest.avatar" alt="">
                   </div>
                 </div>
-                <div class="ml-10">{{item.number_booking}} 人预约</div>
+                <div class="ml-10">{{item.number_booked}} 人预约</div>
               </div>
               <div class="time">{{item.start_time}} 开课</div>
             </div>
