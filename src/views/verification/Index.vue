@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="header" style="background-image: url(../../img/verification-index-bg.png);">
+    <div class="header" style="background-image: url(../img/verification-index-bg.png);">
       <img :src=" userInfo.avatar || 'img/noface.png'" alt="">
       <div class="fz-15 c3 text-center">{{userInfo.real_name}}</div>
     </div>
