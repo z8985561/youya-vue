@@ -61,7 +61,7 @@
         goods_id: "",
         quantity: "",
         goods: {},
-        order_id:""
+        order_id: ""
       };
     },
     watch: {},
@@ -111,7 +111,7 @@
         }
       },
       // 支付（测试）
-      async payed(order_id){
+      async payed(order_id) {
         this.$toast.loading({
           message: '支付中...'
         });
@@ -125,14 +125,23 @@
         if (code == 0) {
           this.$toast.clear()
           console.log(data);
-          this.$router.push({name:"goods_pay_feedback",query:{order_id:this.order_id}})
+          this.$router.push({
+            name: "goods_pay_feedback",
+            query: {
+              order_id: this.order_id
+            }
+          })
         } else {
           this.$toast.fail(message)
         }
       },
       // 支付
       async pay(order_id) {
-        let { data, code, message } = await axios.get("/user/course-order/pay?order_id="+order_id)
+        let {
+          data,
+          code,
+          message
+        } = await axios.get("/user/mall-order/pay?order_id=" + order_id)
         if (code == 0) {
           wx.chooseWXPay({
             timestamp: data.timeStamp, // 支付签名时间戳，注意微信jssdk中的所有使用timestamp字段均为小写。但最新版的支付后台生成签名使用的timeStamp字段名需大写其中的S字符
