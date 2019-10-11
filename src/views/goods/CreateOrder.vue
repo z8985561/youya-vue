@@ -135,6 +135,33 @@
           this.$toast.fail(message)
         }
       },
+      async getSDK() {
+        // alert(location.href)
+        let href = encodeURIComponent(window.location.href)
+        let {
+          data,
+          code,
+          message
+        } = await axios.get('/config/jsjdk?url=' + href)
+        if (code == 0) {
+          wx.config({
+            debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+            appId: data.appId, // 必填，公众号的唯一标识
+            timestamp: Number(data.timestamp), // 必填，生成签名的时间戳
+            nonceStr: data.nonceStr, // 必填，生成签名的随机串
+            signature: data.signature, // 必填，签名，见附录1
+            jsApiList: [
+              'chooseWXPay',
+              'onMenuShareTimeline',
+              'onMenuShareAppMessage', //1.0分享到朋友圈
+              'updateAppMessageShareData', //1.4 分享到朋友
+              'updateTimelineShareData'
+            ] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+          })
+        } else {
+          // $weui.topTips(message, 3000);
+        }
+      },
       // 支付
       async pay(order_id) {
         let {
@@ -166,6 +193,7 @@
       this.goods_id = this.$route.query.goods_id;
       this.quantity = this.$route.query.quantity;
       this.getGoods()
+      this.getSDK()
     },
     mounted() {}
   };
