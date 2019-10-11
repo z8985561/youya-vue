@@ -123,7 +123,7 @@
       this.share_id = this.$route.query.share_id
       // this.login()
       this.checkLogin()
-      // this.getSDK()
+      this.getSDK()
     },
 
     methods: {
