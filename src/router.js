@@ -306,6 +306,16 @@ export default new Router({
         title:"订单管理"
       }
     },
+    // OrderDetail.vue
+    {
+      // 订单核销
+      path: '/verification/order_detail',
+      name: 'verification_order_detail',
+      component: () => import('./views/verification/OrderDetail.vue'),
+      meta:{
+        title:"订单核销"
+      }
+    },
     // Feedback.vue
     {
       // 反馈页面

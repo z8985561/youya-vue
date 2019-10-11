@@ -2,8 +2,8 @@
   <div>
     <ul class="courses-header">
       <li>
-        <img src="../../assets/img/icon-calendar.png" alt="">
         <router-link to="/member/my_reservation_list">
+          <img src="../../assets/img/icon-calendar.png" alt="">
           <div class="fz-12 c3">预约记录</div>
         </router-link>
       </li>
@@ -85,12 +85,12 @@
     </van-tabs>
     <!-- 课程顾问 -->
     <van-popup v-model="isShowCounselor" :closeable="true">
-      <div class="counselor">
+      <div v-if="teacher" class="counselor">
         <div class="flex mb-15">
           <img class="avatar" :src="teacher.avatar" alt="">
           <div class="ml-10">
             <div class="fz-17 c3 mb-10">{{teacher.name}}</div>
-            <div class="fz-14 c9">{{teacher.phone}} <a class="btn-youya-o plr-5" href="tel:13789738274">一键拨打</a></div>
+            <div class="fz-14 c9">{{teacher.phone}} <a class="btn-youya-o plr-5" :href="'tel:'+teacher.phone">一键拨打</a></div>
           </div>
         </div>
         <div class="flex flex-center mb-5">
@@ -111,12 +111,12 @@
     props: {},
     data() {
       return {
-        isShowCounselor:false,
+        isShowCounselor: false,
         active: 0,
         list: [],
         loading: false,
         finished: false,
-        teacher:{}
+        teacher: {}
       };
     },
     watch: {},
@@ -137,15 +137,23 @@
           }
         }, 500);
       },
-      showCounselorModel(){
+      showCounselorModel() {
+        if(!this.teacher){
+          this.$toast.fail("暂时没有配置顾问老师")
+          return
+        }
         this.isShowCounselor = true;
       },
-      async getTeacher(){
-        let {code,data,message} = await axios.get("/user/package-teacher");
-        if(code==0){
+      async getTeacher() {
+        let {
+          code,
+          data,
+          message
+        } = await axios.get("/user/package-teacher");
+        if (code == 0) {
           this.teacher = data;
-        }else{
-
+        } else {
+          this.teacher = null
         }
       }
     },
@@ -156,9 +164,10 @@
   };
 </script>
 <style lang="less">
-  .van-popup--center{
+  .van-popup--center {
     border-radius: 5px;
   }
+
   .courses-header {
     padding: 16px 0;
     display: flex;
@@ -178,6 +187,7 @@
   .courses-list {
     padding: 10px;
     background-color: #F8F8F8;
+
     .courses-item {
       display: flex;
       padding: 17px 10px 19px;
@@ -210,17 +220,20 @@
     color: #8DB9DF;
     text-align: center;
   }
-  .counselor{
-    padding:20px;
+
+  .counselor {
+    padding: 20px;
     width: 290px;
     box-sizing: border-box;
-    .avatar{
+
+    .avatar {
       width: 55px;
       height: 55px;
       border-radius: 50%;
     }
   }
-  .erweima{
+
+  .erweima {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -228,7 +241,8 @@
     height: 165px;
     background-position: center;
     background-size: cover;
-    img{
+
+    img {
       height: 120px;
       width: 120px;
     }

@@ -167,7 +167,7 @@
             paySign: data.paySign, // 支付签名
             success: (res) => {
               this.$toast.success("支付成功");
-              this.$router.replace("/feedback")
+              this.getData()
             },
             fail: (res) => {
               this.$toast.fail('支付失败');

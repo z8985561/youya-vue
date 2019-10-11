@@ -47,6 +47,7 @@
         </li>
       </ul>
     </van-list>
+    <router-link :to="{name:'verification_order_detail',query:{code:'64e7f23311adcedefb3ae6d99861cb85'}}">订单详情</router-link>
     <!-- 订单列表 -->
     <van-popup v-model="isShowCondition" position="bottom">
       <van-picker :columns="condition" @confirm="selectCondition" show-toolbar title="搜索条件" />
@@ -165,8 +166,8 @@
       },
       async getList(){
         var option = {};
-        if(this.status > 0){
-          option.status = this.status
+        if(this.status - 1 >= 0){
+          option.status = this.status -1;
         }
         this.$toast.loading({message:"加载中..."})
         let {code,data,message} = await axios.get("/user/off/reservation-order/",{params:{

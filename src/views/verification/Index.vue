@@ -26,8 +26,9 @@
         if(code == 0){
           this.$toast.clear()
           this.userInfo = data;
-        }else{
+        }else if (code == 401){
           this.$toast.fail(message)
+          window.location.href = `http://youya.chuncom.com/user/off/authorization?code=${this.$route.query.code}&url_type=${this.$route.query.url_type}`
         }
       },
     },
