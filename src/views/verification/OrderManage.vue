@@ -41,7 +41,7 @@
           <van-cell :border="false" title-class="c9" value-class="c9 text-left" title="订单编号" value="456788909867556" />
           <van-cell :border="false" title-class="c9" value-class="c9 text-left" title="下单时间" :value="item.updated_at" />
           <div class="flex flex-end pt-10">
-            <div class="btn-youya" :data-id="item.id" @click="verification">确认核销</div>
+            <div v-if="item.status == 0" class="btn-youya" :data-id="item.id" @click="verification">确认核销</div>
             <div class="btn-youya-o ml-10">生成学员牌</div>
           </div>
         </li>

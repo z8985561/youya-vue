@@ -38,7 +38,7 @@ export default {
         this.$toast.clear()
         this.goods = data
       } else {
-        this.$toast.fail(message)
+        // this.$toast.fail(message)
       }
     }
   },

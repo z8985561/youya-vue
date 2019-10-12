@@ -65,7 +65,7 @@ import Core from "../assets/js/my-core"
         this.$toast.loading({message: '提交中...'});
         let {code,data,message} = await axios.post("/user/experience-apply",{name:username,phone:phone})
         if(code == 0){
-          this.$toast.clear()
+          this.$toast.success("预约成功")
           console.log(data);
           this.hidePopup()
         }else{
