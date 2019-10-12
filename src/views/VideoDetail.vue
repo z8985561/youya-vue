@@ -131,7 +131,7 @@
 
       },
       onPlayerPause(player) {
-        console.log('player pause!', player)
+        // console.log('player pause!', player)
       },
       // or listen state event
       playerStateChanged(playerCurrentState) {
