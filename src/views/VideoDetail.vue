@@ -139,6 +139,7 @@
       },
       onPlayerEnded(playerEnd) {
         console.log('the player is ended', playerEnd)
+        this.$toast("视频播放结束！")
       },
       // 购买事件
       buying(){

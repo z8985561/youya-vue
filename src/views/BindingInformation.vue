@@ -42,8 +42,11 @@
         }
         this.disabled = true;
         let {code,data,messega} = await axios.post(`/user/verify-sms`,{phone:this.phone})
-        console.log(data);
-        alert(data)
+        if(code==0){
+          this.$toast("发送成功")
+        }else{
+          this.$toast(message)
+        }
         this.time=60000
       },
       async confirm(){
