@@ -10,7 +10,7 @@
                 <img :src="img.with_guest.avatar" alt="">
               </div>
             </div>
-            <div class="ml-10">{{course.count}} 人预约</div>
+            <div class="ml-10">{{course.number_booked || 0}} 人预约</div>
           </div>
           <div class="time">{{course.start_time}} 开课</div>
         </div>

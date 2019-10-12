@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- 视频 -->
-    <video-player class="video-player-box" ref="videoPlayer" :options="playerOptions" :playsinline="true" customEventName="customstatechangedeventname" @play="onPlayerPlay($event)" @pause="onPlayerPause($event)" @ended="onPlayerEnded($event)" @statechanged="playerStateChanged($event)" @ready="playerReadied">
+    <video-player class="video-player-box" ref="videoPlayer" :options="playerOptions" :playsinline="true" customEventName="customstatechangedeventname" @play="onPlayerPlay($event)" @pause="onPlayerPause($event)" @ended="onPlayerEnded($event)" @statechanged="playerStateChanged($event)">
     </video-player>
     <!-- 视频 -->
 
@@ -9,13 +9,13 @@
     <div class="p-15 flex mb-10">
       <div class="course-info">
         <h2 class="fz-17 c3 mb-5">{{detail.name}}</h2>
-        <div class="fz-12 c9 mb-5">全部{{detail.period}}集</div>
+        <div class="fz-12 c9 mb-5">全部{{catalogue.length || 0}}集</div>
         <div>
           <span class="fz-15 text-price">¥{{detail.price}} </span>
           <span class="fz-12 c9 text-line">原价¥{{detail.original_price}}</span>
         </div>
       </div>
-      <div class="course-share flex flex-align-start">
+      <div v-if="detail.is_share" class="course-share flex flex-align-start">
         <router-link :to="{name:'share_posters',params:{id:detail.id}}">
           <div class="flex flex-column flex-jus flex-align-center">
             <img src="../assets/img/icon-wallet.png" alt="">
@@ -34,11 +34,11 @@
       </van-tab>
       <van-tab title="目录">
         <ul class="catalogue-list">
-          <li class="catalogue-item" v-for="item in catalogue" :key="item.id" :data-id="item.id">
+          <li class="catalogue-item" @click="changeVideo" v-for="(item,index) in catalogue" :key="item.id" :data-resource="item.resource" :data-index="index" :data-image="item.image">
             <div class="thumb" :style="{backgroundImage:'url('+item.image+')'}">
               <div class="duration">{{item.minute}}分钟</div>
             </div>
-            <div class="fz-14 tilte" :class="item.id== current?'text-primary':'c3'">{{item.title}}</div>
+            <div class="fz-14 tilte" :class="index== current?'text-primary':'c3'">{{item.title}}</div>
           </li>
         </ul>
       </van-tab>
@@ -79,8 +79,8 @@
       return {
         // 是否购买该教程
         isbought:false,
-        active: 1,
-        current: 4,
+        active: 0,
+        current: 0,
         catalogue: [],
         detail:"",
         playerOptions: {
@@ -104,26 +104,38 @@
       }
     },
     methods: {
+      // 切换视频
+      changeVideo(e){
+        let {resource,index,image} = e.currentTarget.dataset
+        if(!this.isbought){
+          this.$toast("您还未购买此课程！")
+          return
+        }
+        if(this.current == index){
+          return
+        }
+        this.current = index;
+        this.playerOptions.poster = image
+        this.playerOptions.sources[0].src = resource
+
+      },
       // listen event
       onPlayerPlay(player) {
-        console.log('player play!', player)
+        // console.log('player play!', player.el_.querySelector(".vjs-tech"))
+        if(!this.isbought){
+          setTimeout(()=>{
+            player.el_.querySelector(".vjs-tech").load()
+            this.$toast("您还未购买此课程！")
+          },300000)
+        }
 
       },
       onPlayerPause(player) {
         console.log('player pause!', player)
       },
-      // ...player event
-
       // or listen state event
       playerStateChanged(playerCurrentState) {
         // console.log('player current update state', playerCurrentState)
-      },
-
-      // player is ready
-      playerReadied(player) {
-        console.log('the player is readied', player)
-        // you can use it to do something...
-        // player.[methods]
       },
       onPlayerEnded(playerEnd) {
         console.log('the player is ended', playerEnd)
@@ -158,6 +170,7 @@
         let {code,data,message} = await axios.get("/course/catalog",{params:{id:this.$route.query.id}})
         if(code == 0){
           this.catalogue = data
+          this.playerOptions.sources[0].src = this.catalogue[0].resource
         }else{
           this.$toast.fail(message)
         }
