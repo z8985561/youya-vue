@@ -136,7 +136,6 @@
         }
       },
       async getSDK() {
-        alert(location.href)
         let href = encodeURIComponent(window.location.href)
         let {
           data,

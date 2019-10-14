@@ -14,7 +14,7 @@
           <span class="fz-12 c9 text-line">原价¥{{detail.original_price}}</span>
         </div>
       </div>
-      <div class="course-share flex flex-align-start">
+      <div v-if="detail.is_share != 0" class="course-share flex flex-align-start">
         <div class="flex flex-column flex-jus flex-align-center">
           <img src="../../assets/img/icon-wallet.png" alt="">
           <div class="fz-11 c9">分享获得</div>

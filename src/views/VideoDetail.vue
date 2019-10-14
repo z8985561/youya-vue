@@ -46,14 +46,15 @@
     <!-- 课程详情和目录 -->
 
     <!-- footer -->
-    <div v-if="!isbought" class="footer-bar plr-15 flex flex-align-center">
+    <div class="footer-bar plr-15 flex flex-align-center">
       <router-link to="/">
         <div class="back-home">
           <img src="../assets/img/icon-home.png" alt="">
           <div class="fz-11 c9">首页</div>
         </div>
       </router-link>
-      <div class="btn-youya" @click="buying">购买专栏</div>
+      <div v-if="!isbought" class="btn-youya" @click="buying">购买专栏</div>
+      <div v-else class="btn-youya" >已购买专栏</div>
     </div>
     <!-- footer -->
     <!-- 侧边客服购物车按钮 -->
@@ -144,16 +145,16 @@
       // 购买事件
       buying(){
         var userinfo = JSON.parse(localStorage.getItem("userinfo")) || {}
-        console.log(userinfo);
         if(!userinfo.phone || !userinfo.real_name){
           this.$router.push({
             path:`/binding_information`
           })
           return;
         }
-        this.$router.push({
-          path:`/authentication?path=create_order&id=${this.$route.query.id}`
-        })
+        // this.$router.push({
+        //   path:`/authentication?path=create_order&id=${this.$route.query.id}`
+        // })
+        this.$router.push({ name:"create_order", params: { id: this.$route.query.id }})
       },
       async getData(){
         this.$toast.loading({message: '加载中...'});
