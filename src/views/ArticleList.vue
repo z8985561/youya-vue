@@ -98,7 +98,7 @@ var Mock = require('mockjs')
     display: flex;
     padding-bottom: 15px;
     >img{
-      width: 75px;
+      width: 130px;
       height: 75px;
       border-radius:3px;
     }
