@@ -117,13 +117,15 @@
         this.$toast.loading({
           message: '加载中...'
         });
+        let params = {};
         let {
           code,
           data,
           message
         } = await axios.post("/user/course-order", {
           course_id: this.$route.params.id,
-          code: this.couponCode
+          code: this.couponCode,
+          share_id: this.$route.query.share_id
         })
         if (code == 0) {
           this.$toast.clear()
@@ -206,6 +208,8 @@
     created() {
       this.getData()
       this.getSDK()
+      console.log(this.$route.query.share_id);
+
     },
     mounted() {},
     filters: {

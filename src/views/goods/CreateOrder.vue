@@ -98,7 +98,8 @@
           message
         } = await axios.post("/user/mall-order", {
           type: this.type,
-          goods: JSON.stringify(goods)
+          goods: JSON.stringify(goods),
+          share_id: this.$route.query.share_id
         })
         if (code == 0) {
           this.$toast.clear()
@@ -120,7 +121,7 @@
           data,
           message
         } = await axios.post("/user/mall-order/payed", {
-          order_id: order_id
+          order_id: order_id,
         })
         if (code == 0) {
           this.$toast.clear()
@@ -194,6 +195,8 @@
       this.quantity = this.$route.query.quantity;
       this.getGoods()
       this.getSDK()
+      console.log(this.$route.query.share_id);
+
     },
     mounted() {}
   };

@@ -116,7 +116,8 @@
           query:{
             type:this.detail.type,
             goods_id:this.detail.id,
-            quantity:this.quantity
+            quantity:this.quantity,
+            share_id: this.$route.query.share_id || ""
           }
         })
       },
