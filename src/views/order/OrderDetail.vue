@@ -6,6 +6,7 @@
         <div v-if="detail.status==1" class="fz-17 cf fw-700">等待卖家发货</div>
         <div v-if="detail.status==2" class="fz-17 cf fw-700">等待买家收货</div>
         <div v-if="detail.status==3" class="fz-17 cf fw-700">已完成</div>
+        <div v-if="detail.status==5" class="fz-17 cf fw-700">已取消</div>
       </div>
       <img class="status" src="../../assets/img/icon-status-0.png" alt="">
     </div>
@@ -61,19 +62,22 @@
 
 
     <div class="footer-bar">
-      <router-link v-if="detail.status!=0" :to="{name:'order_refund',params:{id:12}}">
+      <div v-if="detail.status==1 || detail.status==1" @click="refund" class="btn-youya-o">
+          申请退款
+        </div>
+      <!-- <router-link v-if="detail.status!=0" :to="{name:'order_refund',params:{id:12}}">
         <div class="btn-youya-o">
           申请退款
         </div>
-      </router-link>
+      </router-link> -->
       <router-link v-if="false" :to="{name:'order_refund_detail',params:{id:12}}">
         <div class="btn-youya-o">
           退款详情
         </div>
       </router-link>
-      <div v-if="detail.status==0" class="btn-youya-o">取消订单</div>
+      <div v-if="detail.status==0" @click="cancel" class="btn-youya-o">取消订单</div>
       <div v-if="detail.status==0" class="btn-youya" @click="pay">付款</div>
-      <div v-if="detail.status==2" class="btn-youya">确认收货</div>
+      <div v-if="detail.status==2" @click="complete" class="btn-youya">确认收货</div>
     </div>
   </div>
 </template>
@@ -91,6 +95,99 @@
     watch: {},
     computed: {},
     methods: {
+      async cancel(e) {
+        let flag = await this.$dialog.confirm({
+            title: '提示',
+            message: '是否要取消订单？'
+          })
+          .then(() => {
+            return true
+          })
+          .catch(() => {
+            return false
+          })
+        if (!flag) {
+          return
+        }
+        this.$toast.loading({
+          message: "取消中..."
+        })
+        let {
+          code,
+          data,
+          messege
+        } = await axios.post(`/user/mall-order/cancel`, {
+          id: this.$route.params.id
+        });
+        if (code == 0) {
+          this.$toast.success("取消成功")
+          this.getData()
+        } else {
+          this.$toast.fail(messege)
+        }
+      },
+      async complete(e){
+        let flag = await this.$dialog.confirm({
+            title: '提示',
+            message: '是否要确认收货？'
+          })
+          .then(() => {
+            return true
+          })
+          .catch(() => {
+            return false
+          })
+        if (!flag) {
+          return
+        }
+        this.$toast.loading({
+          message: "确认收货中..."
+        })
+        let {
+          code,
+          data,
+          messege
+        } = await axios.post(`/user/mall-order/complete`, {
+          id: this.$route.params.id
+        });
+        if (code == 0) {
+          this.$toast.success("确认收货成功")
+          this.getData()
+        } else {
+          this.$toast.fail(messege)
+        }
+      },
+      async refund(){
+        let flag = await this.$dialog.confirm({
+            title: '提示',
+            message: '是否要申请退款？'
+          })
+          .then(() => {
+            return true
+          })
+          .catch(() => {
+            return false
+          })
+        if (!flag) {
+          return
+        }
+        this.$toast.loading({
+          message: '申请中...'
+        });
+        let {
+          code,
+          data,
+          message
+        } = await axios.post("/user/mall-order/refund", {
+          id: this.$route.params.id
+        })
+        if (code == 0) {
+          this.$toast.success("申请成功")
+          this.getData()
+        } else {
+          this.$toast.fail(message)
+        }
+      },
       async getData() {
         this.$toast.loading({
           message: "加载中..."
