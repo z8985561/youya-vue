@@ -51,7 +51,7 @@
       <img src="../../assets/img/btn-cart.png" alt="">
     </div>
     <!-- 侧边客服购物车按钮 -->
-    <van-popup v-model="show" round closeable close-icon="close" position="bottom" :style="{ height: '42%' }">
+    <van-popup v-model="show" round closeable close-icon="close" position="bottom" :style="{ height: '60%' }">
       <div class="p-15">
         <div class="p-10 mb-10">
           <div class="goods-item">

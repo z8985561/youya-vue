@@ -113,7 +113,7 @@
           this.$toast.fail(message)
         }
       },
-      async submitOrder(){
+      async submitOrder() {
         this.$toast.loading({
           message: '加载中...'
         });
@@ -135,7 +135,7 @@
         }
       },
       //hedian 课程订单完成(测试)
-      async payed(order_id){
+      async payed(order_id) {
         let {
           code,
           data,
@@ -152,7 +152,11 @@
         }
       },
       async pay(order_id) {
-        let { data, code, message } = await axios.get("/user/course-order/pay?order_id="+order_id)
+        let {
+          data,
+          code,
+          message
+        } = await axios.get("/user/course-order/pay?order_id=" + order_id)
         if (code == 0) {
           wx.chooseWXPay({
             timestamp: data.timeStamp, // 支付签名时间戳，注意微信jssdk中的所有使用timestamp字段均为小写。但最新版的支付后台生成签名使用的timeStamp字段名需大写其中的S字符
@@ -171,17 +175,45 @@
           })
         }
       },
+      async getSDK() {
+        // alert(location.href)
+        let href = encodeURIComponent(window.location.href)
+        let {
+          data,
+          code,
+          message
+        } = await axios.get('/config/jsjdk?url=' + href)
+        if (code == 0) {
+          wx.config({
+            debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+            appId: data.appId, // 必填，公众号的唯一标识
+            timestamp: Number(data.timestamp), // 必填，生成签名的时间戳
+            nonceStr: data.nonceStr, // 必填，生成签名的随机串
+            signature: data.signature, // 必填，签名，见附录1
+            jsApiList: [
+              'chooseWXPay',
+              'onMenuShareTimeline',
+              'onMenuShareAppMessage', //1.0分享到朋友圈
+              'updateAppMessageShareData', //1.4 分享到朋友
+              'updateTimelineShareData'
+            ] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+          })
+        } else {
+          // $weui.topTips(message, 3000);
+        }
+      },
     },
     created() {
       this.getData()
+      this.getSDK()
     },
     mounted() {},
-    filters:{
-      toF(value){
+    filters: {
+      toF(value) {
         var num = Number(value)
-        if(isNaN(num)){
+        if (isNaN(num)) {
           return "错误参数"
-        }else{
+        } else {
           return num.toFixed(2)
         }
       }

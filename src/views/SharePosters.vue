@@ -45,7 +45,6 @@ export default {
       if(code == 0){
         if(data.length){
           this.list = data
-          this.getShareImage(data[0].id)
         }else{
           this.$toast.fail("该商品暂无可用模板！")
           this.$router.go(-1)
@@ -54,13 +53,12 @@ export default {
         this.$toast.fail(message)
       }
     },
-    async getShareImage(id){
+    async getShareImage(){
       this.$toast.loading({message: '生成中...'});
-      let {code,data,message} = await axios.get("/course/create-share-image",{params:{course_id:id}})
+      let {code,data,message} = await axios.get("/course/create-share-image",{params:{course_id:this.$route.params.id}})
       if(code == 0){
         this.$toast.clear()
         this.createShareImage = data
-        this.compoundImg()
       }else{
         // this.$toast.fail(message)
       }
@@ -68,7 +66,7 @@ export default {
     onChangePoster(e){
       let {id,index} = e.currentTarget.dataset;
       this.active = index
-      this.getShareImage(id)
+      this.compoundImg()
     },
     async compoundImg(){
       let mc = new MCanvas({
@@ -180,6 +178,7 @@ export default {
   },
   created() {
     this.getData()
+    this.getShareImage()
     // console.log(MCanvas)
   },
   mounted() {}

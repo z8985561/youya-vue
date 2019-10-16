@@ -165,6 +165,7 @@
           this.playerOptions.poster = data.image
         }else{
           this.$toast.fail(message)
+          this.$router.push({path:"/"})
         }
       },
       // 获取目录
@@ -185,7 +186,26 @@
         }else{
           this.$toast.fail(message)
         }
-      }
+      },
+      async checkLogin() {
+        this.$toast.loading({
+          message: '登录中...'
+        });
+        let {
+          data,
+          code
+        } = await axios.get('/user')
+        this.$toast.clear()
+        if (code == 0) {
+          data = JSON.stringify(data)
+          localStorage.setItem("userinfo", data)
+          this.getData();
+          this.getCourseHot();
+        } else if (code == 401) {
+          this.$toast.fail("您还未登录！")
+          window.location.href = 'http://youya.chuncom.com/user/authorization'
+        }
+      },
     },
     created() {
       this.getData();
