@@ -41,7 +41,7 @@
           return
         }
         this.disabled = true;
-        let {code,data,messega} = await axios.post(`/user/verify-sms`,{phone:this.phone})
+        let {code,data,messega} = await axios.post(`/user/verify-sms`,{phone:'15602280761'})
         if(code==0){
           this.$toast("发送成功")
         }else{

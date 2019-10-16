@@ -3,11 +3,11 @@
     <div class="plr-15 ptb-10">
       <div class="subscribe-item">
         <div class="cover" :style="{backgroundImage:'url('+course.image+')'}">
-          <div class="cate">{{course.with_class.name}}</div>
+          <div v-if="course.with_class" class="cate">{{course.with_class.name}}</div>
           <div class="count">
             <div class="avatar">
               <div v-for="(img,idx) in course.with_booked_user" :key="idx">
-                <img :src="img.with_guest.avatar" alt="">
+                <img v-if="idx < 4" :src="img.with_guest.avatar" alt="">
               </div>
             </div>
             <div class="ml-10">{{course.number_booked || 0}} 人预约</div>
@@ -32,7 +32,7 @@
       <h2 class="fz-15 c3 mb-10">预约详情</h2>
       <div class="flex flex-align-center mb-20">
         <div class="fz-13 c9">
-          剩余<span class="text-primary">{{course.number_booking || 0}}</span>个名额
+          剩余<span class="text-primary">{{course.number_booking - course.number_booked || 0}}</span>个名额
         </div>
         <div class="count2">
           <div class="avatar">
@@ -109,7 +109,7 @@
       width: 345px;
       height: 194px;
       margin-bottom: 10px;
-      background-size: contain;
+      background-size: cover;
       background-position: center;
       background-repeat: no-repeat;
       border-radius: 10px;

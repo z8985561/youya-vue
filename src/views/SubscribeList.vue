@@ -14,11 +14,11 @@
         <li class="subscribe-item" v-for="(item,index) in list" :key="index">
           <router-link :to="{ name: 'subscribe_detail', params: { id: item.id }}">
             <div class="cover" :style="{backgroundImage:'url('+item.image+')'}">
-              <div class="cate">{{item.with_class.name}}</div>
+              <div v-if="item.with_class" class="cate">{{item.with_class.name}}</div>
               <div class="count">
                 <div class="avatar">
-                  <div v-for="(img,idx) in item.with_booked_user" :key="idx">
-                    <img :src="img.with_guest.avatar" alt="">
+                  <div v-if="item.with_booked_user.length" v-for="(img,idx) in item.with_booked_user" :key="idx">
+                    <img v-if="idx < 4" :src="img.with_guest.avatar" alt="">
                   </div>
                 </div>
                 <div class="ml-10">{{item.number_booked}} 人预约</div>
