@@ -96,7 +96,7 @@ var Mock = require('mockjs')
     >div{
       margin-left: 10px;
       flex:1;
-      width: 241px;
+      width: 260px;
       display: flex;
       flex-direction: column;
       justify-content: space-around;
