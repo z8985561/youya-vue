@@ -89,14 +89,14 @@ var Mock = require('mockjs')
     display: flex;
     padding-bottom: 15px;
     >img{
-      width: 75px;
+      width: 130px;
       height: 75px;
       border-radius:3px;
     }
     >div{
       margin-left: 10px;
       flex:1;
-      width: 260px;
+      width: 241px;
       display: flex;
       flex-direction: column;
       justify-content: space-around;

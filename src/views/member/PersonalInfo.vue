@@ -11,7 +11,8 @@
       <van-cell title-class="flex flex-align-center c9" title="二维码名片" value="内容">
         <div class="flex flex-end" slot="default">
           <van-uploader :before-read="upQrCard">
-            <div v-if="userInfo.qr_card" class="c3">修改</div>
+            <!-- <div v-if="userInfo.qr_card" class="c3">修改</div> -->
+            <img v-if="userInfo.qr_card"  class="qr_card" :src="userInfo.qr_card || '../../img/noface.png'" alt="">
             <div v-else class="c3">上传</div>
           </van-uploader>
         </div>
@@ -80,7 +81,7 @@
           }
       },
       async submit(){
-        if(!core.checkPhone(this.userInfo.phone_contact)){
+        if(!core.trim(this.userInfo.phone_contact)){
           this.$toast.fail("手机号码格式错误")
           return;
         }
@@ -127,6 +128,10 @@
     width: 34px;
     height: 34px;
     border-radius: 50%;
+  }
+  .qr_card{
+    width: 60px;
+    height: 60px;
   }
   .footer-bar {
     padding: 0 10px;

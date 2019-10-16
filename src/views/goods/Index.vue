@@ -85,7 +85,7 @@
       border-bottom: 1px solid #eee;
       .thumb {
         margin-right: 10px;
-        width: 75px;
+        width: 130px;
         height: 75px;
         border-radius: 5px;
       }

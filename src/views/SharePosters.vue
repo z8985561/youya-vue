@@ -45,6 +45,7 @@ export default {
       if(code == 0){
         if(data.length){
           this.list = data
+          this.compoundImg()
         }else{
           this.$toast.fail("该商品暂无可用模板！")
           this.$router.go(-1)
@@ -64,7 +65,7 @@ export default {
       }
     },
     onChangePoster(e){
-      let {id,index} = e.currentTarget.dataset;
+      let {index} = e.currentTarget.dataset;
       this.active = index
       this.compoundImg()
     },
