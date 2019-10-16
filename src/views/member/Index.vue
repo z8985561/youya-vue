@@ -36,7 +36,7 @@
       <van-cell title="提现明细" icon="img/icon-member-04.png" is-link to="/member/withdraw_record" />
       <van-cell title="个人资料" icon="img/icon-member-05.png" is-link to="/member/personal_info" />
       <van-cell title="地址管理" icon="img/icon-member-07.png" is-link to="/member/address_list" />
-      <van-cell title="关于我们" icon="img/icon-member-06.png" is-link />
+      <van-cell title="关于我们" icon="img/icon-member-06.png" is-link to="/tool_detail/1" />
       <van-cell title="核销端" icon="img/icon-member-06.png" is-link to="/verification/index"/>
     </van-cell-group>
     </van-pull-refresh>
@@ -69,7 +69,7 @@
     onRefresh() {
       this.getUserInfo()
     }
-      
+
     },
     created() {
       this.getUserInfo()

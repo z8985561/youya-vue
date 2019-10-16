@@ -3,8 +3,8 @@
     <!-- 轮播图 -->
     <div class="mb-10">
       <van-swipe :autoplay="3000" :show-indicators="false">
-        <van-swipe-item v-for="item in ad" :key="item.id">
-          <router-link to="video">
+        <van-swipe-item v-for="item in banner" :key="item.id">
+          <router-link to="">
             <!-- <img src="/img/index-banner-01.png" width="100%" alt=""> -->
             <img :src="item.image" width="100%" alt="">
           </router-link>
@@ -14,7 +14,7 @@
     <!-- 轮播图 -->
     <!-- banner -->
     <div class="flex flex-jus">
-      <div v-for="item in banner" :key="item.id" class="banner2">
+      <div v-for="item in ad" :key="item.id" class="banner2">
         <router-link to="">
           <img :src="item.image" width="100%" alt="">
         </router-link>
