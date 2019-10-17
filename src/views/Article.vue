@@ -76,7 +76,7 @@
           let shareData = {
             title: this.detail.share_title,
             desc: this.detail.share_subtitle, //这里请特别注意是要去除html
-            link: encodeURIComponent(window.location.href),
+            link: window.location.href,
             imgUrl: this.detail.share_image || "http://localhost:8080/youya-h5/img/logo.png"
           }
           if (wx.onMenuShareAppMessage) { //微信文档中提到这两个接口即将弃用，故判断
