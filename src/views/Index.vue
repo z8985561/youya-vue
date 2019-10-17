@@ -21,8 +21,8 @@
           <img :src="item.image" width="100%" alt="">
         </router-link> -->
         <a :href="item.url">
-            <img :src="item.image" width="100%" alt="">
-          </a>
+          <img :src="item.image" width="100%" alt="">
+        </a>
       </div>
       <!-- <div class="banner2">
         <router-link to="/goods/index">
@@ -124,14 +124,40 @@
       }
     },
     created() {
+      this.jumpPage()
       this.activity_id = this.$route.query.activity_id
       this.share_id = this.$route.query.share_id
       // this.login()
       this.checkLogin()
       this.getSDK()
     },
-
     methods: {
+      // 根据type跳转到不同的页面
+      jumpPage() {
+        let type = this.$route.query.type
+        switch (type) {
+          case "1":
+            this.$router.push({
+              name: 'article',
+              query: {
+                id: this.$route.query.id || 10,
+                share_id: this.$route.query.share_id
+              }
+            })
+            break;
+          case "2":
+            this.$router.push({
+              name: 'video_detail',
+              query: {
+                id: this.$route.query.id || 5,
+                share_id: this.$route.query.share_id
+              }
+            })
+            break;
+          default:
+            break;
+        }
+      },
       async login() {
         let {
           code,
@@ -162,28 +188,32 @@
         }
       },
       async getSDK() {
-      // alert(location.href)
-      let href = encodeURIComponent(window.location.href)
-      let { data, code, message } = await axios.get('/config/jsjdk?url=' + href)
-      if (code == 0) {
-        wx.config({
-          debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
-          appId: data.appId, // 必填，公众号的唯一标识
-          timestamp: Number(data.timestamp), // 必填，生成签名的时间戳
-          nonceStr: data.nonceStr, // 必填，生成签名的随机串
-          signature: data.signature, // 必填，签名，见附录1
-          jsApiList: [
-            'chooseWXPay',
-            'onMenuShareTimeline',
-            'onMenuShareAppMessage', //1.0分享到朋友圈
-            'updateAppMessageShareData', //1.4 分享到朋友
-            'updateTimelineShareData'
-          ] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
-        })
-      } else {
-        // $weui.topTips(message, 3000);
-      }
-    },
+        // alert(location.href)
+        let href = encodeURIComponent(window.location.href)
+        let {
+          data,
+          code,
+          message
+        } = await axios.get('/config/jsjdk?url=' + href)
+        if (code == 0) {
+          wx.config({
+            debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+            appId: data.appId, // 必填，公众号的唯一标识
+            timestamp: Number(data.timestamp), // 必填，生成签名的时间戳
+            nonceStr: data.nonceStr, // 必填，生成签名的随机串
+            signature: data.signature, // 必填，签名，见附录1
+            jsApiList: [
+              'chooseWXPay',
+              'onMenuShareTimeline',
+              'onMenuShareAppMessage', //1.0分享到朋友圈
+              'updateAppMessageShareData', //1.4 分享到朋友
+              'updateTimelineShareData'
+            ] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+          })
+        } else {
+          // $weui.topTips(message, 3000);
+        }
+      },
       async getData() {
         this.$toast.loading({
           message: '加载中...'
