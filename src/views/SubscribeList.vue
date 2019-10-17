@@ -32,7 +32,10 @@
               <div class="address">
                 <van-icon name="location-o" /> {{item.address}}</div>
             </div>
-              <div @click="jump" :data-id="item.id" :data-booked="item.number_booked" :data-booking="item.number_booking" class="youya-btn-o">预约</div>
+              <div v-if="item.status == 0" class="youya-btn-o">未开始</div>
+              <div v-if="item.status == 1 && (item.number_booked > item.number_booking)" class="youya-btn-o">预约</div>
+              <div v-if="item.status == 1 && (item.number_booked == item.number_booking)" class="youya-btn-o">已约满</div>
+              <div v-if="item.status == 2" class="youya-btn-o">已结束</div>
           </div>
         </li>
       </ul>
@@ -134,22 +137,6 @@
         }else{
           this.$toast.fail(message)
         }
-      },
-      jump(e){
-        let {booked,booking} = e.currentTarget.dataset;
-        if(booked == booking){
-          this.$toast.fail("预约已满")
-          return;
-        }
-        var userinfo = JSON.parse(localStorage.getItem("userinfo")) || {}
-        console.log(userinfo);
-        if(!userinfo.phone || !userinfo.real_name){
-          this.$router.push({
-            path:`/binding_information`
-          })
-          return;
-        }
-        this.$router.push({name:'subscribe_auth',params:{course_id:e.currentTarget.dataset.id}})
       }
     },
     created() {},

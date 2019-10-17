@@ -54,7 +54,8 @@
       </div>
     </div>
     <footer class="footer-bar flex flex-center flex-align-center">
-        <div @click="jump" :data-id="course.id" class="btn-youya">立即预约</div>
+        <div v-if="course.user_apply" class="btn-youya">已预约</div>
+        <div v-else @click="jump" :data-id="course.id" class="btn-youya">立即预约</div>
     </footer>
   </div>
 </template>
@@ -82,6 +83,14 @@
         }
       },
       jump(e){
+        if(this.course.status == 0){
+          this.$toast.fail("课程未开始")
+          return;
+        }
+        if(this.course.status == 2){
+          this.$toast.fail("课程已结束")
+          return;
+        }
         if(this.course.number_booked == this.course.number_booking){
           this.$toast.fail("预约已满")
           return;
