@@ -82,6 +82,10 @@
         }
       },
       jump(e){
+        if(this.course.number_booked == this.course.number_booking){
+          this.$toast.fail("预约已满")
+          return;
+        }
         var userinfo = JSON.parse(localStorage.getItem("userinfo")) || {}
         console.log(userinfo);
         if(!userinfo.phone || !userinfo.real_name){

@@ -14,7 +14,7 @@
     <!-- 轮播图 -->
 
     <!-- 美文列表 -->
-    <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad">
+    <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="getList">
       <!-- <van-cell v-for="item in list" :key="item.id" :title="item.title" /> -->
 
       <router-link v-for="(item,index) in list" :key="index" :to="{ name: 'article', query: { id: item.id }}">

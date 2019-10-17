@@ -32,7 +32,7 @@
               <div class="address">
                 <van-icon name="location-o" /> {{item.address}}</div>
             </div>
-              <div @click="jump" :data-id="item.id" class="youya-btn-o">预约</div>
+              <div @click="jump" :data-id="item.id" :data-booked="item.number_booked" :data-booking="item.number_booking" class="youya-btn-o">预约</div>
           </div>
         </li>
       </ul>
@@ -136,6 +136,11 @@
         }
       },
       jump(e){
+        let {booked,booking} = e.currentTarget.dataset;
+        if(booked == booking){
+          this.$toast.fail("预约已满")
+          return;
+        }
         var userinfo = JSON.parse(localStorage.getItem("userinfo")) || {}
         console.log(userinfo);
         if(!userinfo.phone || !userinfo.real_name){
