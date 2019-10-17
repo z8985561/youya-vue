@@ -154,7 +154,7 @@
         // this.$router.push({
         //   path:`/authentication?path=create_order&id=${this.$route.query.id}`
         // })
-        this.$router.push({ name:"create_order", params: { id: this.$route.query.id },query:{share_id:this.$route.query.share_id || ""}})
+        this.$router.push({ name:"create_order",query:{id: this.$route.query.id,share_id:this.$route.query.share_id || ""}})
       },
       async getData(){
         this.$toast.loading({message: '加载中...'});

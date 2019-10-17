@@ -88,7 +88,7 @@ export default new Router({
     // CreateOrder.vue
     {
       // 确认购买
-      path: '/create_order/:id',
+      path: '/create_order',
       name: 'create_order',
       component: () => import('./views/CreateOrder.vue'),
       meta:{
@@ -349,7 +349,7 @@ export default new Router({
     // 商品创建订单 CreateOrder.vue
     {
       // 确认订单
-      path: '/goods/create_order',
+      path: '/goods_create_order',
       name: 'goods_create_order',
       component: () => import('./views/goods/CreateOrder.vue'),
       meta:{
@@ -390,7 +390,7 @@ export default new Router({
     // OrderList.vue.vue
     {
       // 订单列表
-      path: '/order/order_list',
+      path: '/order_list',
       name: 'order_list',
       component: () => import('./views/order/OrderList.vue'),
       meta:{
@@ -399,7 +399,7 @@ export default new Router({
     },
     {
       // 订单详情
-      path: '/order/order_detail/:id',
+      path: '/order_detail',
       name: 'order_detail',
       component: () => import('./views/order/OrderDetail.vue'),
       meta:{

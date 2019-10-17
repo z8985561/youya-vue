@@ -24,7 +24,7 @@
             <div v-if="item.status==4" class="fz-12 text-price">已退款</div>
             <div v-if="item.status==5" class="fz-12 c9">已取消</div>
           </div>
-          <router-link v-for="goods in item.with_detail" :key="item.id" :to="{name:'order_detail',params:{id:item.id}}">
+          <router-link v-for="goods in item.with_detail" :key="item.id" :to="{name:'order_detail',query:{id:item.id}}">
             <div class="flex p-10">
               <img class="thumb" :src="goods.goods_image" alt="">
               <div class="ml-10 flex flex-column flex-jus" style="flex:1;">
@@ -40,10 +40,10 @@
           <div class="bar-1"></div>
           <div class="flex flex-end p-10">
             <div v-if="item.status==0" @click="cancel" :data-index="index" :data-id="item.id" class="btn-youya-o">取消订单</div>
-            <router-link :to="{name:'order_detail',params:{id:item.id}}">
+            <router-link :to="{name:'order_detail',query:{id:item.id}}">
               <div v-if="item.status==1 || item.status==2" class="btn-youya-o">申请退款</div>
             </router-link>
-            <router-link :to="{name:'order_detail',params:{id:item.id}}">
+            <router-link :to="{name:'order_detail',query:{id:item.id}}">
               <div v-if="item.status==0" class="btn-youya">去付款</div>
             </router-link>
             <div v-if="item.status==2" @click="complete" class="btn-youya">确认收货</div>

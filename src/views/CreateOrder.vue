@@ -103,7 +103,7 @@
           message
         } = await axios.get("/course/detail", {
           params: {
-            id: this.$route.params.id
+            id: this.$route.query.id
           }
         })
         if (code == 0) {
@@ -123,7 +123,7 @@
           data,
           message
         } = await axios.post("/user/course-order", {
-          course_id: this.$route.params.id,
+          course_id: this.$route.query.id,
           code: this.couponCode,
           share_id: this.$route.query.share_id
         })

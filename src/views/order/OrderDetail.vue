@@ -65,12 +65,12 @@
       <div v-if="detail.status==1 || detail.status==1" @click="refund" class="btn-youya-o">
           申请退款
         </div>
-      <!-- <router-link v-if="detail.status!=0" :to="{name:'order_refund',params:{id:12}}">
+      <!-- <router-link v-if="detail.status!=0" :to="{name:'order_refund',query:{id:12}}">
         <div class="btn-youya-o">
           申请退款
         </div>
       </router-link> -->
-      <router-link v-if="false" :to="{name:'order_refund_detail',params:{id:12}}">
+      <router-link v-if="false" :to="{name:'order_refund_detail',query:{id:12}}">
         <div class="btn-youya-o">
           退款详情
         </div>
@@ -117,7 +117,7 @@
           data,
           messege
         } = await axios.post(`/user/mall-order/cancel`, {
-          id: this.$route.params.id
+          id: this.$route.query.id
         });
         if (code == 0) {
           this.$toast.success("取消成功")
@@ -148,7 +148,7 @@
           data,
           messege
         } = await axios.post(`/user/mall-order/complete`, {
-          id: this.$route.params.id
+          id: this.$route.query.id
         });
         if (code == 0) {
           this.$toast.success("确认收货成功")
@@ -179,7 +179,7 @@
           data,
           message
         } = await axios.post("/user/mall-order/refund", {
-          id: this.$route.params.id
+          id: this.$route.query.id
         })
         if (code == 0) {
           this.$toast.success("申请成功")
@@ -196,7 +196,7 @@
           code,
           data,
           messege
-        } = await axios.get(`/user/mall-order/detail?id=${this.$route.params.id}`);
+        } = await axios.get(`/user/mall-order/detail?id=${this.$route.query.id}`);
         if (code == 0) {
           this.$toast.clear()
           this.detail = data
@@ -213,7 +213,7 @@
           data,
           message
         } = await axios.post("/user/mall-order/payed", {
-          order_id: this.$route.params.id
+          order_id: this.$route.query.id
         })
         if (code == 0) {
           this.$toast.success("支付成功")
@@ -253,7 +253,7 @@
           data,
           code,
           message
-        } = await axios.get("/user/mall-order/pay?order_id=" + this.$route.params.id)
+        } = await axios.get("/user/mall-order/pay?order_id=" + this.$route.query.id)
         if (code == 0) {
           wx.chooseWXPay({
             appId: data.appId,
