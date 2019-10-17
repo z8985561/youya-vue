@@ -6,7 +6,11 @@
         <div class="fz-17 c3 fw-700 text-hide mb-5">
           {{userInfo.nick_name}}
         </div>
-        <div v-if="userInfo.role > 0" class="fz-12 c9">代理商</div>
+        <div v-if="userInfo.role == 1" class="fz-12 c9">会员</div>
+        <div v-if="userInfo.role == 2" class="fz-12 c9">代理商</div>
+        <div v-if="userInfo.role == 3" class="fz-12 c9">学员</div>
+        <div v-if="userInfo.role == 4" class="fz-12 c9">优雅天使</div>
+        <div v-if="userInfo.role == 5" class="fz-12 c9">传播天使</div>
       </div>
       <img class="avatar" :src="userInfo.avatar || 'img/noface.png'" alt="">
     </div>

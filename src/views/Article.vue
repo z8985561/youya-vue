@@ -1,9 +1,9 @@
 <template>
   <div>
-    <div class="container" v-html="content"></div>
+    <div class="container" v-html="detail.text"></div>
     <div v-if="share_info" class="flex flex-column flex-center flex-align-center">
       <div class="fz-13 c6">联系微信</div>
-      <img style="width:30vw;height:30vw;" :src="share_info.share_url" alt="">
+      <img style="width:30vw;height:30vw;" :src="share_info.share_qr" alt="">
       <div class="fz-13 c6">代理：{{share_info.with_guest.real_name}}</div>
       <div class="fz-13 c6">电话：{{share_info.with_guest.phone}}</div>
       <div class="fz-12 c9">长按识别二维码添加微信</div>
@@ -18,7 +18,7 @@
     props: {},
     data() {
       return {
-        content: "",
+        detail: "",
         share_id: "",
         share_info: ""
       };
@@ -37,7 +37,7 @@
         } = await axios.get(`/article/detail?id=${this.$route.query.id}&share_id=${this.share_id}`);
         if (code == 0) {
           this.$toast.clear();
-          this.content = data.text;
+          this.detail = data;
           document.title = data.title
           this.wxShare()
           data.share_info ? this.share_info = data.share_info : "";
@@ -61,7 +61,6 @@
             nonceStr: data.nonceStr, // 必填，生成签名的随机串
             signature: data.signature, // 必填，签名，见附录1
             jsApiList: [
-              'chooseWXPay',
               'onMenuShareTimeline',
               'onMenuShareAppMessage', //1.0分享到朋友圈
               'updateAppMessageShareData', //1.4 分享到朋友
@@ -75,10 +74,10 @@
       wxShare() {
         wx.ready(() => {
           let shareData = {
-            title: this.detail.title,
-            desc: this.detail.subtitle, //这里请特别注意是要去除html
-            link: data.share_self.share_url,
-            imgUrl: document.querySelector('img').src || "http://localhost:8080/youya-h5/img/logo.png"
+            title: this.detail.share_title,
+            desc: this.detail.share_subtitle, //这里请特别注意是要去除html
+            link: encodeURIComponent(window.location.href),
+            imgUrl: this.detail.share_image || "http://localhost:8080/youya-h5/img/logo.png"
           }
           if (wx.onMenuShareAppMessage) { //微信文档中提到这两个接口即将弃用，故判断
             wx.onMenuShareAppMessage(shareData); //1.0 分享到朋友
