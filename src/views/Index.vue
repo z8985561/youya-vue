@@ -4,10 +4,12 @@
     <div class="mb-10">
       <van-swipe :autoplay="3000" :show-indicators="false">
         <van-swipe-item v-for="item in banner" :key="item.id">
-          <router-link :to="item.url">
-            <!-- <img src="/img/index-banner-01.png" width="100%" alt=""> -->
+          <!-- <router-link :to="item.url">
             <img :src="item.image" width="100%" alt="">
-          </router-link>
+          </router-link> -->
+          <a :href="item.url">
+            <img :src="item.image" width="100%" alt="">
+          </a>
         </van-swipe-item>
       </van-swipe>
     </div>
@@ -15,9 +17,12 @@
     <!-- banner -->
     <div class="flex flex-jus">
       <div v-for="item in ad" :key="item.id" class="banner2">
-        <router-link :to="item.url">
+        <!-- <router-link :to="item.url">
           <img :src="item.image" width="100%" alt="">
-        </router-link>
+        </router-link> -->
+        <a :href="item.url">
+            <img :src="item.image" width="100%" alt="">
+          </a>
       </div>
       <!-- <div class="banner2">
         <router-link to="/goods/index">

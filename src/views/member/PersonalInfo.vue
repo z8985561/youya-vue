@@ -13,7 +13,7 @@
           <van-uploader :before-read="upQrCard">
             <!-- <div v-if="userInfo.qr_card" class="c3">修改</div> -->
             <img v-if="userInfo.qr_card"  class="qr_card" :src="userInfo.qr_card || '../../img/noface.png'" alt="">
-            <div v-else class="c3">上传</div>
+            <div v-else class="c3">请上传二维码名片</div>
           </van-uploader>
         </div>
       </van-cell>
