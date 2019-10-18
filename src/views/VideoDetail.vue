@@ -34,7 +34,7 @@
       </van-tab>
       <van-tab title="目录">
         <ul class="catalogue-list">
-          <li class="catalogue-item" @click="changeVideo" v-for="(item,index) in catalogue" :key="item.id" :data-resource="item.resource" :data-index="index" :data-image="item.image">
+          <li class="catalogue-item" @click="changeVideo" v-for="(item,index) in detail.with_catalog" :key="item.id" :data-resource="item.resource" :data-index="index" :data-image="item.image">
             <div class="thumb" :style="{backgroundImage:'url('+item.image+')'}">
               <div class="duration">{{item.minute}}分钟</div>
             </div>

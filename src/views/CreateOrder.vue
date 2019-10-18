@@ -118,6 +118,13 @@
           message: '加载中...'
         });
         let params = {};
+        params.course_id = this.$route.query.id
+        if(this.couponCode){
+          params.code = this.couponCode
+        }
+        if(this.$route.query.share_id){
+          params.share_id = this.$route.query.share_id
+        }
         let {
           code,
           data,
