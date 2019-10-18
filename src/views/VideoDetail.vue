@@ -162,7 +162,8 @@
         if(code == 0){
           this.$toast.clear()
           this.detail = data
-          this.playerOptions.poster = data.image
+          this.playerOptions.poster = this.detail.with_catalog[0].image
+          this.playerOptions.sources[0].src = this.detail.with_catalog[0].resource
         }else{
           this.$toast.fail(message)
           this.$router.push({path:"/"})

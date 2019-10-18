@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="header" style="background-image: url(../../img/order-status-bg.png);">
+    <div class="header" style="background-image: url(img/order-status-bg.png);">
       <div>
         <div v-if="detail.status==0" class="fz-17 cf fw-700">等待买家付款</div>
         <div v-if="detail.status==1" class="fz-17 cf fw-700">等待卖家发货</div>
