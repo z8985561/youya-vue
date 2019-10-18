@@ -209,7 +209,7 @@
     },
     created() {
       this.getData();
-      this.getCatalog()
+      // this.getCatalog()
       this.checkIsBought();
     },
     mounted() {

@@ -33,8 +33,8 @@
                 <van-icon name="location-o" /> {{item.address}}</div>
             </div>
               <div v-if="item.status == 0" class="youya-btn-o">未开始</div>
-              <div v-if="item.status == 1 && (item.number_booked > item.number_booking)" class="youya-btn-o">预约</div>
-              <div v-if="item.status == 1 && (item.number_booked == item.number_booking)" class="youya-btn-o">已约满</div>
+              <div v-if="item.status == 1 && (item.number_booked < item.number_booking)" class="youya-btn-o">预约</div>
+              <div v-if="item.status == 1 && (item.number_booked >= item.number_booking)" class="youya-btn-o">已约满</div>
               <div v-if="item.status == 2" class="youya-btn-o">已结束</div>
           </div>
         </li>

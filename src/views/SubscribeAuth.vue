@@ -41,7 +41,7 @@
           return
         }
         this.disabled = true;
-        let {code,data,messega} = await axios.post(`/user/verify-sms`,{phone:'15602280761'})
+        let {code,data,messega} = await axios.post(`/user/verify-sms`,{phone:this.phone})
         if(code==0){
           this.$toast("发送成功")
         }else{
@@ -81,9 +81,16 @@
         this.disabled = false;
       }
     },
-    created() {
-      let userinfo = JSON.parse(localStorage.getItem("userinfo"))
-      this.phone = userinfo.phone
+    async created() {
+      let {code,data,message} = await axios.get("/user")
+      if(code==0){
+        this.phone = data.phone
+      }else if(code==401){
+        this.$toast.fail("您还未登录")
+        this.$router.push({path:"/"})
+      }
+      // let userinfo = JSON.parse(localStorage.getItem("userinfo"))
+      // this.phone = userinfo.phone
     },
     mounted() {}
   };
