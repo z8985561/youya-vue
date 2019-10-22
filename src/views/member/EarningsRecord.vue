@@ -1,6 +1,6 @@
 <template>
   <div>
-    <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad">
+    <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="getList">
       <ul class="earning-list">
         <li class="earning-item" v-for="item in list" :key="item">
           <div class="flex flex-jus">
@@ -32,26 +32,31 @@
       return {
         list: [],
         loading: false,
-        finished: false
+        finished: false,
+        page:1
       };
     },
     watch: {},
     computed: {},
     methods: {
-      onLoad() {
-        // 异步更新数据
-        setTimeout(() => {
-          for (let i = 0; i < 10; i++) {
-            this.list.push(this.list.length + 1);
-          }
+      async getList(){
+        this.$toast.loading({message: '加载中...'});
+        let {code,data,message} = await axios.get(`/user/income?page=${this.page++}`);
+        if(code == 0){
+          this.$toast.clear()
+          this.list = [
+            ...this.list,
+            ...data.data
+          ]
           // 加载状态结束
           this.loading = false;
-
           // 数据全部加载完成
-          if (this.list.length >= 40) {
+          if (data.current_page == data.last_page) {
             this.finished = true;
           }
-        }, 500);
+        }else{
+          this.$toast.fail(message)
+        }
       }
     },
     created() {},

@@ -182,6 +182,8 @@
               // alert(JSON.stringify(res))
             }
           })
+        }else{
+          this.$toast.fail(message);
         }
       },
       async getSDK() {
@@ -225,7 +227,7 @@
         if (isNaN(num)) {
           return "错误参数"
         } else {
-          return num.toFixed(2)
+          return  num < 0 ? "0.00" : num.toFixed(2);
         }
       }
     }

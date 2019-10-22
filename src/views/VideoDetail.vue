@@ -34,7 +34,7 @@
       </van-tab>
       <van-tab title="目录">
         <ul class="catalogue-list">
-          <li class="catalogue-item" @click="changeVideo" v-for="(item,index) in detail.with_catalog" :key="item.id" :data-resource="item.resource" :data-index="index" :data-image="item.image">
+          <li class="catalogue-item" @click="changeVideo" v-for="(item,index) in detail.with_catalog" :key="item.id" :data-resource="item.resource" :data-index="index" :data-image="item.image" :data-sign_resource="item.sign_resource">
             <div class="thumb" :style="{backgroundImage:'url('+item.image+')'}">
               <div class="duration">{{item.minute}}分钟</div>
             </div>
@@ -107,7 +107,7 @@
     methods: {
       // 切换视频
       changeVideo(e){
-        let {resource,index,image} = e.currentTarget.dataset
+        let {resource,index,image,sign_resource} = e.currentTarget.dataset
         if(!this.isbought){
           this.$toast("您还未购买此课程！")
           return
@@ -117,7 +117,7 @@
         }
         this.current = index;
         this.playerOptions.poster = image
-        this.playerOptions.sources[0].src = resource
+        this.playerOptions.sources[0].src = sign_resource || resource;
 
       },
       // listen event
@@ -163,7 +163,7 @@
           this.$toast.clear()
           this.detail = data
           this.playerOptions.poster = this.detail.with_catalog[0].image
-          this.playerOptions.sources[0].src = this.detail.with_catalog[0].resource
+          this.playerOptions.sources[0].src = this.detail.with_catalog[0].sign_resource || this.detail.with_catalog[0].resource
         }else{
           this.$toast.fail(message)
           this.$router.push({path:"/"})
