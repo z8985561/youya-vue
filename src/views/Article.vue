@@ -3,9 +3,9 @@
     <div class="container" v-html="detail.text"></div>
     <div v-if="share_info" class="flex flex-column flex-center flex-align-center">
       <div class="fz-13 c6">联系微信</div>
-      <img style="width:30vw;height:30vw;" :src="share_info.share_qr" alt="">
-      <div class="fz-13 c6">代理：{{share_info.with_guest.real_name}}</div>
-      <div class="fz-13 c6">电话：{{share_info.with_guest.phone}}</div>
+      <img style="width:30vw;height:30vw;" :src="detail.share_info.share_qr" alt="">
+      <div class="fz-13 c6">代理：{{detail.share_info.with_guest.real_name}}</div>
+      <div class="fz-13 c6">电话：{{detail.share_info.with_guest.phone}}</div>
       <div class="fz-12 c9">长按识别二维码添加微信</div>
     </div>
   </div>
@@ -37,10 +37,11 @@
         } = await axios.get(`/article/detail?id=${this.$route.query.id}&share_id=${this.share_id}`);
         if (code == 0) {
           this.$toast.clear();
+          console.log(data)
           this.detail = data;
           document.title = data.title
           this.wxShare()
-          data.share_info ? this.share_info = data.share_info : "";
+          // data.share_info ? this.share_info = data.share_info : "";
         } else {
           this.$toast.fail(messege)
         }
@@ -76,7 +77,7 @@
           let shareData = {
             title: this.detail.share_title,
             desc: this.detail.share_subtitle, //这里请特别注意是要去除html
-            link: `http://youya.chuncom.com/youya-h5/article?id=${this.$route.query.id}`,
+            link: this.detail.share_info.share_url,
             imgUrl: this.detail.share_image || "http://youya.chuncom.com/youya-h5/img/logo.png"
           }
           if (wx.onMenuShareAppMessage) { //微信文档中提到这两个接口即将弃用，故判断
