@@ -140,7 +140,7 @@
             this.$router.push({
               name: 'article',
               query: {
-                id: this.$route.query.id || 10,
+                id: this.$route.query.id,
                 share_id: this.$route.query.share_id
               }
             })
@@ -149,7 +149,7 @@
             this.$router.push({
               name: 'video_detail',
               query: {
-                id: this.$route.query.id || 5,
+                id: this.$route.query.id,
                 share_id: this.$route.query.share_id
               }
             })
