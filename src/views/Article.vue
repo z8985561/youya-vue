@@ -34,7 +34,7 @@
           code,
           data,
           messages
-        } = await axios.get(`/article/detail?id=${this.$route.query.id}&share_id=${this.share_id}`);
+        } = await axios.get(`/article/detail?id=${this.$route.query.id}&share_id=${this.$route.query.share_id}`);
         if (code == 0) {
           this.$toast.clear();
           console.log(data)
@@ -96,8 +96,6 @@
       },
     },
     created() {
-      let userinfo = JSON.parse(localStorage.getItem("userinfo"));
-      this.share_id = userinfo.id;
       this.getData()
       this.getSDK()
     },
