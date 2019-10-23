@@ -35,7 +35,7 @@
             code,
             data,
             message
-          } = await axios.get(`/article/detail?id=${this.$route.query.id}&share_id=${this.$route.query.share_id}`);
+          } = await axios.get(`/article/detail?id=${this.$route.query.id}&share_id=${ this.share_id || this.$route.query.share_id}`);
         }else{
           var {
             code,
@@ -104,6 +104,10 @@
       },
     },
     created() {
+      let {id,role} = JSON.parse(localStorage.getItem("userinfo"));
+      if(role==3){
+        this.share_id = id;
+      }
       this.getData()
       this.getSDK()
     },
