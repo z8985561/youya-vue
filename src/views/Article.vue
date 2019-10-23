@@ -30,11 +30,20 @@
         this.$toast.loading({
           messages: "加载中..."
         })
-        let {
-          code,
-          data,
-          messages
-        } = await axios.get(`/article/detail?id=${this.$route.query.id}&share_id=${this.$route.query.share_id}`);
+        if (this.$route.query.share_id) {
+          var {
+            code,
+            data,
+            message
+          } = await axios.get(`/article/detail?id=${this.$route.query.id}&share_id=${this.$route.query.share_id}`);
+        }else{
+          var {
+            code,
+            data,
+            message
+          } = await axios.get(`/article/detail?id=${this.$route.query.id}`);
+        }
+
         if (code == 0) {
           this.$toast.clear();
           console.log(data)
@@ -43,7 +52,7 @@
           this.wxShare()
           // data.share_info ? this.share_info = data.share_info : "";
         } else {
-          this.$toast.fail(messege)
+          this.$toast.fail(message)
         }
       },
       async getSDK() {
@@ -103,7 +112,7 @@
   };
 </script>
 <style lang="less" scoped>
-  .container{
+  .container {
     padding: 15px;
   }
 </style>
