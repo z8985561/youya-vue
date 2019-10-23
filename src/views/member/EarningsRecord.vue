@@ -3,20 +3,21 @@
     <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="getList">
       <ul class="earning-list">
         <li class="earning-item" v-for="item in list" :key="item">
-          <div class="flex flex-jus">
-            <div class="flex flex-align-center mb-10">
-              <img src="../../assets/img/noface.png" alt="">
-              <div class="ml-10 fz-13 c3">吃猫的鱼</div>
-            </div>
-            <div class="fz-15 text-price">+19</div>
+          <div class="flex flex-jus fz-13 c9 mb-10">
+            <div>分享收益</div>
+            <div class="fz-15 text-price">+{{item.amount}}</div>
           </div>
           <div class="flex flex-jus fz-13 c9 mb-10">
             <div>订单编号</div>
-            <div>456788909867556</div>
+            <div>{{item.order_number}}</div>
           </div>
-          <div class="flex flex-jus fz-13 c9">
+          <div class="flex flex-jus fz-13 c9 mb-10">
             <div>订单金额</div>
-            <div>¥2390.00</div>
+            <div>¥{{item.order_price}}</div>
+          </div>
+          <div class="flex flex-jus fz-13 c9 mb-10">
+            <div>收益时间</div>
+            <div>¥{{item.updated_at}}</div>
           </div>
         </li>
       </ul>
