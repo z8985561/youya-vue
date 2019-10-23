@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="container" v-html="detail.text"></div>
-    <div v-if="share_info" class="flex flex-column flex-center flex-align-center">
+    <div v-if="detail.share_info" class="flex flex-column flex-center flex-align-center">
       <div class="fz-13 c6">联系微信</div>
       <img style="width:30vw;height:30vw;" :src="detail.share_info.share_qr" alt="">
       <div class="fz-13 c6">代理：{{detail.share_info.with_guest.real_name}}</div>
@@ -46,7 +46,6 @@
 
         if (code == 0) {
           this.$toast.clear();
-          console.log(data)
           this.detail = data;
           document.title = data.title
           this.wxShare()
