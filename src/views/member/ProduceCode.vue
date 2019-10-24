@@ -11,13 +11,19 @@ export default {
   props: {},
   data() {
     return {
-      imgUrl:""
+      imgUrl:"",
+      code:""
     };
   },
   watch: {},
   computed: {},
   methods: {
-    async compoundImg(){
+    readyCode(){
+      this.code = this.$route.query.code
+      this.compoundImg()
+    },
+    compoundImg(){
+      this.$toast.loading()
       let mc = new MCanvas({
         width: 750,
         height: 1334,
@@ -27,96 +33,81 @@ export default {
       mc.background("../img/bg-003.png",{
           left:0,
           top:0,
-          color:'#000000',
+          color:'#ffffff',
           type:'crop',
       })
       // 模板背景图连接
-      .add("../img/poster-bg.png",{
-          width:610,
-          height:642,
+      .add("../img/bg-003.png",{
+          width:750,
+          height:1334,
           pos:{
-              x:70,
-              y:160,
+              x:0,
+              y:0,
               scale:1
           },
       })
-      // 二维码连接 this.createShareImage.share_qr ../img/erweima.png
-      .add(this.createShareImage.share_qr,{
-          width:126,
-          height:126,
+      // 模板背景图连接
+      .add("../img/bg-005.png",{
+          width:534,
+          height:124,
           pos:{
-              x:110,
-              y:635,
-              scale:1
-          },
-      })
-      // 产品图连接 this.detail.image ../img/banner2-01.png
-      .add(this.detail.image,{
-          width:570,
-          height:321,
-          pos:{
-              x:90,
-              y:180,
-              scale:1
-          },
-      })
-      .add("../img/logo.png",{
-          width:162,
-          height:168,
-          pos:{
-              x:487,
-              y:620,
+              x:108,
+              y:210,
               scale:1
           },
       })
       // text 添加文字数据基础函数；
-      .text(this.detail.name,{
-          width:530,
+      .text("商品兑换码",{
+          width:190,
           align:'left',
           normalStyle:{
-            font : `30px Microsoft YaHei,sans-serif`,
-            lineHeight: 32,
+            font : `38px Microsoft YaHei,sans-serif`,
+            lineHeight: 40,
+            color: '#333333',
           },
           pos:{
-              x:110,
-              y:525,
+              x:280,
+              y:114,
           },
       })
       // text 添加文字数据基础函数；
-      .text('加入学习',{
-          width:96,
-          align:'left',
+      .text(this.code,{
+          width:500,
+          align:'center',
           normalStyle:{
-            font : `24px Microsoft YaHei,sans-serif`,
-            lineHeight: 28,
-             color: '#999',
+            font : `bold 68px Microsoft YaHei,sans-serif`,
+            lineHeight: 70,
+             color: '#8DB9DF',
           },
           pos:{
-              x:254,
-              y:660,
+              x:125,
+              y:230,
           },
       })
        // text 添加文字数据基础函数；
-      .text('长按识别二维码',{
-          width:168,
-          align:'left',
+      .text("使用说明：此券为商城的商品兑换券，请在下单的时候使用",{
+          width:570,
+          align:'center',
           normalStyle:{
-            font : `24px Microsoft YaHei,sans-serif`,
-            lineHeight: 28,
-             color: '#999',
+            font : `26px Microsoft YaHei,sans-serif`,
+            lineHeight: 30,
+             color: '#999999',
           },
           pos:{
-              x:254,
-              y:708,
+              x:90,
+              y:376,
           },
       })
       .draw( b64 =>{
         // console.log(b64);
-        this.imgUrl = b64
+        this.imgUrl = b64;
+        this.$toast.clear()
       });
     },
   },
-  created() {},
+  created() {
+    this.readyCode()
+  },
   mounted() {}
 };
 </script>

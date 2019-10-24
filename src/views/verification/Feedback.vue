@@ -2,12 +2,12 @@
   <div>
     <div class="feedback">
       <div class="flex flex-column flex-align-center">
-        <img class="mb-10" src="img/icon-success-big.png" alt="">
+        <img class="mb-10" src="../../assets/img/icon-success-big.png" alt="">
         <div class="fz-18 c3 mb-5">核销成功</div>
         <div class="fz-13 c9">该订单已核销成功</div>
       </div>
       <div class="flex flex-column flex-align-center" v-if="false">
-        <img class="mb-10" src="img/icon-fail-big.png" alt="">
+        <img class="mb-10" src="../../assets/img/icon-fail-big.png" alt="">
         <div class="fz-18 c3 mb-5">核销失败</div>
         <div class="fz-13 c9">该订单已被核销</div>
       </div>

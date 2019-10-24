@@ -98,9 +98,14 @@
         this.disabled = false;
       }
     },
-    created() {
-      let userinfo = JSON.parse(localStorage.getItem("userinfo"))
-      this.phone = userinfo.phone
+    async created() {
+      let {code,data,message} = await axios.get("/user")
+      if(code==0){
+        this.phone = data.phone
+      }else if(code==401){
+        this.$toast.fail("您还未登录")
+        this.$router.push({path:"/"})
+      }
       this.package_id = this.$route.query.package_id
       this.remainder_times = this.$route.query.remainder_times
     },

@@ -137,9 +137,9 @@ import MCanvas,{MCrop} from 'mcanvas'
             }
           })
           // text 添加文字数据基础函数；
-          .text(params.course_title||'广东广州第十期优雅形体礼仪课程', {
+          .text(params.course_title, {
             width: 450,
-            align: 'left',
+            align: 'center',
             normalStyle: {
               font: `30px Microsoft YaHei,sans-serif`,
               lineHeight: 32,

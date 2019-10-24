@@ -7,7 +7,7 @@
             <li class="redeem-item" v-for="item in list" v-if="item.status==0" :key="item.id">
               <div class="flex flex-align-center">
                 <div class="courses-info">
-                  <div class="fz-15 c3 mb-5">香港皇家优雅形体礼仪初级课程</div>
+                  <div class="fz-15 c3 mb-5">{{item.with_package.goods_name}}</div>
                   <div class="fz-13 c9">课次：{{item.times}}</div>
                 </div>
                 <div class="redeem-code">
@@ -29,8 +29,8 @@
             <li class="redeem-item" v-for="item in list" v-if="item.status==1" :key="item.id">
               <div class="flex flex-align-center">
                 <div class="courses-info">
-                  <div class="fz-15 c3 mb-5">香港皇家优雅形体礼仪初级课程</div>
-                  <div class="fz-13 c9">课次：10</div>
+                  <div class="fz-15 c3 mb-5">{{item.with_package.goods_name}}</div>
+                  <div class="fz-13 c9">课次：{{item.times}}</div>
                 </div>
                 <div class="redeem-code">
                   <img src="../../assets/img/redeem-code.png" alt="">
@@ -38,8 +38,8 @@
               </div>
               <div class="redeem-line"></div>
               <div class="flex flex-jus fz-12 c9">
-                <div>赠送时间：2019.09.18 12:34:54</div>
-                <div>赠送者：Luyese</div>
+                <div>核销时间：{{item.off_time}}</div>
+                <div>赠送者：{{item.with_guest.real_name}}</div>
               </div>
               <img class="used" src="../../assets/img/used.png" alt="">
             </li>
@@ -54,6 +54,7 @@
       v-model="codeShow"
       title="请输入兑换码"
       show-cancel-button
+      @confirm="produceCode2"
     >
       <van-field v-model="code" placeholder="请输入兑换码" />
     </van-dialog>
@@ -84,6 +85,13 @@
     methods: {
       produceCode(){
         this.codeShow = true;
+      },
+      produceCode2(){
+        if(this.code){
+          this.$router.push({name:"produce_code",query:{code:this.code}})
+        }else{
+          this.$toast.fail("请输入兑换码！")
+        }
       },
       showQrCode(e){
         this.qr_url = e.currentTarget.dataset.url
