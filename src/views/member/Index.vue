@@ -66,6 +66,15 @@
           this.$toast.clear()
           this.userInfo = data;
           this.isLoading = false;
+          if(data.is_bind==0){
+            this.$dialog.confirm({
+              title:"提示",
+              message:"您还未绑定手机号，是否前往绑定？"
+            })
+              .then(res=>{
+                this.$router.push({name:"binding_information"})
+              })
+          }
         }else{
           this.$toast.fail(message)
         }

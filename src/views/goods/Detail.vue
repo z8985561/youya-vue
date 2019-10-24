@@ -79,6 +79,7 @@
     props: {},
     data() {
       return {
+        userInfo:{},
         detail: {},
         quantity:1,
         images: [
@@ -91,6 +92,23 @@
     watch: {},
     computed: {},
     methods: {
+      async getUserInfo(){
+        let {code,data,message} = await axios.get("/user");
+        if(code == 0){
+          this.userInfo = data;
+          if(data.is_bind==0){
+            this.$dialog.confirm({
+              title:"提示",
+              message:"您还未绑定手机号，是否前往绑定？"
+            })
+              .then(res=>{
+                this.$router.push({name:"binding_information"})
+              })
+          }
+        }else{
+          this.$toast.fail(message)
+        }
+      },
       async getData() {
         this.$toast.loading({
           message: '加载中...'
@@ -111,6 +129,16 @@
         this.show = true
       },
       onBuyClicked() {
+        if(this.userInfo.is_bind==0){
+            this.$dialog.confirm({
+              title:"提示",
+              message:"您还未绑定手机号，是否前往绑定？"
+            })
+              .then(res=>{
+                this.$router.push({name:"binding_information"})
+              })
+          return;
+        }
         this.$router.push({
           name: "goods_create_order",
           query:{
