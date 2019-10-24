@@ -27,64 +27,82 @@
         name: "",
         phone: "",
         code: "",
-        disabled:false,
-        time:60000
+        disabled: false,
+        time: 60000,
+        package_id:0,
+        remainder_times:0
       };
     },
     watch: {},
     computed: {},
     methods: {
-      async getSMS(){
+      async getSMS() {
         let phone = core.trim(this.phone);
-        if(!core.checkPhone(phone)){
+        if (!core.checkPhone(phone)) {
           this.$toast("手机号码输入有误")
           return
         }
         this.disabled = true;
-        let {code,data,messega} = await axios.post(`/user/verify-sms`,{phone:this.phone})
-        if(code==0){
+        let {
+          code,
+          data,
+          messega
+        } = await axios.post(`/user/verify-sms`, {
+          phone: this.phone
+        })
+        if (code == 0) {
           this.$toast("发送成功")
-        }else{
+        } else {
           this.$toast(message)
         }
-        this.time=60000
+        this.time = 60000
       },
-      async confirm(){
+      async confirm() {
         let name = core.trim(this.name);
         let sms = core.trim(this.code);
         let phone = core.trim(this.phone);
-        if(!name){
+        if (!name) {
           this.$toast("请输入真实姓名")
           return
         }
-        if(!sms){
+        if (!sms) {
           this.$toast("请输入验证码")
           return
         }
-        if(!core.checkPhone(phone)){
+        if (!core.checkPhone(phone)) {
           this.$toast("手机号码输入有误")
           return
         }
-        let {code,data,message} = await axios.post("/user/verify",{
-          phone:phone,
-          name:name,
-          code:sms
+        let {
+          code,
+          data,
+          message
+        } = await axios.post("/user/verify", {
+          phone: "15602280761",
+          name: name,
+          code: sms
+        })
+        if (code == 0) {
+          this.$router.push({
+            name: 'member_package_gift',
+            query: {
+              package_id: this.package_id,
+              remainder_times: this.remainder_times
+            }
           })
-        if(code==0){
-          console.log(data);
-          console.log(this.$route.query);
-          this.$router.push({ name:this.$route.query.path, params: { id: this.$route.query.id }})
-        }else{
+        } else {
           this.$toast(message)
         }
       },
-      reset(){
+      reset() {
         this.disabled = false;
       }
     },
     created() {
       let userinfo = JSON.parse(localStorage.getItem("userinfo"))
       this.phone = userinfo.phone
+      this.package_id = this.$route.query.package_id
+      this.remainder_times = this.$route.query.remainder_times
     },
     mounted() {}
   };

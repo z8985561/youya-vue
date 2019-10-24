@@ -4,7 +4,8 @@
       <img :src=" userInfo.avatar || 'img/noface.png'" alt="">
       <div class="fz-15 c3 text-center">{{userInfo.real_name}}</div>
     </div>
-    <van-cell title="订单管理" icon="../../img/icon-member-01.png" is-link to="/verification/order_manage" />
+    <van-cell title="预约订单管理" icon="../../img/icon-member-01.png" is-link to="/verification/order_manage" />
+    <van-cell title="转赠课程管理" icon="../../img/icon-member-01.png" is-link to="/reservation/order_manage" />
   </div>
 </template>
 

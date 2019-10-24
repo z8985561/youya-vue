@@ -71,8 +71,8 @@ export default {
     },
     async compoundImg(){
       let mc = new MCanvas({
-        width: 375,
-        height: 667,
+        width: 750,
+        height: 1334,
         backgroundColor: 'white',
       });
       // 海报背景图 this.list[this.active].image ../img/poster-psd.jpg
@@ -84,82 +84,82 @@ export default {
       })
       // 模板背景图连接
       .add("../img/poster-bg.png",{
-          width:305,
-          height:320,
+          width:610,
+          height:642,
           pos:{
-              x:35,
-              y:80,
+              x:70,
+              y:160,
               scale:1
           },
       })
       // 二维码连接 this.createShareImage.share_qr ../img/erweima.png
       .add(this.createShareImage.share_qr,{
-          width:63,
-          height:63,
+          width:126,
+          height:126,
           pos:{
-              x:55,
-              y:318,
+              x:110,
+              y:635,
               scale:1
           },
       })
       // 产品图连接 this.detail.image ../img/banner2-01.png
       .add(this.detail.image,{
-          width:285,
-          height:161,
+          width:570,
+          height:321,
           pos:{
-              x:45,
-              y:90,
+              x:90,
+              y:180,
               scale:1
           },
       })
       .add("../img/logo.png",{
-          width:81,
-          height:84,
+          width:162,
+          height:168,
           pos:{
-              x:243,
-              y:310,
+              x:487,
+              y:620,
               scale:1
           },
       })
       // text 添加文字数据基础函数；
       .text(this.detail.name,{
-          width:270,
+          width:530,
           align:'left',
           normalStyle:{
-            font : `15px Microsoft YaHei,sans-serif`,
-            lineHeight: 16,
+            font : `30px Microsoft YaHei,sans-serif`,
+            lineHeight: 32,
           },
           pos:{
-              x:55,
-              y:262,
+              x:110,
+              y:525,
           },
       })
       // text 添加文字数据基础函数；
       .text('加入学习',{
-          width:48,
+          width:96,
           align:'left',
           normalStyle:{
-            font : `12px Microsoft YaHei,sans-serif`,
-            lineHeight: 14,
+            font : `24px Microsoft YaHei,sans-serif`,
+            lineHeight: 28,
              color: '#999',
           },
           pos:{
-              x:128,
-              y:330,
+              x:254,
+              y:660,
           },
       })
        // text 添加文字数据基础函数；
       .text('长按识别二维码',{
-          width:100,
+          width:168,
           align:'left',
           normalStyle:{
-            font : `12px Microsoft YaHei,sans-serif`,
-            lineHeight: 14,
+            font : `24px Microsoft YaHei,sans-serif`,
+            lineHeight: 28,
              color: '#999',
           },
           pos:{
-              x:128,
-              y:360,
+              x:254,
+              y:708,
           },
       })
       .draw( b64 =>{

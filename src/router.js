@@ -167,6 +167,16 @@ export default new Router({
         keepAlive:true
       }
     },
+    // PackageGift.vue
+    {
+      // 提现
+      path: '/member/package_gift',
+      name: 'member_package_gift',
+      component: () => import('./views/member/PackageGift.vue'),
+      meta:{
+        title:" 转赠课程"
+      }
+    },
     // Withdraw.vue
     {
       // 提现
@@ -314,6 +324,25 @@ export default new Router({
       component: () => import('./views/verification/OrderDetail.vue'),
       meta:{
         title:"订单核销"
+      }
+    },
+
+    {
+      // 转赠课程包管理页面
+      path: '/reservation/order_manage',
+      name: 'reservation_order_manage',
+      component: () => import('./views/reservation/OrderManage.vue'),
+      meta:{
+        title:"转赠课程管理"
+      }
+    },
+    {
+      // 转赠课程包详情核销
+      path: '/reservation/order_detail',
+      name: 'reservation_order_detail',
+      component: () => import('./views/reservation/OrderDetail.vue'),
+      meta:{
+        title:"转赠课程核销"
       }
     },
     // Feedback.vue

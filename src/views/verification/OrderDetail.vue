@@ -42,7 +42,9 @@
           this.getData()
         }else if (code == 401){
           this.$toast.fail(message)
-          window.location.href = `http://youya.chuncom.com/user/off/authorization?code=${this.$route.query.code}&url_type=${this.$route.query.url_type}`
+          setTimeout(()=>{
+            window.location.href = `http://youya.chuncom.com/user/off/authorization?code=${this.$route.query.code}&url_type=${this.$route.query.url_type}`
+          },2000)
         }
       },
       async getData() {

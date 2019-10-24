@@ -15,7 +15,8 @@
           <input type="text" v-model="search_value">
           <van-icon @click="searchEvent" name="search" size="20px" color="#ccc" />
         </div>
-        <div class="btn-date" @click="showPicker" data-type="date">{{order_time}}
+        <div class="btn-date flex flex-align-center" @click="showPicker" data-type="date">
+          <div style="flex:1;min-height:1px;">{{order_time||"选择日期"}}</div>
           <van-icon name="arrow-down" />
         </div>
       </div>
@@ -28,13 +29,13 @@
     <!-- 订单列表 -->
     <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="getList">
       <ul class="order-list">
-        <li class="order-item" v-for="item in list" :key="item.id">
+        <li class="order-item" v-for="(item,index) in list" :key="item.id">
           <div class="flex flex-align-center mb-15">
             <img class="thumb" :src="item.course_image" alt="">
             <div class="fz-15 c3 ml-10">{{item.course_title}}</div>
           </div>
           <div class="bar-1 mb-10"></div>
-          <van-cell :border="false" title-class="c9" value-class="text-price text-left" title="订单状态" value="待核销" />
+          <van-cell :border="false" title-class="c9" value-class="text-price text-left" title="订单状态" :value="item.status == 0? '待核销':'已核销'" />
           <van-cell :border="false" title-class="c9" value-class="c9 text-left" title="昵称" :value="item.with_guest.nick_name" />
           <van-cell :border="false" title-class="c9" value-class="c9 text-left" title="姓名" :value="item.with_guest.real_name" />
           <van-cell :border="false" title-class="c9" value-class="c9 text-left" title="手机号" :value="item.with_guest.phone_contact" />
@@ -42,7 +43,7 @@
           <van-cell :border="false" title-class="c9" value-class="c9 text-left" title="下单时间" :value="item.updated_at" />
           <div class="flex flex-end pt-10">
             <div v-if="item.status == 0" class="btn-youya" :data-id="item.id" @click="verification">确认核销</div>
-            <div class="btn-youya-o ml-10">生成学员牌</div>
+            <div @click="produce" :data-index="index" class="btn-youya-o ml-10">生成学员牌</div>
           </div>
         </li>
       </ul>
@@ -53,7 +54,15 @@
       <van-picker :columns="condition" @confirm="selectCondition" show-toolbar title="搜索条件" />
     </van-popup>
     <van-popup v-model="isShowDate" position="bottom">
-      <van-datetime-picker v-model="currentDate" @confirm="selectDate" type="date" :min-date="minDate" />
+      <van-datetime-picker v-model="currentDate" @confirm="selectDate" @cancel="closeDate" type="date" :min-date="minDate" :max-date="currentDate" />
+    </van-popup>
+    <van-popup v-model="isShowImg">
+      <div class="student-container" style="background-image: url(../../img/bg-001.png);">
+        <img :src="studentImg" alt="">
+        <div class="close" @click="close">
+          <van-icon name="close" size="30px" />
+        </div>
+      </div>
     </van-popup>
   </div>
 </template>
@@ -96,30 +105,34 @@
 
     return str;
   };
+  import MCanvas from 'mcanvas'
   export default {
     components: {},
     props: {},
     data() {
       return {
+        isShowImg:false,
+        studentImg:"",
         isShowCondition: false,
         isShowDate: false,
         search_value: "",
         currentDate: new Date(),
         minDate: new Date("2019-01-01"),
         status: 0,
-        condition: ["用户昵称", "用户姓名", "用户手机", "课程名称"],
+        condition: ["不限", "用户昵称", "用户姓名", "用户手机", "课程名称"],
         search_key: 0,
-        order_time: new Date().format("YYYY-MM-DD"),
+        order_time: "",
         list: [],
         loading: false,
         finished: false,
-        orderCount:"",
-        page:1
+        orderCount: "",
+        page: 1
       };
     },
     watch: {
       status(n, o) {
-        if (n != 0) {
+        console.log(11)
+        if (n != o) {
           this.list = []
           this.page = 1;
           this.getList()
@@ -128,6 +141,14 @@
     },
     computed: {},
     methods: {
+      searchEvent() {
+        console.log(1231232);
+        this.list = [];
+        this.page = 1;
+        this.getList()
+        this.finished = false;
+
+      },
       showPicker(e) {
         let {
           type
@@ -152,29 +173,49 @@
         this.order_time = date.format("YYYY-MM-DD");
         this.isShowDate = false;
       },
-      searchEvent(){
-        console.log(1231232);
-
+      closeDate() {
+        this.isShowDate = false;
       },
-      async getCount(){
-        let {code,data,message} = await axios.get("/user/off/reservation-order/statistics");
-        if(code == 0){
+      async getCount() {
+        let {
+          code,
+          data,
+          message
+        } = await axios.get("/user/off/reservation-order/statistics");
+        if (code == 0) {
           this.orderCount = data.count;
-        }else{
+        } else {
           this.$toast.fail(message)
         }
       },
-      async getList(){
+      async getList() {
         var option = {};
-        if(this.status - 1 >= 0){
-          option.status = this.status -1;
+        if (this.status - 1 >= 0) {
+          option.status = this.status - 1;
         }
-        this.$toast.loading({message:"加载中..."})
-        let {code,data,message} = await axios.get("/user/off/reservation-order/",{params:{
-          ...option,
-          page:this.page++
-          }});
-        if(code==0){
+        if (this.search_key > 0) {
+          option.search_key = this.search_key;
+        }
+        if (this.search_value) {
+          option.search_value = this.search_value;
+        }
+        if (this.order_time) {
+          option.order_time = this.order_time
+        }
+        this.$toast.loading({
+          message: "加载中..."
+        })
+        let {
+          code,
+          data,
+          message
+        } = await axios.get("/user/off/reservation-order/", {
+          params: {
+            ...option,
+            page: this.page++
+          }
+        });
+        if (code == 0) {
           this.$toast.clear()
           this.list = [
             ...this.list,
@@ -182,18 +223,20 @@
           ];
           // 加载状态结束
           this.loading = false;
-          if(data.current_page==data.last_page){
+          if (data.current_page == data.last_page) {
             // 如果没有更多数据停止加载
             this.finished = true;
           }
-        }else{
+        } else {
           this.$toast.fail(messege)
         }
       },
       // 核销
-      async verification(e){
-        let {id} = e.currentTarget.dataset;
-         var b = await this.$dialog.confirm({
+      async verification(e) {
+        let {
+          id
+        } = e.currentTarget.dataset;
+        var b = await this.$dialog.confirm({
           title: '提示',
           message: '确认核销？'
         }).then(() => {
@@ -202,19 +245,174 @@
         }).catch(() => {
           return false;
         });
-        if(b){
-          this.$toast.loading({message: '加载中...'});
-          let {code,data,message} = await axios.post("/user/off/reservation-order/off",{
-            order_id:id
+        if (b) {
+          this.$toast.loading({
+            message: '加载中...'
           });
-          if(code == 0){
+          let {
+            code,
+            data,
+            message
+          } = await axios.post("/user/off/reservation-order/off", {
+            order_id: id
+          });
+          if (code == 0) {
             this.$toast.clear()
             this.$router.push('/verification/feedback')
 
-          }else{
+          } else {
             this.$toast.fail(message)
           }
         }
+      },
+      close(){
+        this.isShowImg = false
+      },
+      produce(e){
+        let {index} = e.currentTarget.dataset;
+        this.isShowImg = true
+        this.compoundImg(this.list[index])
+      },
+      /**
+       * 生成学员牌
+       */
+      compoundImg(params) {
+        let mc = new MCanvas({
+          width: 690,
+          height: 834,
+          backgroundColor: 'white',
+        });
+        // 海报背景图 this.list[this.active].image ../img/poster-psd.jpg
+        mc.background("../../img/bg-001.png", {
+            left: 0,
+            top: 0,
+            color: '#ffffff',
+            type: 'crop',
+          })
+          .rect({
+            x: 0,
+            y: 0,
+
+            // 矩形尺寸；
+            width: '100%',
+            height: '100%',
+
+            // 矩形填充颜色
+            fillColor: '#fff',
+          })
+          // 模板背景图连接
+          .add("../../img/bg-002.png", {
+            width: 300,
+            height: 154,
+            pos: {
+              x: 197,
+              y: 400,
+              scale: 1
+            },
+          })
+          .add("../../img/logo-2.png", {
+            width: 130,
+            height: 165,
+            pos: {
+              x: 280,
+              y: 90,
+              scale: 1
+            },
+          })
+          .circle({
+            // 圆形圆心位置，支持多种值；
+            // x: 250 / '250px' / '100%' / 'left:250' / 'center',
+            x: 260,
+            y: 400,
+
+            // 圆形半径； 100 / '100%' / '100px'
+            r: '85px',
+            // 圆形填充颜色
+            fillColor: '#ffffff',
+          })
+          .add("../../img/icon-fail-big.png", {
+            width: 164,
+            height: 164,
+            pos: {
+              x: 263,
+              y: 403,
+              scale: 1
+            },
+          })
+          // text 添加文字数据基础函数；
+          .text(params.course_title||'广东广州第十期优雅形体礼仪课程', {
+            width: 450,
+            align: 'left',
+            normalStyle: {
+              font: `30px Microsoft YaHei,sans-serif`,
+              lineHeight: 32,
+              color: '#333333',
+            },
+            pos: {
+              x: 120,
+              y: 288,
+            },
+          })
+          // text 添加文字数据基础函数；
+          .text('姓名', {
+            width: 70,
+            align: 'left',
+            normalStyle: {
+              font: `30px Microsoft YaHei,sans-serif`,
+              lineHeight: 32,
+              color: '#333333',
+            },
+            pos: {
+              x: 186,
+              y: 610,
+            },
+          })
+          // text 添加文字数据基础函数；
+          .text(params.with_guest.real_name || '王萌萌', {
+            width: 120,
+            align: 'left',
+            normalStyle: {
+              font: `30px Microsoft YaHei,sans-serif`,
+              lineHeight: 32,
+              color: '#333333',
+            },
+            pos: {
+              x: 350,
+              y: 610,
+            },
+          })
+          // text 添加文字数据基础函数；
+          .text('手机号', {
+            width: 120,
+            align: 'left',
+            normalStyle: {
+              font: `30px Microsoft YaHei,sans-serif`,
+              lineHeight: 32,
+              color: '#333333',
+            },
+            pos: {
+              x: 186,
+              y: 670,
+            },
+          })
+          // text 添加文字数据基础函数；
+          .text(params.with_guest.phone_contact||'13544445555', {
+            width: 250,
+            align: 'left',
+            normalStyle: {
+              font: `30px Microsoft YaHei,sans-serif`,
+              lineHeight: 32,
+              color: '#333333',
+            },
+            pos: {
+              x: 350,
+              y: 670,
+            },
+          })
+          .draw(b64 => {
+            // console.log(b64);
+            this.studentImg = b64
+          });
       }
     },
     created() {
@@ -228,11 +426,30 @@
   .page {
     height: 100vh;
   }
-
+  .student-container{
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100vw;
+    height: 100vh;
+    background-size: cover;
+    background-position: center;
+    >img{
+      width: 345px;
+      box-shadow:0px 0px 10px 0px rgba(238,238,238,1);
+    }
+    .close{
+      position: absolute;
+      top: 10px;
+      right: 10px;
+    }
+  }
   .search-bar {
     display: flex;
     padding: 5px 15px;
     background-color: #fff;
+
     .search-input {
       margin-right: 10px;
       display: flex;
@@ -265,6 +482,7 @@
   }
 
   .btn-date {
+    padding-right: 3px;
     width: 96px;
     height: 30px;
     line-height: 30px;
@@ -281,39 +499,48 @@
     line-height: 30px;
     background-color: #f8f8f8;
   }
-  .order-list{
+
+  .order-list {
     background-color: #f8f8f8;
-    .order-item{
+
+    .order-item {
       margin-bottom: 10px;
       padding: 15px;
       background-color: #fff;
-      .thumb{
+
+      .thumb {
         width: 100px;
         height: 55px;
         border-radius: 5px;
       }
     }
   }
-  .van-cell{
+
+  .van-cell {
     padding: 0 12px;
   }
-  .van-cell__title{
+
+  .van-cell__title {
     flex: 0 1 80px;
   }
-  .btn-youya,.btn-youya-o{
-    width:85px;
-    height:26px;
+
+  .btn-youya,
+  .btn-youya-o {
+    width: 85px;
+    height: 26px;
     line-height: 26px;
-    border-radius:13px;
+    border-radius: 13px;
     box-sizing: border-box;
     text-align: center;
     font-size: 13px;
   }
-  .btn-youya{
+
+  .btn-youya {
     color: #fff;
-    background:linear-gradient(143deg,rgba(157,195,230,1) 0%,rgba(131,179,219,1) 100%);
+    background: linear-gradient(143deg, rgba(157, 195, 230, 1) 0%, rgba(131, 179, 219, 1) 100%);
   }
-  .btn-youya-o{
+
+  .btn-youya-o {
     border: 1px solid #8DB9DF;
     color: #8DB9DF;
   }

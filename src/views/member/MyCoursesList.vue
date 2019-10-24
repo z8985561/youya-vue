@@ -27,7 +27,10 @@
                     <div class="mb-5">剩余课次：{{item.remainder_times}}次</div>
                     <div>有效期至：{{item.expiration_date}}</div>
                   </div>
-                  <router-link v-if="item.is_gift==0" to="/authentication">
+                  <router-link v-if="item.is_gift==0" :to="{name:'authentication',query:{
+                    package_id:item.id,
+                    remainder_times:item.remainder_times
+                  }}">
                     <div class="btn-youya-o">赠送</div>
                   </router-link>
                 </div>
@@ -50,7 +53,10 @@
                     <div class="mb-5">剩余课次：{{item.remainder_times}}次</div>
                     <div>有效期至：{{item.expiration_date}} </div>
                   </div>
-                  <router-link v-if="item.is_gift==0" to="/authentication">
+                  <router-link v-if="item.is_gift==0" :to="{name:'member_package_gift',query:{
+                    package_id:item.id,
+                    remainder_times:item.remainder_times
+                  }}">
                     <div class="btn-youya-o">赠送</div>
                   </router-link>
                 </div>
@@ -73,7 +79,7 @@
                     <div class="mb-5">剩余课次：{{item.remainder_times}}次</div>
                     <div>有效期至：{{item.expiration_date}} </div>
                   </div>
-                  <router-link v-if="item.is_gift==0" to="/authentication">
+                  <router-link v-if="item.is_gift==0">
                     <div class="btn-youya-o">赠送</div>
                   </router-link>
                 </div>

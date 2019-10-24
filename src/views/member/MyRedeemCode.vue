@@ -2,31 +2,31 @@
   <div>
     <van-tabs v-model="active" :border="false" title-active-color="#8DB9DF" title-inactive-color="#999999" color="#8DB9DF" line-height="2" line-width="45">
       <van-tab title="待使用">
-        <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad">
+        <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="getList">
           <ul class="redeem-list">
-            <li class="redeem-item" v-for="item in list" :key="item">
+            <li class="redeem-item" v-for="item in list" v-if="item.status==0" :key="item.id">
               <div class="flex flex-align-center">
                 <div class="courses-info">
                   <div class="fz-15 c3 mb-5">香港皇家优雅形体礼仪初级课程</div>
-                  <div class="fz-13 c9">课次：10</div>
+                  <div class="fz-13 c9">课次：{{item.times}}</div>
                 </div>
                 <div class="redeem-code">
-                  <img src="../../assets/img/redeem-code.png" alt="">
+                  <img @click="showQrCode" :data-url="item.qr" src="../../assets/img/redeem-code.png" alt="">
                 </div>
               </div>
               <div class="redeem-line"></div>
               <div class="flex flex-jus fz-12 c9">
-                <div>赠送时间：2019.09.18 12:34:54</div>
-                <div>赠送者：Luyese</div>
+                <div>赠送时间：{{item.updated_at}}</div>
+                <div>赠送者：{{item.with_guest.real_name}}</div>
               </div>
             </li>
           </ul>
         </van-list>
       </van-tab>
       <van-tab title="已使用">
-        <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad">
+        <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="getList">
           <ul class="redeem-list">
-            <li class="redeem-item" v-for="item in list" :key="item">
+            <li class="redeem-item" v-for="item in list" v-if="item.status==1" :key="item.id">
               <div class="flex flex-align-center">
                 <div class="courses-info">
                   <div class="fz-15 c3 mb-5">香港皇家优雅形体礼仪初级课程</div>
@@ -47,6 +47,9 @@
         </van-list>
       </van-tab>
     </van-tabs>
+    <van-popup v-model="show">
+      <img class="qr-code" :src="qr_url" alt="">
+    </van-popup>
     <footer class="footer-bar">
       <div class="btn-youya">生成兑换码</div>
     </footer>
@@ -59,6 +62,8 @@
     props: {},
     data() {
       return {
+        show:false,
+        qr_url:"",
         active: 0,
         list: [],
         loading: false,
@@ -68,20 +73,27 @@
     watch: {},
     computed: {},
     methods: {
-      onLoad() {
-        // 异步更新数据
-        setTimeout(() => {
-          for (let i = 0; i < 10; i++) {
-            this.list.push(this.list.length + 1);
-          }
+      showQrCode(e){
+        this.qr_url = e.currentTarget.dataset.url
+        this.show = true;
+      },
+      async getList(){
+        var {code,data,message} = await axios.get("/user/package-gift-code");
+        if(code==0){
+          this.$toast.clear()
+          this.list = [
+            ...this.list,
+            ...data.data
+          ]
           // 加载状态结束
           this.loading = false;
-
           // 数据全部加载完成
-          if (this.list.length >= 40) {
+          if (data.current_page == data.last_page) {
             this.finished = true;
           }
-        }, 500);
+        }else{
+          this.$toast(message)
+        }
       },
       showCounselorModel() {
         this.isShowCounselor = true;
