@@ -38,7 +38,7 @@
           <van-cell :border="false" title-class="c9" value-class="text-price text-left" title="订单状态" :value="item.status == 0? '待核销':'已核销'" />
           <van-cell :border="false" title-class="c9" value-class="c9 text-left" title="昵称" :value="item.with_guest.nick_name" />
           <van-cell :border="false" title-class="c9" value-class="c9 text-left" title="姓名" :value="item.with_guest.real_name" />
-          <van-cell :border="false" title-class="c9" value-class="c9 text-left" title="手机号" :value="item.with_guest.phone_contact" />
+          <van-cell :border="false" title-class="c9" value-class="c9 text-left" title="手机号" :value="item.with_guest.phone" />
           <van-cell :border="false" title-class="c9" value-class="c9 text-left" title="订单编号" value="456788909867556" />
           <van-cell :border="false" title-class="c9" value-class="c9 text-left" title="下单时间" :value="item.updated_at" />
           <div class="flex flex-end pt-10">
@@ -48,7 +48,7 @@
         </li>
       </ul>
     </van-list>
-    <router-link :to="{name:'verification_order_detail',query:{code:'64e7f23311adcedefb3ae6d99861cb85'}}">订单详情</router-link>
+    <!-- <router-link :to="{name:'verification_order_detail',query:{code:'64e7f23311adcedefb3ae6d99861cb85'}}">订单详情</router-link> -->
     <!-- 订单列表 -->
     <van-popup v-model="isShowCondition" position="bottom">
       <van-picker :columns="condition" @confirm="selectCondition" show-toolbar title="搜索条件" />
@@ -105,7 +105,7 @@
 
     return str;
   };
-  import MCanvas from 'mcanvas'
+  import MCanvas,{MCrop} from 'mcanvas'
   export default {
     components: {},
     props: {},
@@ -277,6 +277,22 @@
        * 生成学员牌
        */
       compoundImg(params) {
+        new Promise((resolve,reject)=>{
+          MCrop('../../img/goods-01.jpg', {
+            // cropper shape
+            type: 'circle',
+            // crop by pos
+            x: 'center',
+            y: '0',
+            // radius
+            r: "50%",
+            // the success callback
+            success(b64) {
+                resolve(b64)
+            },
+          })
+        })
+        .then(avatar=>{
         let mc = new MCanvas({
           width: 690,
           height: 834,
@@ -330,14 +346,15 @@
             // 圆形填充颜色
             fillColor: '#ffffff',
           })
-          .add("../../img/icon-fail-big.png", {
+          // 用户头像 params.with_guest.avatar
+          .add(avatar, {
             width: 164,
             height: 164,
             pos: {
               x: 263,
               y: 403,
               scale: 1
-            },
+            }
           })
           // text 添加文字数据基础函数；
           .text(params.course_title||'广东广州第十期优雅形体礼仪课程', {
@@ -413,6 +430,7 @@
             // console.log(b64);
             this.studentImg = b64
           });
+        })
       }
     },
     created() {

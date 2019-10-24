@@ -124,7 +124,9 @@
       }
     },
     created() {
-      this.jumpPage()
+      if(this.$route.query.type){
+        this.jumpPage()
+      }
       this.activity_id = this.$route.query.activity_id
       this.share_id = this.$route.query.share_id
       // this.login()
@@ -151,6 +153,23 @@
               query: {
                 id: this.$route.query.id,
                 share_id: this.$route.query.share_id
+              }
+            })
+            break;
+          case "3":
+            this.$router.push({
+              name: 'goods_detail',
+              query: {
+                id: this.$route.query.id,
+                share_id: this.$route.query.share_id
+              }
+            })
+            break;
+          case "4":
+            this.$router.push({
+              name: 'subscribe_detail',
+              params: {
+                id: this.$route.query.id
               }
             })
             break;

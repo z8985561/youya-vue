@@ -37,9 +37,9 @@
           <div class="bar-1 mb-10"></div>
           <van-cell :border="false" title-class="c9" value-class="text-price text-left" title="订单状态" :value="item.status == 0? '待核销':'已核销'" />
           <van-cell :border="false" title-class="c9" value-class="c9 text-left" title="赠送人" :value="item.with_guest.real_name" />
-          <van-cell :border="false" title-class="c9" value-class="c9 text-left" title="赠送人手机号" :value="item.with_guest.phone_contact" />
+          <van-cell :border="false" title-class="c9" value-class="c9 text-left" title="赠送人手机号" :value="item.with_guest.phone" />
           <van-cell :border="false" title-class="c9" value-class="c9 text-left" title="受赠人" :value="item.with_receive_guest.real_name" />
-          <van-cell :border="false" title-class="c9" value-class="c9 text-left" title="受赠人手机号" :value="item.with_receive_guest.phone_contact" />
+          <van-cell :border="false" title-class="c9" value-class="c9 text-left" title="受赠人手机号" :value="item.with_receive_guest.phone" />
           <van-cell :border="false" title-class="c9" value-class="c9 text-left" title="赠送次数" :value="item.times" />
           <van-cell :border="false" title-class="c9" value-class="c9 text-left" title="下单时间" :value="item.updated_at" />
           <div class="flex flex-end pt-10">
@@ -48,7 +48,7 @@
         </li>
       </ul>
     </van-list>
-    <router-link :to="{name:'reservation_order_detail',query:{code:'33ab36e822311cc949f13afe2e4f3c72'}}">订单详情</router-link>
+    <!-- <router-link :to="{name:'reservation_order_detail',query:{code:'33ab36e822311cc949f13afe2e4f3c72'}}">订单详情</router-link> -->
     <!-- 订单列表 -->
     <van-popup v-model="isShowCondition" position="bottom">
       <van-picker :columns="condition" @confirm="selectCondition" show-toolbar title="搜索条件" />
