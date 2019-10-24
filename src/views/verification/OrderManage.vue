@@ -41,8 +41,9 @@
           <van-cell :border="false" title-class="c9" value-class="c9 text-left" title="昵称" :value="item.with_guest.nick_name" />
           <van-cell :border="false" title-class="c9" value-class="c9 text-left" title="姓名" :value="item.with_guest.real_name" />
           <van-cell :border="false" title-class="c9" value-class="c9 text-left" title="手机号" :value="item.with_guest.phone" />
-          <van-cell :border="false" title-class="c9" value-class="c9 text-left" title="订单编号" value="456788909867556" />
+          <!-- <van-cell :border="false" title-class="c9" value-class="c9 text-left" title="订单编号" value="456788909867556" /> -->
           <van-cell :border="false" title-class="c9" value-class="c9 text-left" title="下单时间" :value="item.updated_at" />
+          <van-cell :border="false" v-if="item.off_time" title-class="c9" value-class="c9 text-left" title="核销时间" :value="item.off_time" />
           <div class="flex flex-end pt-10">
             <div v-if="item.status == 0" class="btn-youya" :data-id="item.id" @click="verification">确认核销</div>
             <div @click="produce" :data-index="index" class="btn-youya-o ml-10">生成学员牌</div>

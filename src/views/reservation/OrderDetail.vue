@@ -13,6 +13,8 @@
           <van-cell :border="false" title-class="c9" value-class="c9 text-left" title="受赠人" :value="detail.with_receive_guest.real_name" />
           <van-cell :border="false" title-class="c9" value-class="c9 text-left" title="受赠人手机号" :value="detail.with_receive_guest.phone_contact" />
           <van-cell :border="false" title-class="c9" value-class="c9 text-left" title="赠送次数" :value="detail.times" />
+          <van-cell :border="false" title-class="c9" value-class="c9 text-left" title="赠送时间" :value="detail.updated_at" />
+          <van-cell :border="false" v-if="detail.off_time" title-class="c9" value-class="c9 text-left" title="核销时间" :value="detail.off_time" />
         <div class="flex flex-end pt-10">
           <div v-if="detail.status == 0" class="btn-youya" :data-id="detail.id" @click="verification">确认核销</div>
         </div>

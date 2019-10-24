@@ -1,7 +1,8 @@
 <template>
   <div>
     <!-- 视频 -->
-    <video-player class="video-player-box" ref="videoPlayer" :options="playerOptions" :playsinline="true" customEventName="customstatechangedeventname" @play="onPlayerPlay($event)" @pause="onPlayerPause($event)" @ended="onPlayerEnded($event)" @statechanged="playerStateChanged($event)">
+    <img v-if="!showVideo" :src="detail.image" class="banner" alt="">
+    <video-player v-if="showVideo" class="video-player-box" ref="videoPlayer" :options="playerOptions" :playsinline="true" customEventName="customstatechangedeventname" @play="onPlayerPlay($event)" @pause="onPlayerPause($event)" @ended="onPlayerEnded($event)" @statechanged="playerStateChanged($event)">
     </video-player>
     <!-- 视频 -->
 
@@ -79,10 +80,11 @@
     props: {},
     data() {
       return {
+        showVideo:false,
         // 是否购买该教程
         isbought:false,
-        active: 0,
-        current: 0,
+        active: 999,
+        current: 999,
         catalogue: [],
         detail:"",
         playerOptions: {
@@ -157,28 +159,35 @@
       },
       // 切换视频
       changeVideo(e){
-        let {resource,index,image,sign_resource} = e.currentTarget.dataset
-        if(!this.isbought){
-          this.$toast("您还未购买此课程！")
-          return
-        }
         if(this.current == index){
           return
         }
-        this.current = index;
-        this.playerOptions.poster = image
-        this.playerOptions.sources[0].src = sign_resource || resource;
-
+        let {resource,index,image,sign_resource} = e.currentTarget.dataset
+        if(this.detail.with_catalog[0].is_free){
+          this.current = index;
+          this.playerOptions.poster = image
+          this.playerOptions.sources[0].src = sign_resource || resource;
+          this.showVideo = true;
+          return;
+        }
+        if(this.detail.with_catalog[index].is_buy){
+          this.current = index;
+          this.playerOptions.poster = image
+          this.playerOptions.sources[0].src = sign_resource || resource;
+          this.showVideo = true;
+          return
+        }
+        this.$toast("您还未购买此课程！")
       },
       // listen event
       onPlayerPlay(player) {
         // console.log('player play!', player.el_.querySelector(".vjs-tech"))
-        if(!this.isbought){
-          setTimeout(()=>{
-            player.el_.querySelector(".vjs-tech").load()
-            this.$toast("您还未购买此课程！")
-          },300000)
-        }
+        // if(!this.isbought){
+        //   setTimeout(()=>{
+        //     player.el_.querySelector(".vjs-tech").load()
+        //     this.$toast("您还未购买此课程！")
+        //   },300000)
+        // }
 
       },
       onPlayerPause(player) {
@@ -211,8 +220,18 @@
         if(code == 0){
           this.$toast.clear()
           this.detail = data
-          this.playerOptions.poster = this.detail.with_catalog[0].image
-          this.playerOptions.sources[0].src = this.detail.with_catalog[0].sign_resource || this.detail.with_catalog[0].resource
+
+          if(!this.detail.with_catalog.length){
+            this.showVideo = false
+            return;
+          }else if(this.detail.with_catalog[0].is_free || this.detail.with_catalog[0].is_buy){
+            this.showVideo = true;
+            this.active = 0;
+            this.current = 0;
+            this.playerOptions.poster = this.detail.with_catalog[0].image
+            this.playerOptions.sources[0].src = this.detail.with_catalog[0].sign_resource || this.detail.with_catalog[0].resource
+          }
+
         }else{
           this.$toast.fail(message)
           this.$router.push({path:"/"})
