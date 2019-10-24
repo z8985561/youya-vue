@@ -230,6 +230,16 @@ export default new Router({
     // MyRedeemCode.vue
     {
       // 我的兑换码
+      path: '/member/produce_code',
+      name: 'produce_code',
+      component: () => import('./views/member/ProduceCode.vue'),
+      meta:{
+        title:"我的兑换码"
+      }
+    },
+    // MyRedeemCode.vue
+    {
+      // 我的兑换码
       path: '/member/my_redeem_code',
       name: 'my_redeem_code',
       component: () => import('./views/member/MyRedeemCode.vue'),

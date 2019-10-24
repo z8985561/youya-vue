@@ -50,8 +50,15 @@
     <van-popup v-model="show">
       <img class="qr-code" :src="qr_url" alt="">
     </van-popup>
+    <van-dialog
+      v-model="codeShow"
+      title="请输入兑换码"
+      show-cancel-button
+    >
+      <van-field v-model="code" placeholder="请输入兑换码" />
+    </van-dialog>
     <footer class="footer-bar">
-      <div class="btn-youya">生成兑换码</div>
+      <div @click="produceCode" class="btn-youya">生成兑换码</div>
     </footer>
   </div>
 </template>
@@ -62,6 +69,8 @@
     props: {},
     data() {
       return {
+        code:"",
+        codeShow:false,
         show:false,
         qr_url:"",
         active: 0,
@@ -73,6 +82,9 @@
     watch: {},
     computed: {},
     methods: {
+      produceCode(){
+        this.codeShow = true;
+      },
       showQrCode(e){
         this.qr_url = e.currentTarget.dataset.url
         this.show = true;

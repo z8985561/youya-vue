@@ -1,5 +1,7 @@
 <template>
   <div class="page">
+    <!-- <router-link :to="{name:'verification_order_detail',query:{code:'64e7f23311adcedefb3ae6d99861cb85'}}">订单详情</router-link> -->
+
     <van-sticky>
       <van-tabs v-model="status" title-active-color="#8DB9DF" title-inactive-color="#999" :line-width="0">
         <van-tab title="全部订单"></van-tab>
@@ -48,7 +50,6 @@
         </li>
       </ul>
     </van-list>
-    <!-- <router-link :to="{name:'verification_order_detail',query:{code:'64e7f23311adcedefb3ae6d99861cb85'}}">订单详情</router-link> -->
     <!-- 订单列表 -->
     <van-popup v-model="isShowCondition" position="bottom">
       <van-picker :columns="condition" @confirm="selectCondition" show-toolbar title="搜索条件" />
@@ -57,7 +58,7 @@
       <van-datetime-picker v-model="currentDate" @confirm="selectDate" @cancel="closeDate" type="date" :min-date="minDate" :max-date="currentDate" />
     </van-popup>
     <van-popup v-model="isShowImg">
-      <div class="student-container" style="background-image: url(../../img/bg-001.png);">
+      <div class="student-container" style="background-image: url(../img/bg-001.png);">
         <img :src="studentImg" alt="">
         <div class="close" @click="close">
           <van-icon name="close" size="30px" />
@@ -278,7 +279,7 @@
        */
       compoundImg(params) {
         new Promise((resolve,reject)=>{
-          MCrop('../../img/goods-01.jpg', {
+          MCrop(params.with_guest.avatar, {
             // cropper shape
             type: 'circle',
             // crop by pos
@@ -299,7 +300,7 @@
           backgroundColor: 'white',
         });
         // 海报背景图 this.list[this.active].image ../img/poster-psd.jpg
-        mc.background("../../img/bg-001.png", {
+        mc.background("../img/bg-001.png", {
             left: 0,
             top: 0,
             color: '#ffffff',
@@ -317,7 +318,7 @@
             fillColor: '#fff',
           })
           // 模板背景图连接
-          .add("../../img/bg-002.png", {
+          .add("../img/bg-002.png", {
             width: 300,
             height: 154,
             pos: {
@@ -326,7 +327,7 @@
               scale: 1
             },
           })
-          .add("../../img/logo-2.png", {
+          .add("../img/logo-2.png", {
             width: 130,
             height: 165,
             pos: {

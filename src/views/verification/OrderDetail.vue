@@ -15,25 +15,203 @@
         <van-cell :border="false" title-class="c9" value-class="c9 text-left" title="下单时间" :value="detail.updated_at" />
         <div class="flex flex-end pt-10">
           <div v-if="detail.status == 0" class="btn-youya" :data-id="detail.id" @click="verification">确认核销</div>
-          <div class="btn-youya-o ml-10">生成学员牌</div>
+          <div @click="produce" class="btn-youya-o ml-10">生成学员牌</div>
         </div>
       </li>
     </ul>
+    <van-popup v-model="isShowImg">
+      <div class="student-container" style="background-image: url(../../img/bg-001.png);">
+        <img :src="studentImg" alt="">
+        <div class="close" @click="close">
+          <van-icon name="close" size="30px" />
+        </div>
+      </div>
+    </van-popup>
   </div>
 </template>
 
 <script>
+import MCanvas,{MCrop} from 'mcanvas'
   export default {
     components: {},
     props: {},
     data() {
       return {
+        isShowImg:false,
+        studentImg:"",
         detail:{}
       };
     },
     watch: {},
     computed: {},
     methods: {
+      close(){
+        this.isShowImg = false
+      },
+      produce(){
+        this.isShowImg = true
+        this.compoundImg(this.detail)
+      },
+      /**
+       * 生成学员牌
+       */
+      compoundImg(params) {
+        console.log(params)
+        new Promise((resolve,reject)=>{
+          MCrop(params.with_guest.avatar, {
+            // cropper shape
+            type: 'circle',
+            // crop by pos
+            x: 'center',
+            y: '0',
+            // radius
+            r: "50%",
+            // the success callback
+            success(b64) {
+                resolve(b64)
+            },
+          })
+        })
+        .then(avatar=>{
+        let mc = new MCanvas({
+          width: 690,
+          height: 834,
+          backgroundColor: 'white',
+        });
+        // 海报背景图 this.list[this.active].image ../img/poster-psd.jpg
+        mc.background("../../img/bg-001.png", {
+            left: 0,
+            top: 0,
+            color: '#ffffff',
+            type: 'crop',
+          })
+          .rect({
+            x: 0,
+            y: 0,
+
+            // 矩形尺寸；
+            width: '100%',
+            height: '100%',
+
+            // 矩形填充颜色
+            fillColor: '#fff',
+          })
+          // 模板背景图连接
+          .add("../../img/bg-002.png", {
+            width: 300,
+            height: 154,
+            pos: {
+              x: 197,
+              y: 400,
+              scale: 1
+            },
+          })
+          .add("../../img/logo-2.png", {
+            width: 130,
+            height: 165,
+            pos: {
+              x: 280,
+              y: 90,
+              scale: 1
+            },
+          })
+          .circle({
+            // 圆形圆心位置，支持多种值；
+            // x: 250 / '250px' / '100%' / 'left:250' / 'center',
+            x: 260,
+            y: 400,
+
+            // 圆形半径； 100 / '100%' / '100px'
+            r: '85px',
+            // 圆形填充颜色
+            fillColor: '#ffffff',
+          })
+          // 用户头像 params.with_guest.avatar
+          .add(avatar, {
+            width: 164,
+            height: 164,
+            pos: {
+              x: 263,
+              y: 403,
+              scale: 1
+            }
+          })
+          // text 添加文字数据基础函数；
+          .text(params.course_title||'广东广州第十期优雅形体礼仪课程', {
+            width: 450,
+            align: 'left',
+            normalStyle: {
+              font: `30px Microsoft YaHei,sans-serif`,
+              lineHeight: 32,
+              color: '#333333',
+            },
+            pos: {
+              x: 120,
+              y: 288,
+            },
+          })
+          // text 添加文字数据基础函数；
+          .text('姓名', {
+            width: 70,
+            align: 'left',
+            normalStyle: {
+              font: `30px Microsoft YaHei,sans-serif`,
+              lineHeight: 32,
+              color: '#333333',
+            },
+            pos: {
+              x: 186,
+              y: 610,
+            },
+          })
+          // text 添加文字数据基础函数；
+          .text(params.with_guest.real_name || '王萌萌', {
+            width: 120,
+            align: 'left',
+            normalStyle: {
+              font: `30px Microsoft YaHei,sans-serif`,
+              lineHeight: 32,
+              color: '#333333',
+            },
+            pos: {
+              x: 350,
+              y: 610,
+            },
+          })
+          // text 添加文字数据基础函数；
+          .text('手机号', {
+            width: 120,
+            align: 'left',
+            normalStyle: {
+              font: `30px Microsoft YaHei,sans-serif`,
+              lineHeight: 32,
+              color: '#333333',
+            },
+            pos: {
+              x: 186,
+              y: 670,
+            },
+          })
+          // text 添加文字数据基础函数；
+          .text(params.with_guest.phone_contact||'13544445555', {
+            width: 250,
+            align: 'left',
+            normalStyle: {
+              font: `30px Microsoft YaHei,sans-serif`,
+              lineHeight: 32,
+              color: '#333333',
+            },
+            pos: {
+              x: 350,
+              y: 670,
+            },
+          })
+          .draw(b64 => {
+            // console.log(b64);
+            this.studentImg = b64
+          });
+        })
+      },
       async getUserInfo(){
         this.$toast.loading({message: '加载中...'});
         let {code,data,message} = await axios.get("/user/off");
@@ -112,7 +290,25 @@
       }
     }
   }
-
+  .student-container{
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100vw;
+    height: 100vh;
+    background-size: cover;
+    background-position: center;
+    >img{
+      width: 345px;
+      box-shadow:0px 0px 10px 0px rgba(238,238,238,1);
+    }
+    .close{
+      position: absolute;
+      top: 10px;
+      right: 10px;
+    }
+  }
   .van-cell {
     padding: 0 12px;
   }

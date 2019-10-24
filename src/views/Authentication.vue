@@ -78,7 +78,7 @@
           data,
           message
         } = await axios.post("/user/verify", {
-          phone: "15602280761",
+          phone: phone,
           name: name,
           code: sms
         })
