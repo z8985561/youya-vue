@@ -27,30 +27,7 @@
                     <div class="mb-5">剩余课次：{{item.remainder_times}}次</div>
                     <div>有效期至：{{item.expiration_date}}</div>
                   </div>
-                  <router-link v-if="item.is_gift" to="/authentication">
-                    <div class="btn-youya-o">赠送</div>
-                  </router-link>
-                </div>
-              </div>
-            </li>
-          </ul>
-        </van-list>
-      </van-tab>
-      <van-tab title="不可转增课程">
-        <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="getList">
-          <ul class="courses-list">
-            <li class="courses-item" v-for="item in list" :key="item.id">
-              <div>
-                <img src="../../assets/img/icon-doctoria.png" alt="">
-              </div>
-              <div class="courses-info">
-                <div class="fz-15 c3 mb-5">{{item.goods_name}}</div>
-                <div class="flex flex-jus flex-align-center">
-                  <div class="fz-12 c9">
-                    <div class="mb-5">剩余课次：{{item.remainder_times}}次</div>
-                    <div>有效期至：{{item.expiration_date}} </div>
-                  </div>
-                  <router-link v-if="item.is_gift" to="/authentication">
+                  <router-link v-if="item.is_gift==0" to="/authentication">
                     <div class="btn-youya-o">赠送</div>
                   </router-link>
                 </div>
@@ -73,7 +50,30 @@
                     <div class="mb-5">剩余课次：{{item.remainder_times}}次</div>
                     <div>有效期至：{{item.expiration_date}} </div>
                   </div>
-                  <router-link v-if="item.is_gift" to="/authentication">
+                  <router-link v-if="item.is_gift==0" to="/authentication">
+                    <div class="btn-youya-o">赠送</div>
+                  </router-link>
+                </div>
+              </div>
+            </li>
+          </ul>
+        </van-list>
+      </van-tab>
+      <van-tab title="不可转增课程">
+        <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="getList">
+          <ul class="courses-list">
+            <li class="courses-item" v-for="item in list" :key="item.id">
+              <div>
+                <img src="../../assets/img/icon-doctoria.png" alt="">
+              </div>
+              <div class="courses-info">
+                <div class="fz-15 c3 mb-5">{{item.goods_name}}</div>
+                <div class="flex flex-jus flex-align-center">
+                  <div class="fz-12 c9">
+                    <div class="mb-5">剩余课次：{{item.remainder_times}}次</div>
+                    <div>有效期至：{{item.expiration_date}} </div>
+                  </div>
+                  <router-link v-if="item.is_gift==0" to="/authentication">
                     <div class="btn-youya-o">赠送</div>
                   </router-link>
                 </div>
@@ -121,8 +121,10 @@
     },
     watch: {
       active(n,o){
-        if(n==0) return;
-
+        if(n==o) return;
+        this.list = [];
+        this.finished = false;
+        // this.getList()
       }
     },
     computed: {},
@@ -150,7 +152,9 @@
         if(this.active==0){
           var {code,data,message} = await axios.get("/user/package");
         }else{
-          var {code,data,message} = await axios.get("/user/package");
+          var {code,data,message} = await axios.get("/user/package",{params:{
+            is_gift: this.active -1
+          }});
         }
         if(code==0){
           this.$toast.clear()
