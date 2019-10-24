@@ -14,20 +14,20 @@
     </ul>
     <van-tabs v-model="active" :border="false" title-active-color="#8DB9DF" title-inactive-color="#999999" color="#8DB9DF" line-height="2" line-width="25">
       <van-tab title="全部">
-        <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad">
+        <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="getList">
           <ul class="courses-list">
-            <li class="courses-item" v-for="item in list" :key="item">
+            <li class="courses-item" v-for="item in list" :key="item.id">
               <div>
                 <img src="../../assets/img/icon-doctoria.png" alt="">
               </div>
               <div class="courses-info">
-                <div class="fz-15 c3 mb-5">香港皇家优雅形体礼仪初级课程</div>
+                <div class="fz-15 c3 mb-5">{{item.goods_name}}</div>
                 <div class="flex flex-jus flex-align-center">
                   <div class="fz-12 c9">
-                    <div class="mb-5">剩余课次：10次</div>
-                    <div>有效期至：2019.12.31 </div>
+                    <div class="mb-5">剩余课次：{{item.remainder_times}}次</div>
+                    <div>有效期至：{{item.expiration_date}}</div>
                   </div>
-                  <router-link to="/authentication">
+                  <router-link v-if="item.is_gift" to="/authentication">
                     <div class="btn-youya-o">赠送</div>
                   </router-link>
                 </div>
@@ -37,20 +37,20 @@
         </van-list>
       </van-tab>
       <van-tab title="不可转增课程">
-        <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad">
+        <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="getList">
           <ul class="courses-list">
-            <li class="courses-item" v-for="item in list" :key="item">
+            <li class="courses-item" v-for="item in list" :key="item.id">
               <div>
                 <img src="../../assets/img/icon-doctoria.png" alt="">
               </div>
               <div class="courses-info">
-                <div class="fz-15 c3 mb-5">香港皇家优雅形体礼仪初级课程</div>
+                <div class="fz-15 c3 mb-5">{{item.goods_name}}</div>
                 <div class="flex flex-jus flex-align-center">
                   <div class="fz-12 c9">
-                    <div class="mb-5">剩余课次：10次</div>
-                    <div>有效期至：2019.12.31 </div>
+                    <div class="mb-5">剩余课次：{{item.remainder_times}}次</div>
+                    <div>有效期至：{{item.expiration_date}} </div>
                   </div>
-                  <router-link to="/authentication">
+                  <router-link v-if="item.is_gift" to="/authentication">
                     <div class="btn-youya-o">赠送</div>
                   </router-link>
                 </div>
@@ -60,20 +60,20 @@
         </van-list>
       </van-tab>
       <van-tab title="可转赠课程">
-        <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="onLoad">
+        <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="getList">
           <ul class="courses-list">
-            <li class="courses-item" v-for="item in list" :key="item">
+            <li class="courses-item" v-for="item in list" :key="item.id">
               <div>
                 <img src="../../assets/img/icon-doctoria.png" alt="">
               </div>
               <div class="courses-info">
-                <div class="fz-15 c3 mb-5">香港皇家优雅形体礼仪初级课程</div>
+                <div class="fz-15 c3 mb-5">{{item.goods_name}}</div>
                 <div class="flex flex-jus flex-align-center">
                   <div class="fz-12 c9">
-                    <div class="mb-5">剩余课次：10次</div>
-                    <div>有效期至：2019.12.31 </div>
+                    <div class="mb-5">剩余课次：{{item.remainder_times}}次</div>
+                    <div>有效期至：{{item.expiration_date}} </div>
                   </div>
-                  <router-link to="/authentication">
+                  <router-link v-if="item.is_gift" to="/authentication">
                     <div class="btn-youya-o">赠送</div>
                   </router-link>
                 </div>
@@ -119,24 +119,14 @@
         teacher: {}
       };
     },
-    watch: {},
+    watch: {
+      active(n,o){
+        if(n==0) return;
+
+      }
+    },
     computed: {},
     methods: {
-      onLoad() {
-        // 异步更新数据
-        setTimeout(() => {
-          for (let i = 0; i < 10; i++) {
-            this.list.push(this.list.length + 1);
-          }
-          // 加载状态结束
-          this.loading = false;
-
-          // 数据全部加载完成
-          if (this.list.length >= 40) {
-            this.finished = true;
-          }
-        }, 500);
-      },
       showCounselorModel() {
         if(!this.teacher){
           this.$toast.fail("暂时没有配置顾问老师")
@@ -154,6 +144,28 @@
           this.teacher = data;
         } else {
           this.teacher = null
+        }
+      },
+      async getList(){
+        if(this.active==0){
+          var {code,data,message} = await axios.get("/user/package");
+        }else{
+          var {code,data,message} = await axios.get("/user/package");
+        }
+        if(code==0){
+          this.$toast.clear()
+          this.list = [
+            ...this.list,
+            ...data.data
+          ]
+          // 加载状态结束
+          this.loading = false;
+          // 数据全部加载完成
+          if (data.current_page == data.last_page) {
+            this.finished = true;
+          }
+        }else{
+          this.$toast(message)
         }
       }
     },

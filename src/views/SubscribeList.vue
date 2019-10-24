@@ -96,6 +96,7 @@
         this.page = 1;
         this.list = [];
         this.finished = false;
+        this.getList()
       },
       async getList(){
         let params = {};

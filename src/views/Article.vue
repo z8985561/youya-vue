@@ -85,7 +85,7 @@
           let shareData = {
             title: this.detail.share_title,
             desc: this.detail.share_subtitle, //这里请特别注意是要去除html
-            link: this.detail.share_info.share_url,
+            link: this.detail.share_info.share_url || `http://youya.chuncom.com/youya-h5/?type=1&id=${this.detail.id}&share_id=0`,
             imgUrl: this.detail.share_image || "http://youya.chuncom.com/youya-h5/img/logo.png"
           }
           if (wx.onMenuShareAppMessage) { //微信文档中提到这两个接口即将弃用，故判断
