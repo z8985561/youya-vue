@@ -25,7 +25,6 @@
               </div>
               <div class="time">{{item.start_time}} 开课</div>
             </div>
-          </router-link>
           <div class="flex plr-5">
             <div style="flex:1;">
               <div class="title mb-5">{{item.title}}</div>
@@ -37,6 +36,7 @@
               <div v-if="item.status == 1 && (item.number_booked >= item.number_booking)" class="youya-btn-o">已约满</div>
               <div v-if="item.status == 2" class="youya-btn-o">已结束</div>
           </div>
+          </router-link>
         </li>
       </ul>
     </van-list>

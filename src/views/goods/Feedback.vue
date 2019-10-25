@@ -7,7 +7,7 @@
       <router-link to="/">
         <div class="btn-youya-o">返回首页</div>
       </router-link>
-      <router-link :to='{name:"order_detail",params:{id:goods.id}}'>
+      <router-link :to='{name:"order_detail",query:{id:goods.id}}'>
         <div class="btn-youya">查看订单</div>
       </router-link>
     </div>

@@ -84,13 +84,29 @@
         <img v-lazy="tool_parameter.HOME_EXPERIENCE_IMAGE" width="100%" alt="">
       </router-link>
     </div>
-    <div style="margin-bottom:2.666667rem;">
+    <div class="mb-10">
       <router-link to="/branch">
         <img v-lazy="tool_parameter.HOME_BRANCH_IMAGE" width="100%" alt="">
       </router-link>
     </div>
+    <div class="mb-10">
+      <router-link :to="ad_foot[0].url">
+        <img v-lazy="ad_foot[0].image" width="100%" alt="">
+      </router-link>
+    </div>
     <!-- banner3 -->
-
+    <!-- banner -->
+    <div class="flex flex-jus" style="margin-bottom:2.666667rem;">
+      <div v-for="(item,index) in ad_foot" v-if="index !=0" :key="item.id" class="banner2">
+        <!-- <router-link :to="item.url">
+          <img :src="item.image" width="100%" alt="">
+        </router-link> -->
+        <a :href="item.url">
+          <img :src="item.image" width="100%" alt="">
+        </a>
+      </div>
+    </div>
+    <!-- banner -->
     <!-- 联系我们 -->
     <div class="contact-us">
       <div class="logo">
@@ -117,6 +133,7 @@
           "../assets/img/index-banner-01.png",
         ],
         ad: "",
+        ad_foot:[],
         banner: "",
         tool: "",
         tool_parameter: "",
@@ -257,6 +274,7 @@
           this.banner = data.banner;
           this.tool = data.tool;
           this.tool_parameter = data.tool_parameter
+          this.ad_foot = data.ad_foot
         } else {
           this.$toast.fail(message)
         }

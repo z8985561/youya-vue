@@ -109,7 +109,7 @@
         currentDate: new Date(),
         minDate: new Date("2019-01-01"),
         status: 0,
-        condition: ["不限","用户昵称", "用户姓名", "用户手机", "课程名称"],
+        condition: ["不限","赠送人", "用户昵称", "用户姓名", "用户手机","班级类别"],
         search_key: 0,
         order_time: "",
         list: [],

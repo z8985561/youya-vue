@@ -464,5 +464,23 @@ export default new Router({
         title:"退款详情"
       }
     },
+    {
+      // 梦想导师团
+      path: '/tutor/index',
+      name: 'tutor_index',
+      component: () => import('./views/tutor/Index.vue'),
+      meta:{
+        title:"梦想导师团"
+      }
+    },
+    {
+      // 梦想导师团
+      path: '/tutor/detail',
+      name: 'tutor_detail',
+      component: () => import('./views/tutor/Detail.vue'),
+      meta:{
+        title:"梦想导师团"
+      }
+    },
   ]
 })
