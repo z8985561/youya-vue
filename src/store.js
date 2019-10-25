@@ -5,12 +5,21 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-
+    customer_contact:""
   },
   mutations: {
-
+    setContact(state,imgUrl){
+      state.customer_contact = imgUrl
+    }
   },
   actions: {
-
+    setContact(context,imgUrl){
+      context.commit("setContact",imgUrl)
+    }
+  },
+  getters:{
+    getContact: state =>{
+      return state.customer_contact;
+    }
   }
 })

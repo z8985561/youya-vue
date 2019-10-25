@@ -124,6 +124,7 @@
       }
     },
     created() {
+      this.getContactImg()
       if(this.$route.query.type){
         this.jumpPage()
       }
@@ -134,6 +135,14 @@
       this.getSDK()
     },
     methods: {
+      async getContactImg(){
+        let {code,data,message} = await axios.get("/config/detail",{params:{
+          key:"CUSTOMER_CONTACT"
+        }})
+        if(code==0){
+          this.$store.dispatch('setContact', data.value)
+        }
+      },
       // 根据type跳转到不同的页面
       jumpPage() {
         let type = this.$route.query.type

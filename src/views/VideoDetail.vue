@@ -60,8 +60,11 @@
     <!-- footer -->
     <!-- 侧边客服购物车按钮 -->
     <div class="side-btn">
-      <img src="../assets/img/btn-service.png" alt="">
+      <img @click="showContact" src="../assets/img/btn-service.png" alt="">
     </div>
+    <van-popup v-model="isShowContact">
+      <img style="width:70vw;" :src="this.$store.getters.getContact" alt="">
+    </van-popup>
     <!-- 侧边客服购物车按钮 -->
   </div>
 </template>
@@ -80,6 +83,7 @@
     props: {},
     data() {
       return {
+        isShowContact:false,
         showVideo:false,
         // 是否购买该教程
         isbought:false,
@@ -109,6 +113,9 @@
       }
     },
     methods: {
+      showContact(){
+        this.isShowContact = true
+      },
       async getSDK() {
         // alert(location.href)
         let href = encodeURIComponent(window.location.href)
@@ -163,7 +170,7 @@
           return
         }
         let {resource,index,image,sign_resource} = e.currentTarget.dataset
-        if(this.detail.with_catalog[0].is_free){
+        if(this.detail.with_catalog[0].is_free==0){
           this.current = index;
           this.playerOptions.poster = image
           this.playerOptions.sources[0].src = sign_resource || resource;
@@ -224,7 +231,7 @@
           if(!this.detail.with_catalog.length){
             this.showVideo = false
             return;
-          }else if(this.detail.with_catalog[0].is_free || this.detail.with_catalog[0].is_buy){
+          }else if(this.detail.with_catalog[0].is_free==0 || this.detail.with_catalog[0].is_buy){
             this.showVideo = true;
             this.active = 0;
             this.current = 0;

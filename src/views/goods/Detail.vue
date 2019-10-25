@@ -46,10 +46,16 @@
     <!-- footer -->
 
     <!-- 侧边客服购物车按钮 -->
-    <div class="side-btn">
+    <!-- <div class="side-btn">
       <img class="mb-5" src="../../assets/img/btn-service.png" alt="">
-      <!-- <img src="../../assets/img/btn-cart.png" alt=""> -->
+      <img src="../../assets/img/btn-cart.png" alt="">
+    </div> -->
+    <div class="side-btn">
+      <img @click="showContact" src="../../assets/img/btn-service.png" alt="">
     </div>
+    <van-popup v-model="isShowContact">
+      <img style="width:70vw;" :src="this.$store.getters.getContact" alt="">
+    </van-popup>
     <!-- 侧边客服购物车按钮 -->
     <van-popup v-model="show" round closeable close-icon="close" position="bottom" :style="{ height: '60%' }">
       <div class="p-15">
@@ -80,6 +86,7 @@ import wx from "weixin-js-sdk";
     props: {},
     data() {
       return {
+        isShowContact:false,
         isBuy:false,
         userInfo:{},
         detail: {},
@@ -94,6 +101,9 @@ import wx from "weixin-js-sdk";
     watch: {},
     computed: {},
     methods: {
+      showContact(){
+        this.isShowContact = true
+      },
       async getSDK() {
         // alert(location.href)
         let href = encodeURIComponent(window.location.href)
