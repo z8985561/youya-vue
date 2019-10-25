@@ -147,7 +147,7 @@
           let shareData = {
             title: this.detail.share_title,
             desc: this.detail.share_subtitle, //这里请特别注意是要去除html
-            link: `http://youya.chuncom.com/youya-h5/?type=1&id=${this.detail.id}&share_id=${this.userinfo.id}`,
+            link: `http://youya.chuncom.com/youya-h5/?type=2&id=${this.detail.id}&share_id=${this.userinfo.id}`,
             imgUrl: this.detail.share_image || "http://youya.chuncom.com/youya-h5/img/logo.png"
           }
           if (wx.onMenuShareAppMessage) { //微信文档中提到这两个接口即将弃用，故判断
@@ -159,7 +159,7 @@
           }
           wx.error(function(res) {
             // config信息验证失败会执行error函数，如签名过期导致验证失败，具体错误信息可以打开config的debug模式查看，也可以在返回的res参数中查看，对于SPA可以在这里更新签名。
-            alert("errorMSG:" + res)
+            // alert("errorMSG:" + res)
             console.log("errorMSG:" + res);
           });
         })
