@@ -185,6 +185,7 @@ import wx from "weixin-js-sdk";
         if (code == 0) {
           this.$toast.clear()
           this.detail = data
+          this.wxShare()
         } else {
           this.$toast.fail(message)
         }
@@ -223,6 +224,7 @@ import wx from "weixin-js-sdk";
     created() {
       this.getData()
       this.getUserInfo()
+      this.getSDK()
     },
     mounted() {}
   };

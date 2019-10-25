@@ -227,7 +227,7 @@
         if(code == 0){
           this.$toast.clear()
           this.detail = data
-
+          this.wxShare()
           if(!this.detail.with_catalog.length){
             this.showVideo = false
             return;
@@ -269,6 +269,7 @@
       this.getData();
       // this.getCatalog()
       this.checkIsBought();
+      this.getSDK()
     },
     mounted() {
 
