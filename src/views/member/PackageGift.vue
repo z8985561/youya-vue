@@ -59,8 +59,8 @@
           phone:this.phone
         })
         if(code==0){
-          console.log(data)
           this.$toast.success("赠送成功")
+          this.$router.go(-2);
         }else{
           this.$toast(message)
         }
