@@ -222,7 +222,7 @@ import MCanvas,{MCrop} from 'mcanvas'
         }else if (code == 401){
           this.$toast.fail(message)
           setTimeout(()=>{
-            window.location.href = `http://youya.chuncom.com/user/off/authorization?code=${this.$route.query.code}&url_type=${this.$route.query.url_type}`
+            window.location.href = `http://youya.chuncom.com/user/off/authorization?code=${this.$route.query.code}&url_type=1`
           },2000)
         }
       },

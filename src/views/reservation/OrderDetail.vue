@@ -45,7 +45,7 @@
         }else if (code == 401){
           this.$toast.fail(message)
           setTimeout(()=>{
-            window.location.href = `http://youya.chuncom.com/user/off/authorization?code=${this.$route.query.code}&url_type=${this.$route.query.url_type}`
+            window.location.href = `http://youya.chuncom.com/youya-h5/`
           },2000)
         }
       },
