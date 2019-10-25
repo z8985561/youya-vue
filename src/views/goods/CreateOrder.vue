@@ -179,7 +179,12 @@
             paySign: data.paySign, // 支付签名
             success: (res) => {
               this.$toast.success("支付成功");
-              this.$router.replace("/feedback")
+              this.$router.push({
+                name: "goods_pay_feedback",
+                query: {
+                  order_id: this.order_id
+                }
+          })
             },
             fail: (res) => {
               this.$toast.fail('支付失败');
