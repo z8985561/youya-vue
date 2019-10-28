@@ -21,7 +21,7 @@
       <van-cell title-class="c9" value-class="c3" title="绑定号码" :value="userInfo.phone" />
       <van-field label="昵称" label-class="c9" input-align="right" v-model="userInfo.nick_name" placeholder="请输入昵称" />
       <van-field label="联系电话" label-class="c9" input-align="right" v-model="userInfo.phone_contact" placeholder="请输入联系电话" />
-      <van-cell title-class="flex flex-align-center c9" title="二维码名片" value="内容">
+      <van-cell title-class="flex flex-align-center c9" title="收款二维码" value="内容">
         <div class="flex flex-end" slot="default">
           <van-uploader :before-read="receiptQr">
             <!-- <div v-if="userInfo.qr_card" class="c3">修改</div> -->
@@ -106,6 +106,10 @@
           this.$toast.fail("请上传二维码名片")
           return;
         }
+        if(!core.trim(this.userInfo.receipt_qr)){
+          this.$toast.fail("请上传收款二维码")
+          return;
+        }
         if(!core.trim(this.userInfo.avatar)){
           this.$toast.fail("请上传头像")
           return;
@@ -121,7 +125,8 @@
           phone_contact:this.userInfo.phone_contact,
           nick_name:this.userInfo.nick_name,
           qr_card:this.userInfo.qr_card,
-          avatar:this.userInfo.avatar
+          avatar:this.userInfo.avatar,
+          receipt_qr:this.receipt_qr
         })
         if (code == 0) {
           this.$toast.success("修改成功")
