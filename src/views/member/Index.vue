@@ -74,6 +74,9 @@
               .then(res=>{
                 this.$router.push({name:"binding_information"})
               })
+              .catch(e=>{
+                console.log(e)
+              })
           }
         }else{
           this.$toast.fail(message)
