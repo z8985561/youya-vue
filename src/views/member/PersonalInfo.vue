@@ -21,6 +21,15 @@
       <van-cell title-class="c9" value-class="c3" title="绑定号码" :value="userInfo.phone" />
       <van-field label="昵称" label-class="c9" input-align="right" v-model="userInfo.nick_name" placeholder="请输入昵称" />
       <van-field label="联系电话" label-class="c9" input-align="right" v-model="userInfo.phone_contact" placeholder="请输入联系电话" />
+      <van-cell title-class="flex flex-align-center c9" title="二维码名片" value="内容">
+        <div class="flex flex-end" slot="default">
+          <van-uploader :before-read="receiptQr">
+            <!-- <div v-if="userInfo.qr_card" class="c3">修改</div> -->
+            <img v-if="userInfo.receipt_qr"  class="qr_card" :src="userInfo.receipt_qr || '../../img/noface.png'" alt="">
+            <div v-else class="c3">请上传收款二维码</div>
+          </van-uploader>
+        </div>
+      </van-cell>
     </van-cell-group>
     <div class="footer-bar">
       <div class="btn-youya" @click="submit">确认修改</div>
@@ -64,6 +73,10 @@
       async upQrCard(e){
         let url = await this.update(e);
         this.userInfo.qr_card = url;
+      },
+      async receiptQr(e){
+        let url = await this.update(e);
+        this.userInfo.receipt_qr = url;
       },
       async update(file){
           let param = new FormData();
