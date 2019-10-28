@@ -126,7 +126,7 @@
           nick_name:this.userInfo.nick_name,
           qr_card:this.userInfo.qr_card,
           avatar:this.userInfo.avatar,
-          receipt_qr:this.receipt_qr
+          receipt_qr:this.userInfo.receipt_qr
         })
         if (code == 0) {
           this.$toast.success("修改成功")
