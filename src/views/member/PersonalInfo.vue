@@ -102,15 +102,15 @@
           this.$toast.fail("请输入昵称")
           return;
         }
-        if(!core.trim(this.userInfo.qr_card)){
+        if(!this.userInfo.qr_card){
           this.$toast.fail("请上传二维码名片")
           return;
         }
-        if(!core.trim(this.userInfo.receipt_qr)){
+        if(!this.userInfo.receipt_qr){
           this.$toast.fail("请上传收款二维码")
           return;
         }
-        if(!core.trim(this.userInfo.avatar)){
+        if(!this.userInfo.avatar){
           this.$toast.fail("请上传头像")
           return;
         }

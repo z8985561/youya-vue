@@ -35,11 +35,11 @@
 
     <van-cell-group :border="false">
       <van-cell title="我的订单" icon="img/icon-member-01.png" is-link to='/order_list'/>
-      <!-- <van-cell title="我的购物车" icon="img/icon-member-02.png" is-link to='/member/my_cart'/> -->
+      <van-cell title="我的购物车" icon="img/icon-member-02.png" is-link to='/member/my_cart'/>
       <van-cell title="收益明细" icon="img/icon-member-03.png" is-link to='/member/earnings_record'/>
       <van-cell title="提现明细" icon="img/icon-member-04.png" is-link to="/member/withdraw_record" />
       <van-cell title="个人资料" icon="img/icon-member-05.png" is-link to="/member/personal_info" />
-      <!-- <van-cell title="地址管理" icon="img/icon-member-07.png" is-link to="/member/address_list" /> -->
+      <van-cell title="地址管理" icon="img/icon-member-07.png" is-link to="/member/address_list" />
       <van-cell title="关于我们" icon="img/icon-member-06.png" is-link to="/tool_detail/1" />
       <van-cell v-if="userInfo.is_off" title="核销端" icon="img/icon-member-06.png" is-link to="/verification/index"/>
     </van-cell-group>

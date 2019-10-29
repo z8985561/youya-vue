@@ -109,6 +109,7 @@ var Mock = require('mockjs')
       display: flex;
       flex-direction: column;
       justify-content: space-around;
+      overflow: hidden;
     }
   }
 </style>

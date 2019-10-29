@@ -252,7 +252,8 @@
               'onMenuShareTimeline',
               'onMenuShareAppMessage', //1.0分享到朋友圈
               'updateAppMessageShareData', //1.4 分享到朋友
-              'updateTimelineShareData'
+              'updateTimelineShareData',
+              "openAddress"
             ] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
           })
         } else {
