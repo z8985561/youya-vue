@@ -5,7 +5,8 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    customer_contact:""
+    customer_contact:"",
+    router_active:1
   },
   mutations: {
     setContact(state,imgUrl){

@@ -44,23 +44,23 @@ export default {
     return{
       index:0,
       icons:[{
-        normal: 'img/home-normal.png',
-        active: 'img/home-active.png'
+        normal: 'http://youya.chuncom.com/youya-h5/img/home-normal.png',
+        active: 'http://youya.chuncom.com/youya-h5/img/home-active.png'
       },{
-        normal: 'img/video-normal.png',
-        active: 'img/video-active.png'
+        normal: 'http://youya.chuncom.com/youya-h5/img/video-normal.png',
+        active: 'http://youya.chuncom.com/youya-h5/img/video-active.png'
       },{
-        normal: 'img/clock-normal.png',
-        active: 'img/clock-active.png'
+        normal: 'http://youya.chuncom.com/youya-h5/img/clock-normal.png',
+        active: 'http://youya.chuncom.com/youya-h5/img/clock-active.png'
       },{
-        normal: 'img/user-normal.png',
-        active: 'img/user-active.png'
+        normal: 'http://youya.chuncom.com/youya-h5/img/user-normal.png',
+        active: 'http://youya.chuncom.com/youya-h5/img/user-active.png'
       }]
     }
   },
   mounted() {
     this.index = this.active || 0 ;
-
+    console.log(this.$router.currentRoute.name)
   },
 }
 </script>

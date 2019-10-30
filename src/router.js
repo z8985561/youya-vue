@@ -54,7 +54,8 @@ export default new Router({
       name: 'tool_detail',
       component: () => import('./views/ToolDetail.vue'),
       meta:{
-        title:""
+        title:"",
+        keepAlive:true
       }
     },
     {
@@ -63,7 +64,8 @@ export default new Router({
       name: 'article',
       component: () => import('./views/Article.vue'),
       meta:{
-        title:"文章"
+        title:"文章",
+        keepAlive:true
       }
     },
     {
@@ -72,7 +74,8 @@ export default new Router({
       name: 'experience',
       component: () => import('./views/Experience.vue'),
       meta:{
-        title:"体验课程"
+        title:"体验课程",
+        keepAlive:true
       }
     },
     // ArticleList.vue
@@ -82,7 +85,8 @@ export default new Router({
       name: 'article_list',
       component: () => import('./views/ArticleList.vue'),
       meta:{
-        title:"优雅美文"
+        title:"优雅美文",
+        keepAlive:true
       }
     },
     // CreateOrder.vue
@@ -375,6 +379,16 @@ export default new Router({
         title:"商品列表"
       }
     },
+    // 产品列表
+    {
+      // 产品列表
+      path: '/goods/index2',
+      name: 'goods_index2',
+      component: () => import('./views/goods/Index2.vue'),
+      meta:{
+        title:"商品列表"
+      }
+    },
     // 产品详情
     {
       // 产品详情
@@ -412,7 +426,8 @@ export default new Router({
       name: 'branch_list',
       component: () => import('./views/branch/BranchList.vue'),
       meta:{
-        title:"全国分院列表"
+        title:"全国分院列表",
+        keepAlive:true
       }
     },
     // BranchDetail.vue
@@ -470,7 +485,8 @@ export default new Router({
       name: 'tutor_index',
       component: () => import('./views/tutor/Index.vue'),
       meta:{
-        title:"梦想导师团"
+        title:"梦想导师团",
+        keepAlive:true
       }
     },
     {

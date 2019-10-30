@@ -90,22 +90,24 @@
       </router-link>
     </div>
     <div v-if="ad_foot.length" class="mb-10">
-      <router-link :to="ad_foot[0].url">
+      <router-link to="/tutor/index">
         <img v-lazy="ad_foot[0].image" width="100%" alt="">
+      </router-link>
+    </div>
+    <div v-if="ad_foot.length" class="mb-10" style="margin-bottom:2.666667rem;">
+      <router-link to="/goods/index2">
+        <img v-lazy="ad_foot[1].image" width="100%" alt="">
       </router-link>
     </div>
     <!-- banner3 -->
     <!-- banner -->
-    <div v-if="ad_foot.length" class="flex flex-jus" style="margin-bottom:2.666667rem;">
+    <!-- <div v-if="ad_foot.length" class="flex flex-jus" style="margin-bottom:2.666667rem;">
       <div v-for="(item,index) in ad_foot" v-if="index !=0" :key="item.id" class="banner2">
-        <!-- <router-link :to="item.url">
-          <img :src="item.image" width="100%" alt="">
-        </router-link> -->
         <a :href="item.url">
           <img :src="item.image" width="100%" alt="">
         </a>
       </div>
-    </div>
+    </div> -->
     <!-- banner -->
     <!-- 联系我们 -->
     <div class="contact-us">

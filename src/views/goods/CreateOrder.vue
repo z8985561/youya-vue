@@ -1,18 +1,24 @@
 <template>
   <div>
     <div v-if="type==2">
+      <div v-if="!address" class="address">
+        <router-link :to="{name:'address_edit'}">
+          <div class="fz-16 c6">
+            <span>暂无地址，请去</span>
+            <span class="text-price">添加地址</span>
+          </div>
+        </router-link>
+      </div>
+      <router-link v-else :to="{name:'address_list'}">
       <div class="address">
-        <div v-if="0" class="fz-16 c6">
-          <span>暂无地址，请去</span>
-          <span class="text-price">添加地址</span>
-        </div>
         <img src="img/icon-dingwei.png" alt="">
-        <div class="fz-15 ml-10" style="width:80%;">
-          <div>熊娟 13445677888</div>
-          <div class="text-hide">中国浙江省宁波市江北区市民路98号4楼区市民路98号4楼</div>
+        <div class="fz-15 ml-10 c3" style="width:80%;">
+          <div>{{address.name}} {{address.phone}}</div>
+          <div class="text-hide">{{address.province}}{{address.city}}{{address.area}}{{address.address}}</div>
         </div>
         <van-icon name="arrow" size="15px" color="#999" />
       </div>
+      </router-link>
       <div class="bar-10"></div>
     </div>
     <!-- 产品列表 -->
@@ -55,6 +61,7 @@
     props: {},
     data() {
       return {
+        address:"",
         value: 1,
         message: "",
         type: "",
@@ -83,6 +90,12 @@
           this.$toast.fail(message)
         }
       },
+      async getAddress(){
+        let {code,data,message} = await axios.get("/user/address-first");
+        if(code==0){
+          this.address = data
+        }
+      },
       async submit() {
         let goods = []
         goods.push({
@@ -92,15 +105,19 @@
         this.$toast.loading({
           message: '提交中...'
         });
+        let params = {
+          type: this.type,
+          goods: JSON.stringify(goods),
+          share_id: this.$route.query.share_id
+        }
+        if(params.type==2){
+          params.address_id = this.address.id
+        }
         let {
           code,
           data,
           message
-        } = await axios.post("/user/mall-order", {
-          type: this.type,
-          goods: JSON.stringify(goods),
-          share_id: this.$route.query.share_id
-        })
+        } = await axios.post("/user/mall-order", params)
         if (code == 0) {
           this.$toast.clear()
           console.log(data);
@@ -200,7 +217,9 @@
       this.quantity = this.$route.query.quantity;
       this.getGoods()
       this.getSDK()
-      console.log(this.$route.query.share_id);
+      if(this.type==2){
+        this.getAddress()
+      }
 
     },
     mounted() {}

@@ -9,7 +9,7 @@
       </li>
       <li @click="showCounselorModel">
         <img src="../../assets/img/icon-service.png" alt="">
-        <div class="fz-12 c3">我的课程顾问</div>
+        <div class="fz-12 c3">我的服务天使</div>
       </li>
     </ul>
     <van-tabs v-model="active" :border="false" title-active-color="#8DB9DF" title-inactive-color="#999999" color="#8DB9DF" line-height="2" line-width="25">
@@ -104,7 +104,7 @@
             <img :src="teacher.qr" alt="">
           </div>
         </div>
-        <div class="fz-12 c9 text-center">识别二维码咨询详情</div>
+        <div class="fz-12 c9 text-center">识别二维码联系</div>
       </div>
     </van-popup>
     <!-- 课程顾问 -->
@@ -122,13 +122,15 @@
         list: [],
         loading: false,
         finished: false,
-        teacher: {}
+        teacher: {},
+        page:1
       };
     },
     watch: {
       active(n,o){
         if(n==o) return;
         this.list = [];
+        this.page = 1;
         this.finished = false;
         // this.getList()
       }
@@ -156,10 +158,13 @@
       },
       async getList(){
         if(this.active==0){
-          var {code,data,message} = await axios.get("/user/package");
+          var {code,data,message} = await axios.get("/user/package",{params:{
+            page:this.page++
+          }});
         }else{
           var {code,data,message} = await axios.get("/user/package",{params:{
-            is_gift: this.active -1
+            is_gift: this.active -1,
+            page:this.page++
           }});
         }
         if(code==0){
