@@ -120,10 +120,13 @@
         } = await axios.post("/user/mall-order", params)
         if (code == 0) {
           this.$toast.clear()
-          console.log(data);
           this.order_id = data.id
-          // this.payed(data.id)
-          this.pay(data.id)
+          if(data.status==1){
+            this.$toast.success("支付成功");
+            this.$router.replace("/feedback")
+          }else{
+            this.pay(data.id)
+          }
         } else {
           this.$toast.fail(message)
         }
