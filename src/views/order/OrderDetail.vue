@@ -10,15 +10,15 @@
       </div>
       <img class="status" src="../../assets/img/icon-status-0.png" alt="">
     </div>
-    <!-- <div class="address-item">
+    <div v-if="detail.type==2" class="address-item">
       <img src="../../assets/img/icon-dingwei.png" alt="">
       <div class="info fz-15 c3 plr-10">
         <div class="flex flex-jus flex-align-center">
-          <div>熊娟 13445677888</div>
+          <div>{{detail.address_name}} {{detail.address_phone}}</div>
         </div>
-        <div class="fz-14 c9">中国浙江省宁波市江北区市民路大道街198号腾辉大厦4楼39号</div>
+        <div class="fz-14 c9">{{detail.address_province}}{{detail.address_city}}{{detail.address_area}}{{detail.address_value}}</div>
       </div>
-    </div> -->
+    </div>
     <div class="bar-10"></div>
     <!-- 商品列表 -->
     <div class="p-10 mb-10">

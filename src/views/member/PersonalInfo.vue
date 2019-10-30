@@ -23,13 +23,18 @@
       <van-field label="联系电话" label-class="c9" input-align="right" v-model="userInfo.phone_contact" placeholder="请输入联系电话" />
       <van-cell title-class="flex flex-align-center c9" title="收款二维码" value="内容">
         <div class="flex flex-end" slot="default">
-          <van-uploader :before-read="receiptQr">
-            <!-- <div v-if="userInfo.qr_card" class="c3">修改</div> -->
+          <van-uploader :before-read="receiptQr" accept="image/gif, image/jpeg">
             <img v-if="userInfo.receipt_qr"  class="qr_card" :src="userInfo.receipt_qr || '../../img/noface.png'" alt="">
             <div v-else class="c3">请上传收款二维码</div>
           </van-uploader>
         </div>
       </van-cell>
+      <!-- <van-cell title-class="flex flex-align-center c9" title="收款二维码" value="内容">
+        <div class="flex flex-end" slot="default">
+          <img v-if="userInfo.receipt_qr" @click="uploadImg" data-key="receipt_qr" class="qr_card" :src="userInfo.receipt_qr || '../../img/noface.png'" alt="">
+          <div v-else class="c3">请上传收款二维码</div>
+        </div>
+      </van-cell> -->
     </van-cell-group>
     <div class="footer-bar">
       <div class="btn-youya" @click="submit">确认修改</div>
@@ -38,6 +43,7 @@
 </template>
 
 <script>
+  import wx from "weixin-js-sdk";
   import core from "@/assets/js/my-core.js";
   export default {
     components: {},
@@ -50,6 +56,49 @@
     watch: {},
     computed: {},
     methods: {
+      uploadImg(e){
+        let {key} = e.currentTarget.dataset;
+        let that = this;
+        wx.chooseImage({
+          count: 1, // 默认9
+          sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
+          sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
+          success: function (res) {
+          console.log(res.localIds)
+          that.userinfo[key] = res.localIds; // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
+          }
+        });
+      },
+      async getSDK() {
+        // alert(location.href)
+        let href = encodeURIComponent(window.location.href)
+        let {
+          data,
+          code,
+          message
+        } = await axios.get('/config/jsjdk?url=' + href)
+        if (code == 0) {
+          wx.config({
+            debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+            appId: data.appId, // 必填，公众号的唯一标识
+            timestamp: Number(data.timestamp), // 必填，生成签名的时间戳
+            nonceStr: data.nonceStr, // 必填，生成签名的随机串
+            signature: data.signature, // 必填，签名，见附录1
+            jsApiList: [
+              'chooseWXPay',
+              'onMenuShareTimeline',
+              'onMenuShareAppMessage', //1.0分享到朋友圈
+              'updateAppMessageShareData', //1.4 分享到朋友
+              'updateTimelineShareData',
+              "openAddress",
+              "chooseImage",
+              "previewImage"
+            ] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+          })
+        } else {
+          // $weui.topTips(message, 3000);
+        }
+      },
       async getData() {
         this.$toast.loading({
           message: '加载中...'
@@ -137,6 +186,7 @@
     },
     created() {
       this.getData()
+      this.getSDK()
     },
     mounted() {}
   };

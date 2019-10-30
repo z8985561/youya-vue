@@ -155,18 +155,18 @@
         }
       },
       async getWXAddress() {
+        let that = this;
         wx.ready(() => {
           wx.openAddress({
             success: function(res) {
-              console.log(res)
-              var userName = res.userName; // 收货人姓名
-              var postalCode = res.postalCode; // 邮编
-              var provinceName = res.provinceName; // 国标收货地址第一级地址（省）
-              var cityName = res.cityName; // 国标收货地址第二级地址（市）
-              var countryName = res.countryName; // 国标收货地址第三级地址（国家）
-              var detailInfo = res.detailInfo; // 详细收货地址信息
-              var nationalCode = res.nationalCode; // 收货地址国家码
-              var telNumber = res.telNumber; // 收货人手机号码
+              that.name = res.userName; // 收货人姓名
+              // var postalCode = res.postalCode; // 邮编
+              that.province = res.provinceName; // 国标收货地址第一级地址（省）
+              that.city = res.cityName; // 国标收货地址第二级地址（市）
+              that.area = res.countryName; // 国标收货地址第三级地址（国家）
+              that.address = res.detailInfo; // 详细收货地址信息
+              // var nationalCode = res.nationalCode; // 收货地址国家码
+              that.phone = res.telNumber; // 收货人手机号码
             }
           });
         })
