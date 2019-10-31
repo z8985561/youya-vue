@@ -109,7 +109,7 @@
           type: this.type,
           goods: JSON.stringify(goods)
         }
-        if(this.$route.query.share_id){
+        if(this.$route.query.share_id && this.$route.query.share_id !="undefined"){
           params.share_id = this.$route.query.share_id
         }
         if(params.type==2){
@@ -135,7 +135,7 @@
             this.pay(data.id)
           }
         } else {
-          this.$toast.fail(message)
+          this.$toast.fail(message||"下单失败，请联系客服！")
         }
       },
       // 支付（测试）

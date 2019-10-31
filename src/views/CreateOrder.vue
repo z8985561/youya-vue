@@ -122,7 +122,7 @@
         if(this.couponCode){
           params.code = this.couponCode
         }
-        if(this.$route.query.share_id){
+        if(this.$route.query.share_id && this.$route.query.share_id !="undefined"){
           params.share_id = this.$route.query.share_id
         }
         let {

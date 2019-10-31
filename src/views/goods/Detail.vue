@@ -135,8 +135,12 @@ import wx from "weixin-js-sdk";
           let shareData = {
             title: this.detail.title,
             desc: this.detail.subtitle, //这里请特别注意是要去除html
-            link: `http://youya.chuncom.com/youya-h5/?type=3&id=${this.detail.id}&share_id=${this.userInfo.id}`,
             imgUrl: this.detail.image || "http://youya.chuncom.com/youya-h5/img/logo.png"
+          }
+          if(this.detail.is_share == 1 && this.userInfo.id ){
+            shareData.link = `http://youya.chuncom.com/youya-h5/?type=3&id=${this.detail.id}&share_id=${this.userInfo.id}`
+          }else{
+            shareData.link = `http://youya.chuncom.com/youya-h5/?type=3&id=${this.detail.id}`
           }
           if (wx.onMenuShareAppMessage) { //微信文档中提到这两个接口即将弃用，故判断
             wx.onMenuShareAppMessage(shareData); //1.0 分享到朋友
@@ -154,6 +158,7 @@ import wx from "weixin-js-sdk";
       },
       async getUserInfo(){
         let {code,data,message} = await axios.get("/user");
+        this.getSDK()
         if(code == 0){
           this.userInfo = data;
           if(data.is_bind==0){
@@ -232,7 +237,7 @@ import wx from "weixin-js-sdk";
     created() {
       this.getData()
       this.getUserInfo()
-      this.getSDK()
+
     },
     mounted() {}
   };

@@ -227,6 +227,7 @@
   }
 
   .btn-youya {
+    width: 100%;
     background: linear-gradient(143deg, rgba(157, 195, 230, 1) 0%, rgba(131, 179, 219, 1) 100%);
     color: #fff;
   }
