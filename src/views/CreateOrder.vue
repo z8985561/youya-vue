@@ -129,11 +129,7 @@
           code,
           data,
           message
-        } = await axios.post("/user/course-order", {
-          course_id: this.$route.query.id,
-          code: this.couponCode,
-          share_id: this.$route.query.share_id
-        })
+        } = await axios.post("/user/course-order", params)
         if (code == 0) {
           this.$toast.clear()
           console.log(data)
@@ -144,7 +140,7 @@
             this.pay(data.id)
           }
         } else {
-          this.$toast.fail(message)
+          this.$toast.fail(message||"下单失败，请联系客服！")
         }
       },
       //hedian 课程订单完成(测试)
@@ -221,7 +217,6 @@
     created() {
       this.getData()
       this.getSDK()
-      console.log(this.$route.query.share_id);
 
     },
     mounted() {},

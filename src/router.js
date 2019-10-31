@@ -392,7 +392,7 @@ export default new Router({
     // 产品详情
     {
       // 产品详情
-      path: '/goods/detail',
+      path: '/goods_detail',
       name: 'goods_detail',
       component: () => import('./views/goods/Detail.vue'),
       meta:{

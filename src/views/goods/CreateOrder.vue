@@ -107,8 +107,10 @@
         });
         let params = {
           type: this.type,
-          goods: JSON.stringify(goods),
-          share_id: this.$route.query.share_id
+          goods: JSON.stringify(goods)
+        }
+        if(this.$route.query.share_id){
+          params.share_id = this.$route.query.share_id
         }
         if(params.type==2){
           params.address_id = this.address.id
