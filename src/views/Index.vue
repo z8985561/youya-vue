@@ -143,14 +143,14 @@
       }
     },
     created() {
+      this.activity_id = this.$route.query.activity_id
+      this.share_id = this.$route.query.share_id
       this.getContactImg()
       if(this.$route.query.type){
         this.jumpPage()
+      }else{
+        this.checkLogin()
       }
-      this.activity_id = this.$route.query.activity_id
-      this.share_id = this.$route.query.share_id
-      // this.login()
-      this.checkLogin()
       this.getSDK()
     },
     methods: {
@@ -202,6 +202,7 @@
             })
             break;
           default:
+            this.checkLogin()
             break;
         }
       },
