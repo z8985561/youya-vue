@@ -10,7 +10,7 @@
       </div>
     </van-sticky>
     <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="getList">
-      <ul class="subscribe-list">
+      <ul v-if="list.length" class="subscribe-list">
         <li class="subscribe-item" v-for="(item,index) in list" :key="index">
           <router-link :to="{ name: 'subscribe_detail', params: { id: item.id }}">
             <div class="cover" :style="{backgroundImage:'url('+item.image+')'}">
@@ -40,6 +40,7 @@
         </li>
       </ul>
     </van-list>
+    <div v-if="!list.length" class="text-center fz-15 p-10 c9">暂时数据</div>
   </div>
 </template>
 

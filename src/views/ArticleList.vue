@@ -29,6 +29,7 @@
 
     </van-list>
     <!-- 美文列表 -->
+    <div v-if="!list.length" class="text-center fz-15 p-10 c9">暂时数据</div>
   </div>
 </template>
 

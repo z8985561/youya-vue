@@ -79,7 +79,7 @@
         });
         if(b){
           this.$toast.loading({message: '加载中...'});
-          let {code,data,message} = await axios.post("/user/off/reservation-order/off",{
+          let {code,data,message} = await axios.post("/user/off/reservation-package/off",{
             order_id:id
           });
           if(code == 0){
