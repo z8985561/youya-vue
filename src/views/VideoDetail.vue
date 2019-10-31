@@ -209,17 +209,40 @@
         this.$toast("视频播放结束！")
       },
       // 购买事件
-      buying(){
-        if(!this.userinfo.phone || !this.userinfo.real_name){
-          this.$router.push({
-            path:`/binding_information`
-          })
-          return;
+      async buying(){
+        let {code,data,message} = await axios.get("/user");
+        if(code == 0){
+          this.userInfo = data;
+          if(data.is_bind==0){
+            this.$dialog.confirm({
+              title:"提示",
+              message:"您还未绑定手机号，是否前往绑定？"
+            })
+              .then(res=>{
+                this.$router.push({name:"binding_information"})
+              })
+              .catch(e=>{})
+            return;
+          }else{
+            this.$router.push({ name:"create_order",query:{id: this.$route.query.id,share_id:this.$route.query.share_id || ""}})
+          }
+        }else if(code==401){
+          this.$dialog.confirm({
+              title:"提示",
+              message:"您还未授权登录，无法进行购买，是否前往授权？"
+            })
+              .then(res=>{
+                 window.location.href = `http://youya.chuncom.com/user/authorization?url=${encodeURIComponent(window.location.href)}`
+              })
+              .catch(e=>{})
+          // this.$toast.fail("您还未授权登录，无法进行购买")
         }
-        // this.$router.push({
-        //   path:`/authentication?path=create_order&id=${this.$route.query.id}`
-        // })
-        this.$router.push({ name:"create_order",query:{id: this.$route.query.id,share_id:this.$route.query.share_id || ""}})
+        // if(!this.userinfo.phone || !this.userinfo.real_name){
+        //   this.$router.push({
+        //     path:`/binding_information`
+        //   })
+        //   return;
+        // }
       },
       async getData(){
         this.$toast.loading({message: '加载中...'});
@@ -265,7 +288,7 @@
       }
     },
     created() {
-      this.userinfo = JSON.parse(localStorage.getItem("userinfo")) || {}
+      // this.userinfo = JSON.parse(localStorage.getItem("userinfo")) || {}
       this.getData();
       // this.getCatalog()
       this.checkIsBought();

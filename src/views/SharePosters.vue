@@ -83,15 +83,15 @@ export default {
           type:'crop',
       })
       // 模板背景图连接
-      .add("../img/poster-bg.png",{
-          width:610,
-          height:642,
-          pos:{
-              x:70,
-              y:160,
-              scale:1
-          },
-      })
+      // .add("../img/poster-bg.png",{
+      //     width:610,
+      //     height:642,
+      //     pos:{
+      //         x:70,
+      //         y:160,
+      //         scale:1
+      //     },
+      // })
       // 二维码连接 this.createShareImage.share_qr ../img/erweima.png
       .add(this.createShareImage.share_qr,{
           width:126,

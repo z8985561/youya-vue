@@ -170,7 +170,15 @@ import wx from "weixin-js-sdk";
           this.isBuy = true;
         }else if(code==401){
           this.isBuy = false;
-          this.$toast.fail("您还未授权登录，无法进行购买")
+          this.$dialog.confirm({
+              title:"提示",
+              message:"您还未授权登录，无法进行购买，是否前往授权？"
+            })
+              .then(res=>{
+                 window.location.href = `http://youya.chuncom.com/user/authorization?url=${encodeURIComponent(window.location.href)}`
+              })
+              .catch(e=>{})
+          // this.$toast.fail("您还未授权登录，无法进行购买")
         }
       },
       async getData() {
