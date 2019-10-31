@@ -5,13 +5,13 @@
         <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="getList">
           <ul class="redeem-list">
             <li class="redeem-item" v-for="item in list" v-if="item.status==0" :key="item.id">
-              <div class="flex flex-align-center">
+              <div @click="showQrCode" :data-url="item.qr" class="flex flex-align-center">
                 <div class="courses-info">
                   <div class="fz-15 c3 mb-5">{{item.with_package.goods_name}}</div>
                   <div class="fz-13 c9">课次：{{item.times}}</div>
                 </div>
                 <div class="redeem-code">
-                  <img @click="showQrCode" :data-url="item.qr" src="../../assets/img/redeem-code.png" alt="">
+                  <img  src="../../assets/img/redeem-code.png" alt="">
                 </div>
               </div>
               <div class="redeem-line"></div>

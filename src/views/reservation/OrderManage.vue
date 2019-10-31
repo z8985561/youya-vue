@@ -49,7 +49,7 @@
         </li>
       </ul>
     </van-list>
-    <!-- <router-link :to="{name:'reservation_order_detail',query:{code:'33ab36e822311cc949f13afe2e4f3c72'}}">订单详情</router-link> -->
+    <!-- <router-link :to="{name:'reservation_order_detail',query:{code:'5fc55ba95184bc9c80d1f9d3adf42b4d'}}">订单详情</router-link> -->
     <!-- 订单列表 -->
     <van-popup v-model="isShowCondition" position="bottom">
       <van-picker :columns="condition" @confirm="selectCondition" show-toolbar title="搜索条件" />

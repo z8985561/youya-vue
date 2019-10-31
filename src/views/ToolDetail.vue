@@ -26,10 +26,26 @@ export default {
         }else{
           this.$toast.fail(messege)
         }
+    },
+    async getAbout(){
+      this.$toast.loading({messages:"加载中..."})
+      let {code,data,messages} = await axios.get(`/config/detail?key=ABOUT_US`);
+      if(code==0){
+        this.$toast.clear();
+        this.content = data.value;
+        document.title = data.tip;
+      }else{
+        this.$toast.fail(messege)
+      }
     }
   },
   created() {
-    this.getData()
+    if(this.$route.query.key){
+      this.getAbout()
+    }else{
+      this.getData()
+    }
+
   },
   mounted() {}
 };
