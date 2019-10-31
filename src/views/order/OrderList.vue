@@ -260,6 +260,17 @@
     border: 1px solid #999;
     color: #999;
   }
+  .counselor {
+    padding: 20px;
+    width: 290px;
+    box-sizing: border-box;
+
+    .avatar {
+      width: 55px;
+      height: 55px;
+      border-radius: 50%;
+    }
+  }
   .btn-side{
     position: fixed;
     right: 5px;
