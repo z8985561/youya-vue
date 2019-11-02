@@ -23,7 +23,7 @@
       <van-field label="联系电话" label-class="c9" input-align="right" v-model="userInfo.phone_contact" placeholder="请输入联系电话" />
       <van-cell title-class="flex flex-align-center c9" title="收款二维码" value="内容">
         <div class="flex flex-end" slot="default">
-          <van-uploader :before-read="receiptQr" accept="image/gif,image/jpeg,image/jpg,image/png">
+          <van-uploader :before-read="receiptQr">
             <img v-if="userInfo.receipt_qr"  class="qr_card" :src="userInfo.receipt_qr || '../../img/noface.png'" alt="">
             <div v-else class="c3">请上传收款二维码</div>
           </van-uploader>
@@ -116,18 +116,18 @@
         }
       },
       async upAvatar(e){
-        let url = await this.update(e);
-        this.userInfo.avatar = url;
+        this.update(e,'avatar');
+        // this.userInfo.avatar = url;
       },
       async upQrCard(e){
-        let url = await this.update(e);
-        this.userInfo.qr_card = url;
+        this.update(e,"qr_card");
+        // this.userInfo.qr_card = url;
       },
       async receiptQr(e){
-        let url = await this.update(e);
-        this.userInfo.receipt_qr = url;
+        this.update(e,"receipt_qr");
+        // this.userInfo.receipt_qr = url;
       },
-      async update(file){
+      async update(file,name){
           let param = new FormData();
           param.append('image',file);
           let config = {
@@ -137,7 +137,7 @@
           let {code,data,message} = await axios.post('/user/upload-image',param,config)
           if (code == 0) {
             this.$toast.clear()
-            return data.image_url
+            this.userInfo[name] = data.image_url
           } else {
             this.$toast.fail(message)
           }
