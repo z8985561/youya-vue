@@ -23,7 +23,7 @@
       <van-field label="联系电话" label-class="c9" input-align="right" v-model="userInfo.phone_contact" placeholder="请输入联系电话" />
       <van-cell title-class="flex flex-align-center c9" title="收款二维码" value="内容">
         <div class="flex flex-end" slot="default">
-          <van-uploader :before-read="receiptQr">
+          <van-uploader :after-read='receiptQr2'>
             <img v-if="userInfo.receipt_qr"  class="qr_card" :src="userInfo.receipt_qr || '../../img/noface.png'" alt="">
             <div v-else class="c3">请上传收款二维码</div>
           </van-uploader>
@@ -120,6 +120,7 @@
         // this.userInfo.avatar = url;
       },
       async upQrCard(e){
+        console.log(e)
         this.update(e,"qr_card");
         // this.userInfo.qr_card = url;
       },
@@ -127,20 +128,31 @@
         this.update(e,"receipt_qr");
         // this.userInfo.receipt_qr = url;
       },
+      receiptQr2(e){
+        this.userInfo.receipt_qr = e.content
+        this.update(e.file,"receipt_qr");
+      },
       async update(file,name){
-          let param = new FormData();
-          param.append('image',file);
-          let config = {
-              headers:{'Content-Type':'multipart/form-data'}
-          };
-          this.$toast.loading({message: '加载中...'});
-          let {code,data,message} = await axios.post('/user/upload-image',param,config)
-          if (code == 0) {
-            this.$toast.clear()
-            this.userInfo[name] = data.image_url
-          } else {
-            this.$toast.fail(message)
+          try {
+            let param = new FormData();
+            param.append('image',file,file.name);
+            let config = {
+                headers:{'Content-Type':'multipart/form-data'}
+            };
+            this.$toast.loading({message: '加载中...'});
+            let {code,data,message} = await axios.post('/user/upload-image',param,config)
+            if (code == 0) {
+              this.$toast.clear()
+              this.userInfo[name] = data.image_url
+            } else {
+              this.$toast.fail(message)
+            }
+          } catch (error) {
+            if(error){
+              this.$toast.fail(error|| "上传失败！")
+            }
           }
+
       },
       async submit(){
         if(!core.trim(this.userInfo.phone_contact)){
