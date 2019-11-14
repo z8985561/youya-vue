@@ -35,7 +35,7 @@
 
     <van-cell-group :border="false">
       <van-cell title="我的订单" icon="img/icon-member-01.png" is-link to='/order_list'/>
-      <!-- <van-cell title="我的购物车" icon="img/icon-member-02.png" is-link to='/member/my_cart'/> -->
+      <van-cell title="我的购物车" icon="img/icon-member-02.png" is-link to='/member/my_cart'/>
       <van-cell title="收益明细" icon="img/icon-member-03.png" is-link to='/member/earnings_record'/>
       <van-cell title="提现明细" icon="img/icon-member-04.png" is-link to="/member/withdraw_record" />
       <van-cell title="个人资料" icon="img/icon-member-05.png" is-link to="/member/personal_info" />

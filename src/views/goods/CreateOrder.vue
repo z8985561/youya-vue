@@ -22,14 +22,14 @@
       <div class="bar-10"></div>
     </div>
     <!-- 产品列表 -->
-    <div class="goods-item">
-      <img :src="goods.image" alt="">
+    <div v-for="item in list" class="goods-item">
+      <img :src="item.image" alt="">
       <div class="ml-10 flex flex-column flex-jus" style="flex:1;">
-        <div class="fz-15 c3">{{goods.title}}</div>
+        <div class="fz-15 c3">{{item.title}}</div>
         <!-- <div class="fz-11 c9">颜色：色号#3</div> -->
         <div class="flex flex-jus flex-align-end">
-          <div class="fz-15 c3">¥{{goods.price}}</div>
-          <van-stepper v-model="quantity" integer />
+          <div class="fz-15 c3">¥{{item.price}}</div>
+          <van-stepper v-model="item.quantity" @change="sumPriceEvent"  integer />
         </div>
       </div>
     </div>
@@ -47,7 +47,7 @@
     <div class="footer-bar">
       <div>
         <span class="fz-15 c9">合计：</span>
-        <span class="fz-15 text-price">￥{{quantity * goods.price}}</span>
+        <span class="fz-15 text-price">￥{{sumPrice}}</span>
       </div>
       <div class="btn-youya" @click="submit">提交订单</div>
     </div>
@@ -65,16 +65,29 @@
         value: 1,
         message: "",
         type: "",
-        goods_id: "",
-        quantity: "",
-        goods: {},
-        order_id: ""
+        list:[],
+        goods: [],
+        order_id: "",
+        sumPrice:0,
       };
     },
     watch: {},
-    computed: {},
+    computed: {
+
+    },
     methods: {
-      async getGoods() {
+      sumPriceEvent(){
+        var sum = 0
+        if(this.list.length){
+          this.list.forEach(item=>{
+            sum = (parseFloat(item.price) * 100 * item.quantity) / 100 + sum;
+          })
+          this.sumPrice = sum;
+        }else{
+          this.sumPrice = 0;
+        }
+      },
+      async getGoods(goods_id,index) {
         this.$toast.loading({
           message: '加载中...'
         });
@@ -82,10 +95,14 @@
           code,
           data,
           message
-        } = await axios.get(`/mall/detail?id=${this.goods_id}`)
+        } = await axios.get(`/mall/detail?id=${goods_id}`)
         if (code == 0) {
           this.$toast.clear()
-          this.goods = data
+          this.list[index] = {
+            ...this.list[index],
+            ...data
+          }
+          this.sumPriceEvent()
         } else {
           this.$toast.fail(message)
         }
@@ -98,9 +115,11 @@
       },
       async submit() {
         let goods = []
-        goods.push({
-          goods_id: this.goods_id,
-          quantity: this.quantity
+        this.list.forEach(item=>{
+          goods.push({
+            goods_id:item.goods_id,
+            quantity:item.quantity
+          })
         })
         this.$toast.loading({
           message: '提交中...'
@@ -222,10 +241,19 @@
       },
     },
     created() {
+      console.log( this.$route.query)
+      if(this.$route.query.list){
+        this.list = this.$route.query.list
+      }else{
+        this.list.push({
+          goods_id:this.$route.query.goods_id,
+          quantity:this.$route.query.quantity
+        })
+      }
+      this.list.forEach((item,index)=>{
+        this.getGoods(item.goods_id,index)
+      })
       this.type = this.$route.query.type;
-      this.goods_id = this.$route.query.goods_id;
-      this.quantity = this.$route.query.quantity;
-      this.getGoods()
       this.getSDK()
       if(this.type==2){
         this.getAddress()

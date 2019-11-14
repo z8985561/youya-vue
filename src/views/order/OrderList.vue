@@ -24,7 +24,7 @@
             <div v-if="item.status==4" class="fz-12 text-price">已退款</div>
             <div v-if="item.status==5" class="fz-12 c9">已取消</div>
           </div>
-          <router-link v-for="goods in item.with_detail" :key="item.id" :to="{name:'order_detail',query:{id:item.id}}">
+          <router-link v-for="goods in item.with_detail" :key="goods.id" :to="{name:'order_detail',query:{id:item.id}}">
             <div class="flex p-10">
               <img class="thumb" :src="goods.goods_image" alt="">
               <div class="ml-10 flex flex-column flex-jus" style="flex:1;">
@@ -99,6 +99,7 @@
           this.loading = false;
           this.finished = false;
           this.list = []
+          this.getList()
         }
       }
     },

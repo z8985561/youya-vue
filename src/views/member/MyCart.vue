@@ -1,18 +1,18 @@
 <template>
   <div>
     <!-- 产品列表 -->
-    <div class="goods-item" v-for="(item,index) in list" :key="index">
+    <div v-if="list.length" class="goods-item" v-for="(item,index) in list" :key="index">
       <div class="checkbox">
         <van-checkbox v-if="!changeEdit" v-model="item.checked" checked-color="#ee7063" @change="checkedChange"></van-checkbox>
         <van-checkbox v-if="changeEdit" v-model="item.editCkecked" checked-color="#ee7063" @change="checkedChange2"></van-checkbox>
       </div>
-      <img src="../../assets/img/goods-01.jpg" alt="">
+      <img :src="item.with_goods.image" alt="">
       <div class="ml-10 flex flex-column flex-jus" style="flex:1;">
-        <div class="fz-15 text-hide2">完美日记（PERFECT DIARY）无痕持妆粉底液B21 黄调自然偏白黄调自然偏白</div>
-        <div class="fz-11 c9">颜色：色号#3</div>
+        <div class="fz-15 text-hide2">{{item.with_goods.title}}</div>
+        <!-- <div class="fz-11 c9">颜色：色号#3</div> -->
         <div class="flex flex-jus flex-align-end">
-          <div class="fz-15 text-price">¥159.00</div>
-          <van-stepper v-model="item.totle" integer />
+          <div class="fz-15 text-price">¥{{item.with_goods.price}}</div>
+          <van-stepper v-model="item.quantity" integer />
         </div>
       </div>
     </div>
@@ -22,12 +22,12 @@
       <van-checkbox v-if="changeEdit" icon-size="24px" v-model="editCkeckedAll" checked-color="#ee7063" @click="editCkeckedChangeAll">全选</van-checkbox>
       <div class="flex" v-if="!changeEdit">
         <div class="btn-youya-o" @click="changeEditEvent">编辑</div>
-        <div class="btn-youya">去结算</div>
+        <div @click="clearing" class="btn-youya">去结算</div>
       </div>
       <div class="flex" v-if="changeEdit">
         <div class="btn-youya-o" @click="changeEditEvent">完成</div>
         <div class="btn-danger-o" @click="deleteItem">删除</div>
-        <div class="btn-youya">加入收藏夹</div>
+        <!-- <div class="btn-youya">加入收藏夹</div> -->
       </div>
     </div>
   </div>
@@ -39,20 +39,8 @@
     props: {},
     data() {
       return {
-        list:[{
-          checked:true,
-          editCkecked:false,
-          totle:1
-        },{
-          checked:true,
-          editCkecked:false,
-          totle:1
-        },{
-          checked:true,
-          editCkecked:false,
-          totle:1
-        }],
-        checkedAll:true,
+        list:[],
+        checkedAll:false,
         editCkeckedAll:false,
         changeEdit:false
       };
@@ -60,6 +48,17 @@
     watch: {},
     computed: {},
     methods: {
+      // 获取购物车列表
+      async getCartList(){
+        let {code,data,message} = await axios.get("/user/mall-cart")
+        if(code==0){
+          this.list = data
+        }else if(code==401){
+          this.$toast.fail("您还未登录！")
+        }else{
+          this.$toast.fail(message)
+        }
+      },
       checkedChange(e){
         this.checkedAll = this.list.every(item=>item.checked)
       },
@@ -81,9 +80,46 @@
       changeEditEvent(){
         this.changeEdit = !this.changeEdit
       },
-      deleteItem(){}
+      async deleteItem(){
+        var goodsList = this.list.map(item=>{
+          if(item.editCkecked){
+            return item.id
+          }
+        })
+        let {code,message} = await axios.post("/user/mall-cart/delete",{
+          ids: goodsList.join(",")
+        })
+        if(code==0){
+          this.$toast.success('操作成功')
+          this.getCartList()
+        }else{
+          this.$toast.fail(message)
+        }
+
+      },
+      clearing(){
+        let goodsList = [];
+        this.list.forEach(item=>{
+          if(item.checked){
+            goodsList.push({
+              goods_id:item.goods_id,
+              quantity:item.quantity
+            })
+          }
+        })
+        this.$router.push({
+          name:"goods_create_order",
+          query:{
+            type:2,
+            list:goodsList
+          }
+        })
+        console.log(goodsList)
+      },
     },
-    created() {},
+    created() {
+      this.getCartList()
+    },
     mounted() {}
   };
 </script>

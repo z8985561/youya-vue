@@ -75,7 +75,9 @@
           })
         if(code==0){
           console.log(data);
-          this.getUserInfo()
+          this.$toast("绑定成功")
+          this.$router.go(-1);
+          // this.getUserInfo()
         }else{
           this.$toast(message)
         }

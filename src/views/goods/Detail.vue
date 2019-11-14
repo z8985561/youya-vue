@@ -51,7 +51,8 @@
       <img src="../../assets/img/btn-cart.png" alt="">
     </div> -->
     <div class="side-btn">
-      <img @click="showContact" src="../../assets/img/btn-service.png" alt="">
+      <img @click="showContact" class="mb-5"  src="../../assets/img/btn-service.png" alt="">
+      <img @click="addCart" src="../../assets/img/btn-cart.png" alt="">
     </div>
     <van-popup v-model="isShowContact">
       <img style="width:70vw;" :src="this.$store.getters.getContact" alt="">
@@ -101,6 +102,20 @@ import wx from "weixin-js-sdk";
     watch: {},
     computed: {},
     methods: {
+      // 加入购物车
+      async addCart(){
+        let {code,data,message} = await axios.post("/user/mall-cart/add",{
+          goods_id:this.detail.id
+        });
+        if(code==0){
+          console.log(data)
+          this.$toast.success("成功加入购物车")
+        }else if(code==401){
+          this.$toast.fail("您还未登录！")
+        }else{
+          this.$toast.fail(message)
+        }
+      },
       showContact(){
         this.isShowContact = true
       },
