@@ -111,7 +111,7 @@
           name:"goods_create_order",
           query:{
             type:2,
-            list:goodsList
+            list:JSON.stringify(goodsList)
           }
         })
         console.log(goodsList)

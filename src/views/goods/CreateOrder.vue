@@ -243,7 +243,7 @@
     created() {
       console.log( this.$route.query)
       if(this.$route.query.list){
-        this.list = this.$route.query.list
+        this.list = JSON.parse(this.$route.query.list)
       }else{
         this.list.push({
           goods_id:this.$route.query.goods_id,
