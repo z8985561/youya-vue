@@ -5,7 +5,7 @@
       <div class="fz-13 c6">联系微信</div>
       <img style="width:30vw;height:30vw;" :src="detail.share_info.with_guest.qr_card" alt="">
       <div class="fz-13 c6">优雅传播者：{{detail.share_info.with_guest.nick_name}}</div>
-      <div class="fz-13 c6">电话：{{detail.share_info.with_guest.phone}}</div>
+      <div class="fz-13 c6">电话：{{detail.share_info.with_guest.phone_contact}}</div>
       <div class="fz-12 c9">长按识别二维码添加微信</div>
     </div>
   </div>
