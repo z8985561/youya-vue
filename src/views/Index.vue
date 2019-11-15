@@ -300,6 +300,11 @@
   }
 </script>
 <style lang="less">
+  .van-uploader__input{
+    right: 0;
+    left: -40vw !important;
+    width: 60vw !important;
+  }
   .van-icon__image {
     width: 45px !important;
     height: 45px !important;

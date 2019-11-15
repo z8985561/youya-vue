@@ -1,9 +1,12 @@
 <template>
   <div>
+
     <!-- 视频 -->
-    <img v-if="!showVideo" :src="detail.image" class="banner" alt="">
-    <video-player v-if="showVideo" class="video-player-box" ref="videoPlayer" :options="playerOptions" :playsinline="true" customEventName="customstatechangedeventname" @play="onPlayerPlay($event)" @pause="onPlayerPause($event)" @ended="onPlayerEnded($event)" @statechanged="playerStateChanged($event)">
-    </video-player>
+    <van-sticky>
+      <img v-if="!showVideo" :src="detail.image" class="banner" alt="">
+      <video-player v-if="showVideo" class="video-player-box" ref="videoPlayer" :options="playerOptions" :playsinline="true" customEventName="customstatechangedeventname" @play="onPlayerPlay($event)" @pause="onPlayerPause($event)" @ended="onPlayerEnded($event)" @statechanged="playerStateChanged($event)">
+      </video-player>
+    </van-sticky>
     <!-- 视频 -->
 
     <!-- 课程信息 -->

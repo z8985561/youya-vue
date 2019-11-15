@@ -415,7 +415,7 @@
             },
           })
           // text 添加文字数据基础函数；
-          .text(params.with_guest.phone_contact||'13544445555', {
+          .text(params.with_guest.phone||'13544445555', {
             width: 250,
             align: 'left',
             normalStyle: {
