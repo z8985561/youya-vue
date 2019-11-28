@@ -16,8 +16,8 @@
       FooterNav
     },
     mounted() {
-      document.addEventListener("blur",function(){
-        window.scrollTo(0, 0)
+      window.addEventListener('focusout', function() {
+        document.body.scrollTop = document.body.scrollHeight;
       })
     },
   }
