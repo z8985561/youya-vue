@@ -1,7 +1,7 @@
 <template>
   <div>
     <div v-html="content"></div>
-    <div class="footer-bar flex flex-center flex-align-center">
+    <div class="p-10 flex flex-center flex-align-center">
       <div class="btn-youya" @click="showPopup">预约体验课程</div>
     </div>
     <van-popup v-model="show">

@@ -14,7 +14,12 @@
   export default {
     components: {
       FooterNav
-    }
+    },
+    mounted() {
+      document.addEventListener("blur",function(){
+        window.scrollTo(0, 0)
+      })
+    },
   }
 </script>
 <style lang="less">
