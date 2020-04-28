@@ -39,6 +39,9 @@ img {
   height: auto;
   display: block;
 }
+.bg-f5 {
+  background-color: #f5f5f5;
+}
 .bar-10 {
   height: 10px;
   background-color: #f8f8f8;
@@ -46,6 +49,7 @@ img {
 .bar-1 {
   height: 1px;
   background-color: #f0f0f0;
+  transform: scaleY(0.5);
 }
 .van-icon {
   vertical-align: middle;
@@ -165,6 +169,9 @@ img {
 }
 .text-price {
   color: #D7736D !important;
+}
+.text-price2 {
+  color: #FFB07F !important;
 }
 .text-primary {
   color: #8DB9DF;
@@ -291,6 +298,15 @@ img {
   min-height: 50px;
   background-color: #fff;
   box-sizing: border-box;
+}
+.footer-bar .tips {
+  position: absolute;
+  top: -30px;
+  left: 0;
+  right: 0;
+  padding: 0 15px;
+  font-size: 13px;
+  color: #999;
 }
 .cell-group {
   background-color: #fff;
