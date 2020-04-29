@@ -238,7 +238,7 @@ export default {
         case "5":
           this.$router.push({
             name: "live_detail",
-            params: {
+            query: {
               id: this.$route.query.id,
               share_id: this.$route.query.share_id
             }
