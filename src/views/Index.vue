@@ -270,10 +270,10 @@ export default {
         this.getData();
         this.getCourseHot();
       } else if (code == 401) {
-        // this.login();
-        let href = encodeURIComponent(window.location.href);
-        window.location.href =
-          "http://youya-test.chuncom.com/user/authorization?url=" + href;
+        this.login();
+        // let href = encodeURIComponent(window.location.href);
+        // window.location.href =
+        //   "http://youya-test.chuncom.com/user/authorization?url=" + href;
       }
     },
     async getSDK() {
