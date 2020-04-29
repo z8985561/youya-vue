@@ -62,7 +62,7 @@ export default {
       }
     },
     copyCode() {
-      let clipboardObj = new clipboard(".cobyDomObj");
+      let clipboardObj = new clipboard(".copy");
       clipboardObj.on("success", () => {
         this.$toast("复制成功");
       });
