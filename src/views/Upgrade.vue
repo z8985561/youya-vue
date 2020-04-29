@@ -92,8 +92,8 @@ export default {
         }
       );
       if (code == 0) {
-        this.payTest(data.id);
-        // this.pay(data.id);
+        // this.payTest(data.id);
+        this.pay(data.id);
       } else {
         window.console.error(message);
       }

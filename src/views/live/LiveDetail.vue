@@ -132,10 +132,10 @@ export default {
         let shareData = {
           title: this.detail.share_title,
           desc: this.detail.share_subtitle, //这里请特别注意是要去除html
-          link: `http://youya-test.chuncom.com/youya-h5/?type=5&id=${this.detail.id}`,
+          link: `http://youya.chuncom.com/youya-h5/?type=5&id=${this.detail.id}`,
           imgUrl:
             this.detail.share_image ||
-            "http://youya-test.chuncom.com/youya-h5/img/logo.png"
+            "http://youya.chuncom.com/youya-h5/img/logo.png"
         };
         if (wx.onMenuShareAppMessage) {
           //微信文档中提到这两个接口即将弃用，故判断
@@ -186,7 +186,7 @@ export default {
             message: "您还未授权登录，无法进行购买，是否前往授权？"
           })
           .then(() => {
-            window.location.href = `http://youya-test.chuncom.com/user/authorization?url=${encodeURIComponent(
+            window.location.href = `http://youya.chuncom.com/user/authorization?url=${encodeURIComponent(
               window.location.href
             )}`;
           })

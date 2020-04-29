@@ -21,7 +21,7 @@ Vue.use(Vant);
 
 Vue.config.productionTip = false
 
-const IS_TEST = true;
+const IS_TEST = false;
 
 // Axios 请求
 Axios.defaults.timeout = 30000;
@@ -30,7 +30,7 @@ Axios.interceptors.response.use(response => {
   if (response.status === 200) {
     if (!IS_TEST && response.data.code == 401) {
       window.console.log(response.data.code);
-      window.location.href = `http://youya-test.chuncom.com/user/authorization?url=${encodeURIComponent(
+      window.location.href = `http://youya.chuncom.com/user/authorization?url=${encodeURIComponent(
               window.location.href
             )}`;
       return;

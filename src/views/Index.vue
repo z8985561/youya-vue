@@ -273,7 +273,7 @@ export default {
         this.login();
         // let href = encodeURIComponent(window.location.href);
         // window.location.href =
-        //   "http://youya-test.chuncom.com/user/authorization?url=" + href;
+        //   "http://youya.chuncom.com/user/authorization?url=" + href;
       }
     },
     async getSDK() {
