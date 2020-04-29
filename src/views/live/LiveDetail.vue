@@ -12,12 +12,10 @@
         </div>
       </div>
       <div v-if="detail.is_share" class="course-share flex flex-align-start">
-        <router-link :to="{name:'share_posters',params:{id:detail.id}}">
-          <div class="flex flex-column flex-jus flex-align-center">
-            <img src="@/assets/img/icon-wallet.png" alt />
-            <div class="fz-11 c9">分享获得</div>
-          </div>
-        </router-link>
+        <div class="flex flex-column flex-jus flex-align-center">
+          <img src="@/assets/img/icon-wallet.png" alt />
+          <div class="fz-11 c9">分享获得</div>
+        </div>
         <div class="award-tips">{{parseInt(detail.share_amount||0)}}元奖励</div>
       </div>
     </div>
@@ -61,43 +59,26 @@
 </template>
 
 <script>
+import MCanvas from "mcanvas";
 // require styles
 import wx from "weixin-js-sdk";
 export default {
   props: {},
   data() {
     return {
+      active: 0,
       isShowContact: false,
       showVideo: false,
       // 是否购买该教程
       isbought: false,
-      active: 999,
-      current: 999,
       catalogue: [],
       detail: "",
-      playerOptions: {
-        // videojs options
-        muted: true,
-        language: "zh-CN",
-        playbackRates: [0.5, 1.0, 1.5, 2.0],
-        sources: [
-          {
-            type: "video/mp4",
-            src: "./video/1.mp4"
-          }
-        ],
-        width: document.documentElement.clientWidth,
-        poster: "/video/1.jpg"
-      },
-      userinfo: {}
+      userinfo: {},
+      imgUrl: ""
     };
   },
   watch: {},
-  computed: {
-    player() {
-      return this.$refs.videoPlayer.player;
-    }
-  },
+  computed: {},
   methods: {
     showContact() {
       this.isShowContact = true;
@@ -105,7 +86,7 @@ export default {
     async getSDK() {
       // alert(location.href)
       let href = encodeURIComponent(window.location.href);
-      let { data, code, message } = await axios.get(
+      let { data, code, message } = await window.axios.get(
         "/config/jsjdk?url=" + href
       );
       if (code == 0) {
@@ -131,7 +112,7 @@ export default {
         let shareData = {
           title: this.detail.share_title,
           desc: this.detail.share_subtitle, //这里请特别注意是要去除html
-          link: `http://youya.chuncom.com/youya-h5/?type=2&id=${this.detail.id}`,
+          link: `http://youya.chuncom.com/youya-h5/?type=5&id=${this.detail.id}`,
           imgUrl:
             this.detail.share_image ||
             "http://youya.chuncom.com/youya-h5/img/logo.png"
@@ -185,7 +166,7 @@ export default {
             message: "您还未授权登录，无法进行购买，是否前往授权？"
           })
           .then(() => {
-            window.location.href = `http://youya.chuncom.com/user/authorization?url=${encodeURIComponent(
+            window.location.href = `http://youya-test.chuncom.com/user/authorization?url=${encodeURIComponent(
               window.location.href
             )}`;
           })
@@ -206,10 +187,109 @@ export default {
         this.$toast.clear();
         this.detail = data;
         this.wxShare();
+        this.compoundImg();
       } else {
         this.$toast.fail(message);
         // this.$router.push({ path: "/" });
       }
+    },
+    async compoundImg() {
+      let mc = new MCanvas({
+        width: 750,
+        height: 1334,
+        backgroundColor: "white"
+      });
+      // 海报背景图 this.list[this.active].image ../img/poster-psd.jpg
+      mc.background(this.detail.poster, {
+        left: 0,
+        top: 0,
+        color: "#000000",
+        type: "crop"
+      })
+        // 模板背景图连接
+        // .add("../img/poster-bg.png",{
+        //     width:610,
+        //     height:642,
+        //     pos:{
+        //         x:70,
+        //         y:160,
+        //         scale:1
+        //     },
+        // })
+        // 二维码连接 this.createShareImage.share_qr ../img/erweima.png
+        .add(this.detail.share_info.share_qr, {
+          width: 126,
+          height: 126,
+          pos: {
+            x: 110,
+            y: 635,
+            scale: 1
+          }
+        })
+        // 产品图连接 this.detail.image ../img/banner2-01.png
+        .add(this.detail.image, {
+          width: 570,
+          height: 321,
+          pos: {
+            x: 90,
+            y: 180,
+            scale: 1
+          }
+        })
+        .add("../img/logo.png", {
+          width: 162,
+          height: 168,
+          pos: {
+            x: 487,
+            y: 620,
+            scale: 1
+          }
+        })
+        // text 添加文字数据基础函数；
+        .text(this.detail.name, {
+          width: 530,
+          align: "left",
+          normalStyle: {
+            font: `30px Microsoft YaHei,sans-serif`,
+            lineHeight: 32
+          },
+          pos: {
+            x: 110,
+            y: 525
+          }
+        })
+        // text 添加文字数据基础函数；
+        .text("加入学习", {
+          width: 96,
+          align: "left",
+          normalStyle: {
+            font: `24px Microsoft YaHei,sans-serif`,
+            lineHeight: 28,
+            color: "#999"
+          },
+          pos: {
+            x: 254,
+            y: 660
+          }
+        })
+        // text 添加文字数据基础函数；
+        .text("长按识别二维码", {
+          width: 168,
+          align: "left",
+          normalStyle: {
+            font: `24px Microsoft YaHei,sans-serif`,
+            lineHeight: 28,
+            color: "#999"
+          },
+          pos: {
+            x: 254,
+            y: 708
+          }
+        })
+        .draw(b64 => {
+          // console.log(b64);
+          this.imgUrl = b64;
+        });
     }
   },
   created() {

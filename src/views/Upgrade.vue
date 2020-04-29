@@ -23,9 +23,7 @@
       <div class="xieyi-box">
         <div class="title">购买协议</div>
         <div class="content-box">
-          <div
-            class="mb-10 fz-15 c6"
-          >在您购买香港皇家优雅女子学堂直播过程过程中，您需要完成我们的注册流程并通过点击同意的的形式在线签署以下协议，请您务必仔细阅读、充分理解协议中的条款内后再点击同意（尤其以粗体并下划线标识的条款，因为这些条款可能会明确您）点击同意即表示您已阅读同意《爆款公社用户注册协议》和《爆款公社隐私政策》在您购买香港皇家优雅女子学堂直播过程过程中，您需要完成我们的注册流程并通过点击同意的的形式在线签署以下协议，请您务必仔细阅读、充分理解协议中的条款内后再点击同意（尤其以粗体并下划线标识的条款，因为这些条款可能会明确您）点击同意即表示您已阅读同意《爆款公社用户注册协议》和《爆款公社隐私政策》在您购买香港皇家优雅女子学堂直播过程过程中，您需要完成我们的注册流程并通过点击同意的的形式在线签署以下协议，请您务必仔细阅读、充分理解协议中的条款内后再点击同意（尤其以粗体并下划线标识的条款，因为这些条款可能会明确您）点击同意即表示您已阅读同意《爆款公社用户注册协议》和《爆款公社隐私政策》在您购买香港皇家优雅女子学堂直播过程过程中，您需要完成我们的注册流程并通过点击同意的的形式在线签署以下协议，请您务必仔细阅读、充分理解协议中的条款内后再点击同意（尤其以粗体并下划线标识的条款，因为这些条款可能会明确您）点击同意即表示您已阅读同意《爆款公社用户注册协议》和《爆款公社隐私政策》</div>
+          <div class="mb-10 fz-15 c6" v-html="UPGRADE_SERVICE_AGREEMENT.value"></div>
           <div class="flex flex-align-center">
             <div @click="flag = !flag" class="checked" :class="flag ? 'on' : ''"></div>
             <div class="fz-14 c9">
@@ -35,7 +33,7 @@
           </div>
         </div>
         <div class="btns">
-          <div class="btn-o">取消</div>
+          <div class="btn-o" @click="show = false">关闭</div>
           <div @click="confirmXY" class="btn" :class="flag ? '' :'disable'">确定</div>
         </div>
       </div>
@@ -51,13 +49,27 @@ export default {
       flag: false,
       active: 0,
       show: false,
-      list: []
+      list: [],
+      UPGRADE_SERVICE_AGREEMENT: {}
     };
   },
   created() {
     this.getList();
+    this.getXiyi();
   },
   methods: {
+    async getXiyi() {
+      let { code, data, message } = await window.axios.get("/config/detail", {
+        params: {
+          key: "UPGRADE_SERVICE_AGREEMENT"
+        }
+      });
+      if (code == 0) {
+        this.UPGRADE_SERVICE_AGREEMENT = data;
+      } else {
+        window.console.log(message);
+      }
+    },
     confim() {
       if (this.list[this.active].protocol_show == 1) {
         this.show = true;

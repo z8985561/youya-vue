@@ -48,7 +48,8 @@
         :max-date="maxDate"
         :formatter="formatter"
         @confirm="chooseDate"
-        @cancel="isShowDate = false"
+        @cancel="resetDate"
+        cancel-button-text="重置时间"
       />
     </van-popup>
     <van-popup v-model="isShowType" position="bottom">
@@ -96,6 +97,8 @@ export default {
         }
       ],
       keyword: "",
+      date: "",
+      type: "",
       total: 0,
       list: [],
       loading: false,
@@ -108,27 +111,57 @@ export default {
   methods: {
     onSearch() {
       this.list = [];
+      this.page = 1;
       this.loading = false;
       this.finished = false;
+    },
+    resetDate() {
+      this.list = [];
       this.page = 1;
+      this.date = "";
+      this.loading = false;
+      this.finished = false;
+      this.isShowDate = false;
     },
     chooseDate(e) {
-      window.console.log(e);
+      this.list = [];
+      this.page = 1;
+      this.date = e.getFullYear() + "-" + (e.getMonth() + 1);
+      this.loading = false;
+      this.finished = false;
+      this.isShowDate = false;
     },
     chooseType(e) {
-      window.console.log(e);
+      this.list = [];
+      this.page = 1;
+      if (e.value == 0) {
+        this.type = "";
+      } else {
+        this.type = e.value;
+      }
+      this.loading = false;
+      this.finished = false;
+      this.isShowType = false;
     },
     async getList() {
+      let params = {
+        page: this.page,
+        nick_name: this.keyword
+      };
+      if (this.date) {
+        params.date = this.date;
+      }
+      if (this.type) {
+        params.type = this.type;
+      }
       this.$toast.loading({ message: "加载中..." });
       let { code, data, message } = await window.axios.get(
         `/user/superior/live-income`,
         {
-          params: {
-            page: this.page++,
-            nick_name: this.keyword
-          }
+          params
         }
       );
+      this.page++;
       if (code == 0) {
         this.$toast.clear();
         this.total = data.total;
@@ -182,14 +215,14 @@ export default {
       border-radius: 2px;
       border: 1px solid rgba(141, 185, 223, 1);
       font-size: 11px;
-      color: #8DB9DF;
+      color: #8db9df;
     }
   }
 }
 .dropdown-menu {
   height: 45px;
   display: flex;
-  .dropdown-item {    
+  .dropdown-item {
     flex: 1;
     height: 45px;
     display: flex;

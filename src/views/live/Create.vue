@@ -113,7 +113,7 @@ export default {
         // console.log(data);
         if (data.status == 1) {
           this.$toast.success("支付成功");
-          this.$router.replace("/feedback");
+          this.$router.replace("/live/feedback?id=" + data.id);
         } else {
           this.payed(data.id);
           // this.pay(data.id);

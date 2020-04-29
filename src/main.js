@@ -21,11 +21,20 @@ Vue.use(Vant);
 
 Vue.config.productionTip = false
 
+const IS_TEST = false;
+
 // Axios 请求
 Axios.defaults.timeout = 30000;
 Axios.defaults.withCredentials = true;
-Axios.interceptors.response.use( response => {
+Axios.interceptors.response.use(response => {
   if (response.status === 200) {
+    if (!IS_TEST && response.data.code == 401) {
+      window.console.log(response.data.code);
+      window.location.href = `http://youya-test.chuncom.com/user/authorization?url=${encodeURIComponent(
+              window.location.href
+            )}`;
+      return;
+    }
     return Promise.resolve(response.data);
   } else {
     return Promise.reject(response.data);

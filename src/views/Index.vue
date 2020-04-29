@@ -71,7 +71,7 @@
     <van-grid :border="false" :column-num="4">
       <van-grid-item
         v-for="(item ,index) in liveList"
-        :v-key="index"
+        :key="index"
         :to="{name:'live_list',query:{id:item.id}}"
       >
         <div class="live-item">
@@ -84,7 +84,7 @@
     <!-- 视频列表 -->
     <h2 class="fz-16 c3 mb-10">热门课程</h2>
     <div class="video-list mb-10">
-      <div class="video-item" v-for="(item,index) in CourseHot" :v-key="index">
+      <div class="video-item" v-for="(item,index) in CourseHot" :key="index">
         <router-link :to="{ name: 'video_detail', query: { id: item.id }}">
           <div class="video-img">
             <img :src="item.image" width="100%" alt />
@@ -232,6 +232,15 @@ export default {
             name: "subscribe_detail",
             params: {
               id: this.$route.query.id
+            }
+          });
+          break;
+        case "5":
+          this.$router.push({
+            name: "live_detail",
+            params: {
+              id: this.$route.query.id,
+              share_id: this.$route.query.share_id
             }
           });
           break;
