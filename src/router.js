@@ -546,7 +546,7 @@ export default new Router({
     },
     {
       // 课程列表
-      path: '/live/live_list',
+      path: '/live_list',
       name: 'live_list',
       component: () => import('./views/live/LiveList.vue'),
       meta: {
@@ -555,7 +555,7 @@ export default new Router({
     },
     {
       // 课程详情
-      path: '/live/live_detail',
+      path: '/live_detail',
       name: 'live_detail',
       component: () => import('./views/live/LiveDetail.vue'),
       meta: {
