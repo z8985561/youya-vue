@@ -6,7 +6,7 @@
           <div class="checked" :class="active == index ? 'on' : ''"></div>
           <div>
             <div class="fz-14 c3 mb-10">{{item.upgrade_role_name}}</div>
-            <div class="fz-12 c9">原价￥398.00</div>
+            <div class="fz-12 c9">原价{{item.original_price}}</div>
           </div>
         </div>
         <div>
