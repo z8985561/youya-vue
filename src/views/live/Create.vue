@@ -80,11 +80,12 @@ export default {
       this.$toast.loading({
         message: "加载中..."
       });
-      let { code, data, message } = await window.axios.get("/course/detail", {
-        params: {
-          id: this.$route.query.id
+      let { code, data, message } = await window.axios.get(
+        "/live/goods-detail",
+        {
+          params: { goods_id: this.$route.query.id }
         }
-      });
+      );
       if (code == 0) {
         this.$toast.clear();
         this.detail = data;
