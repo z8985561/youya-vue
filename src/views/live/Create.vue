@@ -116,8 +116,8 @@ export default {
           this.$toast.success("支付成功");
           this.$router.replace("/live/feedback?id=" + data.id);
         } else {
-          // this.payed(data.id);
-          this.pay(data.id);
+          this.payed(data.id);
+          // this.pay(data.id);
         }
       } else {
         this.$toast.fail(message || "下单失败，请联系客服！");
