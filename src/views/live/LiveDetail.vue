@@ -61,7 +61,7 @@
     <!-- 侧边客服购物车按钮 -->
 
     <van-popup v-model="isShowPoster">
-      <img :src="imgUrl" class="poster" alt />
+      <img :src="imgUrl || this.detail.share_info.share_qr" class="poster" alt />
     </van-popup>
   </div>
 </template>
@@ -132,7 +132,7 @@ export default {
         let shareData = {
           title: this.detail.share_title,
           desc: this.detail.share_subtitle, //这里请特别注意是要去除html
-          link: `http://youya.chuncom.com/youya-h5/?type=5&id=${this.detail.id}`,
+          link: this.detail.share_info.share_url,
           imgUrl:
             this.detail.share_image ||
             "http://youya.chuncom.com/youya-h5/img/logo.png"
@@ -148,7 +148,7 @@ export default {
         wx.error(function(res) {
           // config信息验证失败会执行error函数，如签名过期导致验证失败，具体错误信息可以打开config的debug模式查看，也可以在返回的res参数中查看，对于SPA可以在这里更新签名。
           // alert("errorMSG:" + res)
-          console.log("errorMSG:" + res);
+          window.console.log("errorMSG:" + res);
         });
       });
     },
@@ -214,20 +214,23 @@ export default {
       }
     },
     async compoundImg() {
+      let { poster, image, share_info, name } = this.detail;
+      window.console.log(poster, image, share_info);
       let mc = new MCanvas({
         width: 750,
         height: 1334,
         backgroundColor: "white"
       });
       // 海报背景图 this.list[this.active].image ../img/poster-psd.jpg
-      mc.background(this.detail.poster, {
+      mc.background(poster, {
         left: 0,
         top: 0,
         color: "#000000",
         type: "crop"
       })
         // 模板背景图连接
-        // .add("../img/poster-bg.png",{
+        // .add("../img/poster-bg.pn
+        // hg",{
         //     width:610,
         //     height:642,
         //     pos:{
@@ -237,7 +240,7 @@ export default {
         //     },
         // })
         // 二维码连接 this.createShareImage.share_qr ../img/erweima.png
-        .add(this.detail.share_info.share_qr, {
+        .add(share_info.share_qr, {
           width: 126,
           height: 126,
           pos: {
@@ -247,7 +250,7 @@ export default {
           }
         })
         // 产品图连接 this.detail.image ../img/banner2-01.png
-        .add(this.detail.image, {
+        .add(image, {
           width: 570,
           height: 321,
           pos: {
@@ -266,7 +269,7 @@ export default {
           }
         })
         // text 添加文字数据基础函数；
-        .text(this.detail.name, {
+        .text(name, {
           width: 530,
           align: "left",
           normalStyle: {
