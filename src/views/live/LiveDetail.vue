@@ -206,8 +206,8 @@ export default {
       if (code == 0) {
         this.$toast.clear();
         this.detail = data;
-        this.wxShare();
         this.compoundImg();
+        this.wxShare();
       } else {
         this.$toast.fail(message);
         // this.$router.push({ path: "/" });
@@ -307,7 +307,7 @@ export default {
           }
         })
         .draw(b64 => {
-          // console.log(b64);
+          window.console.log(b64);
           this.imgUrl = b64;
         });
     }
