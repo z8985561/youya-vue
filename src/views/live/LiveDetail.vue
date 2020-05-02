@@ -259,7 +259,7 @@ export default {
             scale: 1
           }
         })
-        .add("../img/logo.png", {
+        .add("/youya-h5/img/logo.png", {
           width: 162,
           height: 168,
           pos: {
