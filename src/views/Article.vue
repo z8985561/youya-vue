@@ -21,30 +21,47 @@
         detail: "",
         share_id: "",
         share_info: "",
-        userInfo:{}
+        userInfo: {}
       };
     },
     watch: {},
     computed: {},
     methods: {
-      async getUserInfo(){
-        let {code,data,message} = await axios.get("/user");
-        if(code == 0){
+      async getUserInfo() {
+        let {
+          code,
+          data,
+          message
+        } = await axios.get("/user");
+        if (code == 0) {
           this.userInfo = data;
-          if(data.role==3){
+          if (data.role == 3) {
             this.share_id = data.id;
           }
-        }else if(code==401){
+        } else if (code == 401) {
           this.isBuy = false;
           this.$dialog.confirm({
-              title:"提示",
-              message:"您还未授权登录，是否前往授权？"
+              title: "提示",
+              message: "您还未授权登录，是否前往授权？"
             })
-              .then(res=>{
-                 window.location.href = `http://youya.chuncom.com/user/authorization?url=${encodeURIComponent(window.location.href)}`
-              })
-              .catch(e=>{})
+            .then(res => {
+              window.location.href = `http://youya.chuncom.com/user/authorization?url=${encodeURIComponent(window.location.href)}`
+            })
+            .catch(e => {})
           // this.$toast.fail("您还未授权登录，无法进行购买")
+        }
+      },
+      async add() {
+        if (!this.$route.query.share_id) {
+          return;
+        }
+        let {
+          code
+        } = await window.axios.post("/user/superior/add", {
+          superior_id: this.$route.query.share_id
+        });
+        if (code == 0) {
+          window.console.log("绑定成功");
         }
       },
       async getData() {
@@ -57,7 +74,7 @@
             data,
             message
           } = await axios.get(`/article/detail?id=${this.$route.query.id}&share_id=${ this.share_id || this.$route.query.share_id}`);
-        }else{
+        } else {
           var {
             code,
             data,
@@ -128,6 +145,7 @@
       this.getData()
       this.getSDK()
       this.getUserInfo()
+      this.add();
     },
     mounted() {}
   };
