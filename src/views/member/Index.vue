@@ -9,14 +9,8 @@
               <span class="fz-17 cf">{{userInfo.nick_name}}</span>
               <span class="vip-tag">{{userInfo.upgrade_role_name}}</span>
             </div>
-            <div
-              v-if="userInfo.superior_info"
-              class="fz-12 cf mb-5"
-            >推荐人：{{userInfo.superior_info.real_name}}</div>
-            <div
-              v-if="userInfo.superior_info"
-              class="fz-12 cf"
-            >推荐人电话：{{userInfo.superior_info.phone}}</div>
+            <div v-if="userInfo.superior_info" class="fz-12 cf mb-5">推荐人：{{userInfo.superior_info.real_name}}</div>
+            <div v-if="userInfo.superior_info" class="fz-12 cf">推荐人电话：{{userInfo.superior_info.phone}}</div>
           </div>
           <img class="avatar" :src="userInfo.avatar || 'img/noface.png'" alt />
         </div>
@@ -60,12 +54,12 @@
                 <div class="fz-12 c9">收益明细</div>
               </div>
             </van-grid-item>
-            <van-grid-item v-if="userInfo.grade != 3" to="/upgrade">
+            <!-- <van-grid-item v-if="userInfo.grade != 3" to="/upgrade">
               <div slot="default" class="text-center">
                 <img class="member-icon" src="@/assets/img/member/icon-03.png" alt srcset />
                 <div class="fz-12 c9">服务升级</div>
               </div>
-            </van-grid-item>
+            </van-grid-item> -->
             <van-grid-item to="/member/withdraw_record">
               <div slot="default" class="text-center">
                 <img class="member-icon" src="@/assets/img/member/icon-04.png" alt srcset />
@@ -172,6 +166,12 @@
                 <div class="fz-12 c9">课程直播</div>
               </div>
             </van-grid-item>
+            <van-grid-item v-if="userInfo.grade > 1" to="/upgrade_order">
+              <div slot="default" class="text-center">
+                <img class="member-icon" src="@/assets/img/member/icon-14.png" alt srcset />
+                <div class="fz-12 c9">会员课程</div>
+              </div>
+            </van-grid-item>
           </van-grid>
         </div>
 
@@ -253,134 +253,146 @@
 </template>
 
 <script>
-export default {
-  props: {},
-  data() {
-    return {
-      userInfo: {},
-      isLoading: false
-    };
-  },
-  watch: {},
-  computed: {},
-  methods: {
-    async getUserInfo() {
-      this.$toast.loading({ message: "加载中..." });
-      let { code, data, message } = await axios.get("/user");
-      if (code == 0) {
-        this.$toast.clear();
-        this.userInfo = data;
+  export default {
+    props: {},
+    data() {
+      return {
+        userInfo: {},
+        isLoading: false
+      };
+    },
+    watch: {},
+    computed: {},
+    methods: {
+      async getUserInfo() {
+        this.$toast.loading({
+          message: "加载中..."
+        });
+        let {
+          code,
+          data,
+          message
+        } = await axios.get("/user");
+        if (code == 0) {
+          this.$toast.clear();
+          this.userInfo = data;
 
-        this.isLoading = false;
-        if (data.is_bind == 0) {
-          this.$dialog
-            .confirm({
-              title: "提示",
-              message: "您还未绑定手机号，是否前往绑定？"
-            })
-            .then(() => {
-              this.$router.push({ name: "binding_information" });
-            })
-            .catch(e => {
-              window.console.log(e);
-            });
+          this.isLoading = false;
+          if (data.is_bind == 0) {
+            this.$dialog
+              .confirm({
+                title: "提示",
+                message: "您还未绑定手机号，是否前往绑定？"
+              })
+              .then(() => {
+                this.$router.push({
+                  name: "binding_information"
+                });
+              })
+              .catch(e => {
+                window.console.log(e);
+              });
+          }
+        } else {
+          this.$toast.fail(message);
         }
-      } else {
-        this.$toast.fail(message);
+      },
+      onRefresh() {
+        this.getUserInfo();
       }
     },
-    onRefresh() {
+    created() {
       this.getUserInfo();
-    }
-  },
-  created() {
-    this.getUserInfo();
-  },
-  mounted() {}
-};
+    },
+    mounted() {}
+  };
 </script>
 <style lang="less" scoped>
-.text-brown {
-  color: #695745;
-}
-
-.user-box {
-  position: relative;
-  .user-info {
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    // padding-top: 72.5px;
-    padding-left: 35px;
-    padding-right: 35px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    .username {
-      width: 200px;
-    }
-    .avatar {
-      width: 60px;
-      height: 60px;
-      border-radius: 50%;
-      border: 2px solid #fff;
-    }
-    .vip-tag {
-      display: inline-block;
-      margin-left: 6px;
-      padding: 1px 5px;
-      font-size: 11px;
-      color: #fff;
-      border-radius: 2px;
-      background: linear-gradient(
-        90deg,
-        rgba(255, 158, 100, 1) 0%,
-        rgba(255, 180, 120, 1) 100%
-      );
-    }
+  .text-brown {
+    color: #695745;
   }
-}
 
-.member-box {
-  margin-bottom: 8px;
-  border-radius: 8px;
-  background: #fff;
-  overflow: hidden;
-  .title {
+  .user-box {
     position: relative;
-    padding: 15px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    &::after {
-      content: "";
+
+    .user-info {
       position: absolute;
-      bottom: 0;
       left: 0;
       right: 0;
-      border-bottom: 1px dashed #eee;
-      transform: scaleY(0.5);
+      top: 0;
+      bottom: 0;
+      // padding-top: 72.5px;
+      padding-left: 35px;
+      padding-right: 35px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      .username {
+        width: 200px;
+      }
+
+      .avatar {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        border: 2px solid #fff;
+      }
+
+      .vip-tag {
+        display: inline-block;
+        margin-left: 6px;
+        padding: 1px 5px;
+        font-size: 11px;
+        color: #fff;
+        border-radius: 2px;
+        background: linear-gradient(90deg,
+            rgba(255, 158, 100, 1) 0%,
+            rgba(255, 180, 120, 1) 100%);
+      }
     }
   }
-  .withdraw-btn {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 70px;
-    height: 24px;
-    background: linear-gradient(
-      141deg,
-      rgba(252, 186, 133, 1) 0%,
-      rgba(255, 169, 117, 1) 100%
-    );
-    border-radius: 12px;
+
+  .member-box {
+    margin-bottom: 8px;
+    border-radius: 8px;
+    background: #fff;
+    overflow: hidden;
+
+    .title {
+      position: relative;
+      padding: 15px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      &::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        border-bottom: 1px dashed #eee;
+        transform: scaleY(0.5);
+      }
+    }
+
+    .withdraw-btn {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 70px;
+      height: 24px;
+      background: linear-gradient(141deg,
+          rgba(252, 186, 133, 1) 0%,
+          rgba(255, 169, 117, 1) 100%);
+      border-radius: 12px;
+    }
   }
-}
-.member-icon {
-  margin: 0 auto;
-  width: 30px;
-  height: 30px;
-}
+
+  .member-icon {
+    margin: 0 auto;
+    width: 30px;
+    height: 30px;
+  }
 </style>
