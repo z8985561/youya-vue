@@ -133,7 +133,7 @@ export default {
       this.loading = false;
       if (code == 0) {
         this.payTest(data.id,data.rose_id);
-        // this.pay(data.id,data.rose_id));
+        // this.pay(data.id,data.rose_id);
       } else {
         window.console.error(message);
         this.$toast.fail(message);
