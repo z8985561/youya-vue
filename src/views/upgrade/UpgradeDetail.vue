@@ -327,7 +327,7 @@
             }
           })
           .draw(b64 => {
-            window.console.log(b64);
+            // window.console.log(b64);
             this.imgUrl = b64;
           });
       }

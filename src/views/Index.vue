@@ -306,7 +306,7 @@
           code,
           data,
           message
-        } = await window.axios.get("/user/login?id=1");
+        } = await window.axios.get("/user/login?id=48");
         if (code == 0) {
           this.getData();
           this.getCourseHot();

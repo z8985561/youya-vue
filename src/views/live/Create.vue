@@ -44,7 +44,8 @@ export default {
       discounts: false,
       isShowCouponModel: false,
       detail: {},
-      coupon: {}
+      coupon: {},
+      loading: false
     };
   },
   watch: {},
@@ -125,12 +126,17 @@ export default {
     },
     //hedian 课程订单完成(测试)
     async payed(order_id) {
+      if (this.loading) {
+        return;
+      }
+      this.loading = true;
       let { code, message } = await window.axios.post(
         "/user/live/order-payed",
         {
           order_id
         }
       );
+      this.loading = false;
       if (code == 0) {
         this.$toast.success("支付成功");
         this.$router.replace("/live/feedback?id=" + order_id);
