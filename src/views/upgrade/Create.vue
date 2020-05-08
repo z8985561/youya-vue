@@ -132,14 +132,14 @@ export default {
       );
       this.loading = false;
       if (code == 0) {
-        this.payTest(data.id);
-        // this.pay(data.id);
+        this.payTest(data.id,data.rose_id);
+        // this.pay(data.id,data.rose_id));
       } else {
         window.console.error(message);
-        this.$toast.fail(message)
+        this.$toast.fail(message);
       }
     },
-    async pay(order_id) {
+    async pay(order_id, rose_id) {
       let { data, code, message } = await window.axios.get(
         "/user/upgrade/order-pay?order_id=" + order_id
       );
@@ -152,9 +152,15 @@ export default {
           paySign: data.paySign, // 支付签名
           success: res => {
             this.$toast.success("升级成功");
-            setTimeout(() => {
-              this.$router.replace("/upgrade_feedback?id=" + order_id);
-            }, 1500);
+            if (rose_id > 1) {
+              setTimeout(() => {
+                this.$router.replace("/");
+              }, 1500);
+            } else {
+              setTimeout(() => {
+                this.$router.replace("/upgrade_feedback?id=" + order_id);
+              }, 1500);
+            }
           },
           fail: res => {
             this.$toast.fail("支付失败");
@@ -165,7 +171,7 @@ export default {
         this.$toast.fail(message);
       }
     },
-    async payTest(order_id) {
+    async payTest(order_id, rose_id) {
       let { code, data, message } = await window.axios.post(
         "/user/upgrade/order-payed",
         {
@@ -174,10 +180,15 @@ export default {
       );
       if (code == 0) {
         window.console.log(data);
-        this.$toast.success("升级成功");
-        setTimeout(() => {
-          this.$router.replace("/upgrade_feedback?id=" + order_id);
-        }, 1500);
+        if (rose_id > 1) {
+          setTimeout(() => {
+            this.$router.replace("/");
+          }, 1500);
+        } else {
+          setTimeout(() => {
+            this.$router.replace("/upgrade_feedback?id=" + order_id);
+          }, 1500);
+        }
       } else {
         window.console.error(message);
       }
