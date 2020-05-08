@@ -9,7 +9,7 @@
               <span class="fz-17 cf">{{userInfo.nick_name}}</span>
               <span class="vip-tag">{{userInfo.upgrade_role_name}}</span>
             </div>
-            <div v-if="userInfo.superior_info" class="fz-12 cf mb-5">推荐人：{{userInfo.superior_info.real_name}}</div>
+            <div v-if="userInfo.superior_info" class="fz-12 cf mb-5">推荐人：{{userInfo.superior_info.nick_name}}</div>
             <div v-if="userInfo.superior_info" class="fz-12 cf">推荐人电话：{{userInfo.superior_info.phone}}</div>
           </div>
           <img class="avatar" :src="userInfo.avatar || 'img/noface.png'" alt />
