@@ -98,31 +98,31 @@
             </router-link>
           </div>
           <van-grid :column-num="5" :border="false">
-            <van-grid-item to="/member/my_courses_list">
+            <van-grid-item to="/order_list?active=1">
               <div slot="default" class="text-center">
                 <img class="member-icon" src="@/assets/img/member/icon-05.png" alt srcset />
                 <div class="fz-12 c9">待支付</div>
               </div>
             </van-grid-item>
-            <van-grid-item to="/member/my_courses_list">
+            <van-grid-item to="/order_list?active=2">
               <div slot="default" class="text-center">
                 <img class="member-icon" src="@/assets/img/member/icon-06.png" alt srcset />
                 <div class="fz-12 c9">待发货</div>
               </div>
             </van-grid-item>
-            <van-grid-item to="/member/my_courses_list">
+            <van-grid-item to="/order_list?active=3">
               <div slot="default" class="text-center">
                 <img class="member-icon" src="@/assets/img/member/icon-07.png" alt srcset />
                 <div class="fz-12 c9">待收货</div>
               </div>
             </van-grid-item>
-            <van-grid-item to="/member/my_courses_list">
+            <van-grid-item to="/order_list?active=4">
               <div slot="default" class="text-center">
                 <img class="member-icon" src="@/assets/img/member/icon-08.png" alt srcset />
                 <div class="fz-12 c9">已完成</div>
               </div>
             </van-grid-item>
-            <van-grid-item to="/member/my_courses_list">
+            <van-grid-item to="/order_list?active=5">
               <div slot="default" class="text-center">
                 <img class="member-icon" src="@/assets/img/member/icon-09.png" alt srcset />
                 <div class="fz-12 c9">售后</div>

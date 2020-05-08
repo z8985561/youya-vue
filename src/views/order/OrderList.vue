@@ -14,7 +14,7 @@
     <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="getList">
       <!-- <van-cell v-for="item in list" :key="item" :title="item" /> -->
       <ul class="order-list">
-        <li v-for="(item,index) in list" :key="item.id" :title="item" class="order-item">
+        <li v-for="(item,index) in list" :key="index" class="order-item">
           <div class="p-10 flex flex-jus">
             <div class="fz-13 c9">订单号：{{item.number}}</div>
             <div v-if="item.status==0" class="fz-12 text-price">待付款</div>
@@ -106,7 +106,7 @@
     computed: {},
     methods: {
       showCounselorModel() {
-        if(!this.teacher){
+        if (!this.teacher) {
           this.$toast.fail("暂时没有配置顾问老师")
           return
         }
@@ -124,7 +124,7 @@
           this.teacher = null
         }
       },
-      async complete(e){
+      async complete(e) {
         let flag = await this.$dialog.confirm({
             title: '提示',
             message: '是否要确认收货？'
@@ -221,6 +221,10 @@
     },
     created() {
       this.getTeacher()
+      if (this.$route.query.active) {
+        this.active = parseInt(this.$route.query.active);
+      }
+
     },
     mounted() {}
   };
@@ -261,6 +265,7 @@
     border: 1px solid #999;
     color: #999;
   }
+
   .counselor {
     padding: 20px;
     width: 290px;
@@ -272,7 +277,8 @@
       border-radius: 50%;
     }
   }
-  .btn-side{
+
+  .btn-side {
     position: fixed;
     right: 5px;
     bottom: 25%;
@@ -284,7 +290,8 @@
     text-align: center;
     box-shadow: 0 0 6px #bbb;
     color: #666;
-    img{
+
+    img {
       display: inline-block;
       width: 30px;
       vertical-align: top;
