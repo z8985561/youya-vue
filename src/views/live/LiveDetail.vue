@@ -18,9 +18,9 @@
       >
         <div class="flex flex-column flex-jus flex-align-center">
           <img src="@/assets/img/icon-wallet.png" alt />
-          <div class="fz-11 c9">分享获得</div>
+          <div class="fz-11 c9">分享</div>
         </div>
-        <div class="award-tips">{{parseInt(detail.share_amount||0)}}元奖励</div>
+        <!-- <div class="award-tips">{{parseInt(detail.share_amount||0)}}元奖励</div> -->
       </div>
     </div>
     <!-- 课程信息 -->
@@ -334,7 +334,7 @@ export default {
 
 .course-share {
   position: relative;
-  width: 84px;
+  width: 40px;
   padding-top: 10px;
 
   img {
