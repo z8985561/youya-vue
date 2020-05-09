@@ -427,6 +427,6 @@ export default {
   }
 }
 .poster {
-  width: 80vw;
+  width: 95vw;
 }
 </style>

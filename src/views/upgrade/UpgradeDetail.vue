@@ -256,16 +256,6 @@
           //         scale:1
           //     },
           // })
-          // 二维码连接 this.createShareImage.share_qr ../img/erweima.png
-          .add(share_info.share_qr, {
-            width: 126,
-            height: 126,
-            pos: {
-              x: 110,
-              y: 635,
-              scale: 1
-            }
-          })
           // 产品图连接 this.detail.image ../img/banner2-01.png
           .add(image, {
             width: 570,
@@ -273,6 +263,16 @@
             pos: {
               x: 90,
               y: 180,
+              scale: 1
+            }
+          })
+          // 二维码连接 this.createShareImage.share_qr ../img/erweima.png
+          .add(share_info.share_qr, {
+            width: 126,
+            height: 126,
+            pos: {
+              x: 110,
+              y: 635,
               scale: 1
             }
           })
@@ -452,7 +452,7 @@
   }
 
   .poster {
-    width: 80vw;
+    width: 95vw;
   }
 
   .xieyi-box {
