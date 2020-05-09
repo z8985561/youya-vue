@@ -187,11 +187,7 @@
       this.activity_id = this.$route.query.activity_id;
       this.share_id = this.$route.query.share_id;
       this.getContactImg();
-      if (this.$route.query.type) {
-        this.jumpPage();
-      } else {
-        this.checkLogin();
-      }
+      this.checkLogin();
       this.getSDK();
       this.getLive();
       this.getUpgradeInfo();
@@ -324,15 +320,19 @@
         } = await window.axios.get("/user");
         this.$toast.clear();
         if (code == 0) {
+          if (this.$route.query.type) {
+            this.jumpPage();
+            return;
+          }
           data = JSON.stringify(data);
           localStorage.setItem("userinfo", data);
           this.getData();
           this.getCourseHot();
         } else if (code == 401) {
-          this.login();
-          // let href = encodeURIComponent(window.location.href);
-          // window.location.href =
-          //   "http://youya.chuncom.com/user/authorization?url=" + href;
+          // this.login();
+          let href = encodeURIComponent(window.location.href);
+          window.location.href =
+            "http://youya.chuncom.com/user/authorization?url=" + href;
         }
       },
       async getSDK() {
