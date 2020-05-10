@@ -6,7 +6,7 @@
       <div class="course-info">
         <h2 class="fz-17 c3 mb-5">{{detail.name}}</h2>
         <!-- <div class="fz-12 c9 mb-5">全部{{catalogue.length || 0}}集</div> -->
-        <div>
+        <div v-if="detail.bug_info.price">
           <span class="fz-15 text-price">¥{{detail.bug_info.price}}</span>
           <span class="fz-12 c9 text-line">原价¥{{detail.bug_info.original_price}}</span>
         </div>
