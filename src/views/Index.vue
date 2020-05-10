@@ -200,7 +200,6 @@
           message
         } = await window.axios.get("/home/upgrade-info");
         if (code == 0) {
-          window.console.log(data);
           this.upgradeInfo = data;
         } else {
           window.console.error(message);
@@ -213,7 +212,6 @@
           message
         } = await window.axios.get("/home/live");
         if (code == 0) {
-          // window.console.log(data);
           this.liveList = data;
         } else {
           window.console.error(message);
@@ -329,10 +327,10 @@
           this.getData();
           this.getCourseHot();
         } else if (code == 401) {
-          // this.login();
-          let href = encodeURIComponent(window.location.href);
-          window.location.href =
-            "http://youya.chuncom.com/user/authorization?url=" + href;
+          this.login();
+          // let href = encodeURIComponent(window.location.href);
+          // window.location.href =
+          //   "http://youya.chuncom.com/user/authorization?url=" + href;
         }
       },
       async getSDK() {

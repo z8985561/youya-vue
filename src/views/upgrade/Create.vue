@@ -123,6 +123,10 @@ export default {
       if (this.loading) {
         return;
       }
+      this.$toast.loading({
+        message: "支付中...",
+        forbidClick: true
+      });
       this.loading = true;
       let { code, data, message } = await window.axios.post(
         "/user/upgrade/order",
@@ -132,8 +136,8 @@ export default {
       );
       this.loading = false;
       if (code == 0) {
-        // this.payTest(data.id,data.rose_id);
-        this.pay(data.id,data.rose_id);
+        this.payTest(data.id,data.rose_id);
+        // this.pay(data.id, data.rose_id);
       } else {
         window.console.error(message);
         this.$toast.fail(message);
@@ -143,6 +147,7 @@ export default {
       let { data, code, message } = await window.axios.get(
         "/user/upgrade/order-pay?order_id=" + order_id
       );
+      this.$toast.clear();
       if (code == 0) {
         wx.chooseWXPay({
           timestamp: data.timeStamp, // 支付签名时间戳，注意微信jssdk中的所有使用timestamp字段均为小写。但最新版的支付后台生成签名使用的timeStamp字段名需大写其中的S字符
