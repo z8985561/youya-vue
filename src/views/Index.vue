@@ -33,7 +33,12 @@
     <!-- banner -->
     <!-- 菜单 -->
     <van-grid :column-num="5" :border="false">
-      <van-grid-item v-for="item in tool" :icon="item.image" :text="item.title" :to="{ name: 'tool_detail', params: { id: item.id }}" />
+      <van-grid-item
+        v-for="item in tool"
+        :icon="item.image"
+        :text="item.title"
+        :to="{ name:'tool_detail', params: {id: item.id}}"
+      />
     </van-grid>
     <!-- 菜单 -->
 
@@ -46,9 +51,7 @@
       </div>
     </div>
 
-
     <!-- 升级课程 -->
-
 
     <!-- 课程推荐 -->
     <div class="flex flex-wrap flex-jus mb-10">
@@ -81,7 +84,6 @@
         <span class="fz-11 c9">查看跟多</span>
         <van-icon name="arrow" size="11" color="#999" />
       </router-link>
-      </rou>
     </h2>
     <!-- <van-grid :border="false" :column-num="4">
       <van-grid-item v-for="(item ,index) in liveList" :key="index" :to="{name:'live_list',query:{id:item.id}}">
@@ -89,7 +91,7 @@
           <div>{{ item.name }}</div>
         </div>
       </van-grid-item>
-    </van-grid> -->
+    </van-grid>-->
     <div class="video-list mb-10">
       <div class="video-item" v-for="(item,index) in liveList" :key="index">
         <router-link :to="{name:'live_detail',query:{id:item.id}}">
@@ -164,337 +166,309 @@
   </div>
 </template>
 <script>
-  import wx from "weixin-js-sdk";
-  export default {
-    data() {
-      return {
-        active: 1,
-        images: [
-          "../assets/img/index-banner-01.png",
-          "../assets/img/index-banner-01.png"
-        ],
-        ad: "",
-        ad_foot: [],
-        banner: "",
-        tool: "",
-        tool_parameter: "",
-        CourseHot: [],
-        liveList: [],
-        upgradeInfo: []
-      };
+import wx from "weixin-js-sdk";
+export default {
+  data() {
+    return {
+      active: 1,
+      images: [
+        "../assets/img/index-banner-01.png",
+        "../assets/img/index-banner-01.png"
+      ],
+      ad: "",
+      ad_foot: [],
+      banner: "",
+      tool: "",
+      tool_parameter: "",
+      CourseHot: [],
+      liveList: [],
+      upgradeInfo: []
+    };
+  },
+  created() {
+    this.activity_id = this.$route.query.activity_id;
+    this.share_id = this.$route.query.share_id;
+    this.getContactImg();
+    this.checkLogin();
+    this.getSDK();
+    this.getLive();
+    this.getUpgradeInfo();
+  },
+  methods: {
+    async getUpgradeInfo() {
+      let { code, data, message } = await window.axios.get(
+        "/home/upgrade-info"
+      );
+      if (code == 0) {
+        this.upgradeInfo = data;
+      } else {
+        window.console.error(message);
+      }
     },
-    created() {
-      this.activity_id = this.$route.query.activity_id;
-      this.share_id = this.$route.query.share_id;
-      this.getContactImg();
-      this.checkLogin();
-      this.getSDK();
-      this.getLive();
-      this.getUpgradeInfo();
+    async getLive() {
+      let { code, data, message } = await window.axios.get("/home/live");
+      if (code == 0) {
+        this.liveList = data;
+      } else {
+        window.console.error(message);
+      }
     },
-    methods: {
-      async getUpgradeInfo() {
-        let {
-          code,
-          data,
-          message
-        } = await window.axios.get("/home/upgrade-info");
-        if (code == 0) {
-          this.upgradeInfo = data;
-        } else {
-          window.console.error(message);
+    async getContactImg() {
+      let { code, data, message } = await window.axios.get("/config/detail", {
+        params: {
+          key: "CUSTOMER_CONTACT"
         }
-      },
-      async getLive() {
-        let {
-          code,
-          data,
-          message
-        } = await window.axios.get("/home/live");
-        if (code == 0) {
-          this.liveList = data;
-        } else {
-          window.console.error(message);
-        }
-      },
-      async getContactImg() {
-        let {
-          code,
-          data,
-          message
-        } = await window.axios.get("/config/detail", {
-          params: {
-            key: "CUSTOMER_CONTACT"
-          }
-        });
-        if (code == 0) {
-          this.$store.dispatch("setContact", data.value);
-        } else {
-          window.console.error(message);
-        }
-      },
-      // 根据type跳转到不同的页面
-      jumpPage() {
-        let type = this.$route.query.type;
-        switch (type) {
-          case "1":
-            this.$router.push({
-              name: "article",
-              query: {
-                id: this.$route.query.id,
-                share_id: this.$route.query.share_id
-              }
-            });
-            break;
-          case "2":
-            this.$router.push({
-              name: "video_detail",
-              query: {
-                id: this.$route.query.id,
-                share_id: this.$route.query.share_id
-              }
-            });
-            break;
-          case "3":
-            this.$router.push({
-              name: "goods_detail",
-              query: {
-                id: this.$route.query.id,
-                share_id: this.$route.query.share_id
-              }
-            });
-            break;
-          case "4":
-            this.$router.push({
-              name: "subscribe_detail",
-              params: {
-                id: this.$route.query.id
-              }
-            });
-            break;
-          case "5":
-            this.$router.push({
-              name: "live_detail",
-              query: {
-                id: this.$route.query.id,
-                share_id: this.$route.query.share_id
-              }
-            });
-            break;
-          case "6":
-            this.$router.push({
-              name: "upgrade_detail",
-              query: {
-                id: this.$route.query.id,
-                share_id: this.$route.query.share_id
-              }
-            });
-            break;
-          default:
-            this.checkLogin();
-            break;
-        }
-      },
-      async login() {
-        let {
-          code,
-          data,
-          message
-        } = await window.axios.get("/user/login?id=55");
-        if (code == 0) {
-          this.getData();
-          this.getCourseHot();
-          data = JSON.stringify(data);
-          localStorage.setItem("userinfo", data);
-        }
-      },
-      async checkLogin() {
-        this.$toast.loading({
-          message: "加载中..."
-        });
-        let {
-          data,
-          code
-        } = await window.axios.get("/user");
-        this.$toast.clear();
-        if (code == 0) {
-          if (this.$route.query.type) {
-            this.jumpPage();
-            return;
-          }
-          data = JSON.stringify(data);
-          localStorage.setItem("userinfo", data);
-          this.getData();
-          this.getCourseHot();
-        } else if (code == 401) {
-          this.login();
-          // let href = encodeURIComponent(window.location.href);
-          // window.location.href =
-          //   "http://youya.chuncom.com/user/authorization?url=" + href;
-        }
-      },
-      async getSDK() {
-        // alert(location.href)
-        let href = encodeURIComponent(window.location.href);
-        let {
-          data,
-          code,
-          message
-        } = await window.axios.get(
-          "/config/jsjdk?url=" + href
-        );
-        if (code == 0) {
-          wx.config({
-            debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
-            appId: data.appId, // 必填，公众号的唯一标识
-            timestamp: Number(data.timestamp), // 必填，生成签名的时间戳
-            nonceStr: data.nonceStr, // 必填，生成签名的随机串
-            signature: data.signature, // 必填，签名，见附录1
-            jsApiList: [
-              "chooseWXPay",
-              "onMenuShareTimeline",
-              "onMenuShareAppMessage", //1.0分享到朋友圈
-              "updateAppMessageShareData", //1.4 分享到朋友
-              "updateTimelineShareData",
-              "openAddress"
-            ] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+      });
+      if (code == 0) {
+        this.$store.dispatch("setContact", data.value);
+      } else {
+        window.console.error(message);
+      }
+    },
+    // 根据type跳转到不同的页面
+    jumpPage() {
+      let type = this.$route.query.type;
+      switch (type) {
+        case "1":
+          this.$router.push({
+            name: "article",
+            query: {
+              id: this.$route.query.id,
+              share_id: this.$route.query.share_id
+            }
           });
-        } else {
-          // $weui.topTips(message, 3000);
+          break;
+        case "2":
+          this.$router.push({
+            name: "video_detail",
+            query: {
+              id: this.$route.query.id,
+              share_id: this.$route.query.share_id
+            }
+          });
+          break;
+        case "3":
+          this.$router.push({
+            name: "goods_detail",
+            query: {
+              id: this.$route.query.id,
+              share_id: this.$route.query.share_id
+            }
+          });
+          break;
+        case "4":
+          this.$router.push({
+            name: "subscribe_detail",
+            params: {
+              id: this.$route.query.id
+            }
+          });
+          break;
+        case "5":
+          this.$router.push({
+            name: "live_detail",
+            query: {
+              id: this.$route.query.id,
+              share_id: this.$route.query.share_id
+            }
+          });
+          break;
+        case "6":
+          this.$router.push({
+            name: "upgrade_detail",
+            query: {
+              id: this.$route.query.id,
+              share_id: this.$route.query.share_id
+            }
+          });
+          break;
+        default:
+          this.checkLogin();
+          break;
+      }
+    },
+    async login() {
+      let { code, data } = await window.axios.get("/user/login?id=55");
+      if (code == 0) {
+        this.getData();
+        this.getCourseHot();
+        data = JSON.stringify(data);
+        localStorage.setItem("userinfo", data);
+      }
+    },
+    async checkLogin() {
+      this.$toast.loading({
+        message: "加载中..."
+      });
+      let { data, code } = await window.axios.get("/user");
+      this.$toast.clear();
+      if (code == 0) {
+        if (this.$route.query.type) {
+          this.jumpPage();
+          return;
         }
-      },
-      async getData() {
-        this.$toast.loading({
-          message: "加载中..."
+        data = JSON.stringify(data);
+        localStorage.setItem("userinfo", data);
+        this.getData();
+        this.getCourseHot();
+      } else if (code == 401) {
+        this.login();
+        // let href = encodeURIComponent(window.location.href);
+        // window.location.href =
+        //   "http://youya.chuncom.com/user/authorization?url=" + href;
+      }
+    },
+    async getSDK() {
+      // alert(location.href)
+      let href = encodeURIComponent(window.location.href);
+      let { data, code, message } = await window.axios.get(
+        "/config/jsjdk?url=" + href
+      );
+      if (code == 0) {
+        wx.config({
+          debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+          appId: data.appId, // 必填，公众号的唯一标识
+          timestamp: Number(data.timestamp), // 必填，生成签名的时间戳
+          nonceStr: data.nonceStr, // 必填，生成签名的随机串
+          signature: data.signature, // 必填，签名，见附录1
+          jsApiList: [
+            "chooseWXPay",
+            "onMenuShareTimeline",
+            "onMenuShareAppMessage", //1.0分享到朋友圈
+            "updateAppMessageShareData", //1.4 分享到朋友
+            "updateTimelineShareData",
+            "openAddress"
+          ] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
         });
-        let {
-          code,
-          data,
-          message
-        } = await window.axios.get("/home");
-        if (code == 0) {
-          this.$toast.clear();
-          this.ad = data.ad;
-          this.banner = data.banner;
-          this.tool = data.tool;
-          this.tool_parameter = data.tool_parameter;
-          this.ad_foot = data.ad_foot;
-        } else {
-          this.$toast.fail(message);
-        }
-      },
-      async getCourseHot() {
-        let {
-          code,
-          data,
-          message
-        } = await window.axios.get("/home/course-hot");
-        if (code == 0) {
-          this.CourseHot = data;
-        } else {
-          this.$toast.fail(message);
-        }
+      } else {
+        // $weui.topTips(message, 3000);
+        window.console.log(message);
+      }
+    },
+    async getData() {
+      this.$toast.loading({
+        message: "加载中..."
+      });
+      let { code, data, message } = await window.axios.get("/home");
+      if (code == 0) {
+        this.$toast.clear();
+        this.ad = data.ad;
+        this.banner = data.banner;
+        this.tool = data.tool;
+        this.tool_parameter = data.tool_parameter;
+        this.ad_foot = data.ad_foot;
+      } else {
+        this.$toast.fail(message);
+      }
+    },
+    async getCourseHot() {
+      let { code, data, message } = await window.axios.get("/home/course-hot");
+      if (code == 0) {
+        this.CourseHot = data;
+      } else {
+        this.$toast.fail(message);
       }
     }
-  };
+  }
+};
 </script>
 <style lang="less">
-  .van-uploader__input {
-    right: 0;
-    left: -40vw !important;
-    width: 60vw !important;
-  }
+.van-uploader__input {
+  right: 0;
+  left: -40vw !important;
+  width: 60vw !important;
+}
 
-  .van-icon__image {
-    width: 45px !important;
-    height: 45px !important;
-  }
+.van-icon__image {
+  width: 45px !important;
+  height: 45px !important;
+}
 
-  .van-grid-item__text {
-    color: #999 !important;
-  }
+.van-grid-item__text {
+  color: #999 !important;
+}
 
-  .course-item {
-    margin-bottom: 10px;
-    width: 168px;
+.course-item {
+  margin-bottom: 10px;
+  width: 168px;
 
-    img {
-      width: 100%;
-      vertical-align: bottom;
-    }
-  }
-
-  .banner2 {
-    width: 168px;
-
-    img {
-      width: 100%;
-      vertical-align: bottom;
-    }
-  }
-
-  .video-list {
+  img {
     width: 100%;
-    overflow-x: scroll;
-    white-space: nowrap;
+    vertical-align: bottom;
+  }
+}
 
-    .video-item {
-      display: inline-block;
-      margin-right: 10px;
-      width: 168px;
+.banner2 {
+  width: 168px;
 
-      .video-img {
-        position: relative;
-        margin-bottom: 5px;
+  img {
+    width: 100%;
+    vertical-align: bottom;
+  }
+}
 
-        .sets {
-          position: absolute;
-          right: 7px;
-          bottom: 2px;
-          font-size: 11px;
-          color: #fff;
-        }
+.video-list {
+  width: 100%;
+  overflow-x: scroll;
+  white-space: nowrap;
+
+  .video-item {
+    display: inline-block;
+    margin-right: 10px;
+    width: 168px;
+
+    .video-img {
+      position: relative;
+      margin-bottom: 5px;
+
+      .sets {
+        position: absolute;
+        right: 7px;
+        bottom: 2px;
+        font-size: 11px;
+        color: #fff;
       }
     }
   }
+}
 
-  .contact-us {
-    position: relative;
-    border-top: 4px dotted #eee;
-    border-bottom: 4px dotted #eee;
-    padding: 46px 0 17px;
+.contact-us {
+  position: relative;
+  border-top: 4px dotted #eee;
+  border-bottom: 4px dotted #eee;
+  padding: 46px 0 17px;
 
-    .logo {
-      position: absolute;
-      background-color: #fff;
-      padding: 0 24px;
-      left: 50%;
-      top: 0;
-      transform: translate(-50%, -60%);
+  .logo {
+    position: absolute;
+    background-color: #fff;
+    padding: 0 24px;
+    left: 50%;
+    top: 0;
+    transform: translate(-50%, -60%);
 
-      img {
-        width: 90px;
-      }
-    }
-
-    p {
-      color: #bcbcbc;
-      font-size: 12px;
-      text-align: center;
+    img {
+      width: 90px;
     }
   }
 
-  .live-item {
-    width: 100%;
-    height: 40px;
-    line-height: 40px;
-    background: rgba(255, 255, 255, 1);
-    border-radius: 20px;
-    border: 1px solid rgba(236, 236, 236, 1);
-    color: #333;
-    text-align: center;
+  p {
+    color: #bcbcbc;
     font-size: 12px;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    text-align: center;
   }
+}
+
+.live-item {
+  width: 100%;
+  height: 40px;
+  line-height: 40px;
+  background: rgba(255, 255, 255, 1);
+  border-radius: 20px;
+  border: 1px solid rgba(236, 236, 236, 1);
+  color: #333;
+  text-align: center;
+  font-size: 12px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 </style>
