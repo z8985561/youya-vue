@@ -3,7 +3,7 @@ import App from "./App.vue";
 import router from "./router";
 import store from "./store";
 import Axios from "axios";
-import VueAxios from "vue-axios";
+// import VueAxios from "vue-axios";
 // 适配方案
 import "lib-flexible/flexible.js";
 
@@ -24,7 +24,7 @@ Vue.config.productionTip = false;
 const IS_TEST = true;
 
 // Axios 请求
-Axios.defaults.timeout = 30000;
+Axios.defaults.timeout = 20000;
 Axios.defaults.withCredentials = true;
 Axios.interceptors.response.use(
   (response) => {
@@ -42,8 +42,12 @@ Axios.interceptors.response.use(
     }
   },
   (error) => {
+    if (error.message.includes('timeout')) { // 判断请求异常信息中是否含有超时timeout字符串
+      window.alert("网络超时");
+      return Promise.reject(error); // reject这个错误信息
+    }
     if (error.response.status) {
-      console.log(error);
+      window.console.log(error);
       // switch (error.response.status) {
       //   case 401:
       //     router.replace({
@@ -83,7 +87,7 @@ const errorHandler = (error, vm) => {
 };
 
 Vue.config.errorHandler = errorHandler;
-Vue.prototype.$throw = function(error) {
+Vue.prototype.$throw = function (error) {
   return errorHandler(error, this);
 };
 
