@@ -80,6 +80,9 @@ const errorHandler = (error, vm) => {
   window.console.error(error);
   window.alert(error);
   window.console.log(vm.$route.name);
+  if (typeof error == "object") {
+    error = JSON.stringify(error);
+  }
   window.axios.post("/log", {
     var_1: "name:" + vm.$route.name,
     text_1: error,

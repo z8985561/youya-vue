@@ -1,6 +1,5 @@
 <template>
   <div class="p-15">
-
       <div class="cell-group">
         <router-link v-for="item in list" :key="item.with_course.id" :to="{ name: 'video_detail', query: { id: item.with_course.id }}">
           <div class="cell">
@@ -15,6 +14,7 @@
           </div>
         </router-link>
       </div>
+      <div v-if="list.length" class="text-center fz-15 c9">暂无视频课程~</div>
   </div>
 </template>
 
@@ -32,7 +32,7 @@
     methods: {
       async getList(){
         this.$toast.loading({message: '加载中...'});
-        let {code,data,message} = await axios.get(`/user/course-order/list`);
+        let {code,data,message} = await window.axios.get(`/user/course-order/list`);
         if(code == 0){
           this.$toast.clear()
           this.list = data

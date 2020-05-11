@@ -43,7 +43,9 @@ export default {
   data() {
     return {
       order_id: "",
-      detail: {}
+      detail: {
+        with_info: {}
+      }
     };
   },
   created() {
