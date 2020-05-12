@@ -83,11 +83,18 @@ const errorHandler = (error, vm) => {
   if (typeof error == "object") {
     error = JSON.stringify(error);
   }
-  window.axios.post("/log", {
+  let user = localStorage.getItem("userinfo");
+
+  let params = {
     var_1: "name:" + vm.$route.name,
     text_1: error,
     text_2: window.navigator.userAgent
-  });
+  }
+  if (user) {
+    user = JSON.parse(user);
+    params.var_2 = user;
+  }
+  window.axios.post("/log", params);
 };
 
 Vue.config.errorHandler = errorHandler;

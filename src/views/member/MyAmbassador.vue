@@ -11,7 +11,7 @@
     >
       <van-tab title="协助大使">
         <van-search @search="onSearch1" shape="round" v-model="keyword1" placeholder="请输入昵称搜索" />
-        <van-list v-model="loading1" :finished="loading1" finished-text="没有更多了" @load="getList1">
+        <van-list v-model="loading1" :finished="finished1" finished-text="没有更多了" @load="getList1">
           <div v-for="(item,index) in list1" :key="index">
             <van-cell :border="false">
               <div slot="title" class="flex flex-align-center">
@@ -131,6 +131,7 @@ export default {
       );
       if (code == 0) {
         this.list1 = [...this.list1, ...data.data];
+        this.loading1 = false;
         if (this.list1.length >= data.total) {
           this.finished1 = true;
         }
@@ -150,6 +151,7 @@ export default {
       );
       if (code == 0) {
         this.list2 = [...this.list2, ...data.data];
+        this.loading2 = false;
         if (this.list2.length >= data.total) {
           this.finished2 = true;
         }

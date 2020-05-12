@@ -10,13 +10,14 @@
       :sticky="true"
     >
       <van-tab title="我的会员">
-        <van-search v-show="active == 0" @search="onSearch" shape="round" v-model="keyword" placeholder="请输入昵称搜索" />
-        <van-list
-          v-model="loading1"
-          :finished="loading1"
-          finished-text="没有更多了"
-          @load="getList1"
-        >
+        <van-search
+          v-show="active == 0"
+          @search="onSearch"
+          shape="round"
+          v-model="keyword"
+          placeholder="请输入昵称搜索"
+        />
+        <van-list v-model="loading1" :finished="finished1" finished-text="没有更多了" @load="getList1">
           <div v-for="(item,index) in list1" :key="index">
             <van-cell :border="false">
               <div slot="title" class="flex flex-align-center">
@@ -105,6 +106,7 @@ export default {
       );
       if (code == 0) {
         this.list1 = [...this.list1, ...data.data];
+        this.loading1 = false;
         if (this.list1.length >= data.total) {
           this.finished1 = true;
         }
@@ -124,6 +126,7 @@ export default {
       );
       if (code == 0) {
         this.list2 = [...this.list2, ...data.data];
+        this.loading1 = false;
         if (this.list2.length >= data.total) {
           this.finished2 = true;
         }
