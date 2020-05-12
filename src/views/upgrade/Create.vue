@@ -65,7 +65,9 @@ export default {
       // D86HIDIV
       discounts: false,
       isShowCouponModel: false,
-      detail: {},
+      detail: {
+        bug_info:{}
+      },
       coupon: {},
       UPGRADE_SERVICE_AGREEMENT: {},
       loading: false
@@ -201,7 +203,7 @@ export default {
     async getSDK() {
       // alert(location.href)
       let href = encodeURIComponent(window.location.href);
-      let { data, code, message } = await window.axios.get(
+      let { data, code } = await window.axios.get(
         "/config/jsjdk?url=" + href
       );
       if (code == 0) {

@@ -86,6 +86,7 @@ const errorHandler = (error, vm) => {
   window.axios.post("/log", {
     var_1: "name:" + vm.$route.name,
     text_1: error,
+    text_2: window.navigator.userAgent
   });
 };
 
