@@ -642,6 +642,15 @@ export default new Router({
     meta: {
       title: ""
     }
+  },
+  {
+    // 升级课程支付反馈
+    path: '/webview',
+    name: 'webview',
+    component: () => import('./views/WebView.vue'),
+    meta: {
+      title: ""
+    }
   }
   ]
 })

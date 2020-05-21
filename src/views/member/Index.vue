@@ -42,12 +42,6 @@
             </div>
           </div>
           <van-grid :column-num="4" :border="false">
-            <van-grid-item to="/member/service_object">
-              <div slot="default" class="text-center">
-                <img class="member-icon" src="@/assets/img/member/icon-01.png" alt srcset />
-                <div class="fz-12 c9">服务对象</div>
-              </div>
-            </van-grid-item>
             <van-grid-item to="/member/earnings_record2">
               <div slot="default" class="text-center">
                 <img class="member-icon" src="@/assets/img/member/icon-02.png" alt srcset />
@@ -70,6 +64,12 @@
               <div slot="default" class="text-center">
                 <img class="member-icon" src="@/assets/img/member/icon-19.png" alt srcset />
                 <div class="fz-12 c9">业绩排行</div>
+              </div>
+            </van-grid-item>
+            <van-grid-item to="/member/service_object">
+              <div slot="default" class="text-center">
+                <img class="member-icon" src="@/assets/img/member/icon-01.png" alt srcset />
+                <div class="fz-12 c9">服务对象</div>
               </div>
             </van-grid-item>
             <van-grid-item v-if="userInfo.grade == 3" to="/member/my_ambassador">

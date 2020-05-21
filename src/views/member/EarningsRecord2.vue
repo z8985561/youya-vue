@@ -1,7 +1,7 @@
 <template>
   <div>
     <van-sticky>
-      <van-search v-model="keyword" shape="round" @search="onSearch" placeholder="请输入昵称搜索" />
+      <van-search v-model="keyword" shape="round" @search="onSearch" placeholder="请输入引荐人搜索" />
       <div class="dropdown-menu">
         <div class="dropdown-item" @click="isShowDate = true">
           <div class="fz-14 c3 mr-10">全部收益</div>
@@ -32,9 +32,13 @@
             <div>订单编号</div>
             <div>{{item.order_number}}</div>
           </div>
-          <div class="flex flex-jus fz-13 c9">
+          <div class="flex flex-jus fz-13 c9 mb-10">
             <div>订单金额</div>
             <div>¥{{item.order_price}}</div>
+          </div>
+          <div class="flex flex-jus fz-13 c9">
+            <div>引荐人</div>
+            <div>{{item.superior_guest.real_name || item.superior_guest.nick_name}}</div>
           </div>
         </li>
       </ul>
@@ -165,7 +169,7 @@ export default {
       if (code == 0) {
         this.$toast.clear();
         this.total = data.total;
-        this.list = [...this.list, ...data.list.data];
+        this.list = [...this.list, ...data.list];
         // 加载状态结束
         this.loading = false;
         // 数据全部加载完成
@@ -222,6 +226,7 @@ export default {
 .dropdown-menu {
   height: 45px;
   display: flex;
+  background: #fff;
   .dropdown-item {
     flex: 1;
     height: 45px;

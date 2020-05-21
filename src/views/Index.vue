@@ -288,7 +288,7 @@ export default {
       }
     },
     async login() {
-      let { code, data } = await window.axios.get("/user/login?id=354");
+      let { code, data } = await window.axios.get("/user/login?id=11");
       if (code == 0) {
         this.getData();
         this.getCourseHot();
@@ -312,10 +312,10 @@ export default {
         this.getData();
         this.getCourseHot();
       } else if (code == 401) {
-        // this.login();
-        let href = encodeURIComponent(window.location.href);
-        window.location.href =
-          "http://youya.chuncom.com/user/authorization?url=" + href;
+        this.login();
+        // let href = encodeURIComponent(window.location.href);
+        // window.location.href =
+        //   "http://youya.chuncom.com/user/authorization?url=" + href;
       }
     },
     async getSDK() {

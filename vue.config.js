@@ -6,7 +6,9 @@ module.exports = {
   devServer: {
     proxy: {
       '/': {
-        target: 'http://youya.chuncom.com/',
+        // http://youya-test.chuncom.com/
+        // http://youya.chuncom.com/
+        target: 'http://youya-test.chuncom.com/',
         ws: false,
         changeOrigin: true,
         pathRewrite: {
@@ -25,7 +27,7 @@ module.exports = {
           // 这个目录只能有一级，如果目录层次大于一级，在生成的时候不会有任何错误提示，在预渲染的时候只会卡着不动。
           staticDir: path.join(__dirname, 'dist'),
           // 对应自己的路由文件，比如a有参数，就需要写成 /a/param1。
-          routes: ['/', '/article', "/tutor/detail", "/video", "/verification/index", "/verification/order_detail", "/reservation/order_detail", "/live/live_detail","/upgrade_detail"],
+          routes: ['/', '/article', "/tutor/detail", "/video", "/verification/index", "/verification/order_detail", "/reservation/order_detail", "/live/live_detail", "/upgrade_detail"],
           // 这个很重要，如果没有配置这段，也不会进行预编译
           renderer: new Renderer({
             inject: {
