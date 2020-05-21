@@ -16,7 +16,7 @@
             <van-cell title="引荐人" :value="item.with_superior_guest.real_name || item.with_superior_guest.nick_name" title-class="fz-13 c9" value-class="fz-12" :border="false"></van-cell>
             <van-cell title="电话" :value="item.with_guest.total_cost" title-class="fz-13 c9" :border="false">
               <div slot="default">
-                <a :href="'tel:'+item.with_superior_guest.phone" class="c3">{{item.with_superior_guest.phone}}</a>
+                <a :href="'tel:'+item.with_superior_guest.phone"></a>{{item.with_superior_guest.phone}}</a>
               </div>
             </van-cell>
             <van-cell title="绑定时间" :value="item.created_at" title-class="fz-13 c9" value-class="fz-12 c9" :border="false"></van-cell>
@@ -37,7 +37,7 @@
             <van-cell title="引荐人" :value="item.with_superior_guest.real_name || item.with_superior_guest.nick_name" title-class="fz-13 c9" value-class="fz-12" :border="false"></van-cell>
             <van-cell title="电话" :value="item.with_guest.total_cost" title-class="fz-13 c9" :border="false">
               <div slot="default">
-                <a :href="'tel:'+item.with_superior_guest.phone" class="c3">{{item.with_superior_guest.phone}}</a>
+                <a :href="'tel:'+item.with_superior_guest.phone">{{item.with_superior_guest.phone}}</a>
               </div>
             </van-cell>
             <van-cell title="绑定时间" :value="item.created_at" title-class="fz-13 c9" value-class="fz-12 c9" :border="false"></van-cell>
