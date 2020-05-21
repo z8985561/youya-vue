@@ -91,7 +91,6 @@ const errorHandler = (error, vm) => {
     text_2: window.navigator.userAgent
   }
   if (user) {
-    user = JSON.parse(user);
     params.var_2 = user;
   }
   window.axios.post("/log", params);
