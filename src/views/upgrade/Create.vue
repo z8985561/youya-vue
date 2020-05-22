@@ -66,7 +66,7 @@ export default {
       discounts: false,
       isShowCouponModel: false,
       detail: {
-        bug_info:{}
+        bug_info: {}
       },
       coupon: {},
       UPGRADE_SERVICE_AGREEMENT: {},
@@ -138,8 +138,8 @@ export default {
       );
       this.loading = false;
       if (code == 0) {
-        this.payTest(data.id,data.rose_id);
-        // this.pay(data.id, data.rose_id);
+        // this.payTest(data.id,data.rose_id);
+        this.pay(data.id, data.rose_id);
       } else {
         window.console.error(message);
         this.$toast.fail(message);
@@ -203,9 +203,7 @@ export default {
     async getSDK() {
       // alert(location.href)
       let href = encodeURIComponent(window.location.href);
-      let { data, code } = await window.axios.get(
-        "/config/jsjdk?url=" + href
-      );
+      let { data, code } = await window.axios.get("/config/jsjdk?url=" + href);
       if (code == 0) {
         wx.config({
           debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
