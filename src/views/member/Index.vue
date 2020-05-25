@@ -166,7 +166,13 @@
                 <div class="fz-12 c9">课程直播</div>
               </div>
             </van-grid-item>
-            <van-grid-item v-if="userInfo.grade > 1" to="/upgrade_order">
+            <!-- <van-grid-item v-if="userInfo.grade > 1" to="/upgrade_order">
+              <div slot="default" class="text-center">
+                <img class="member-icon" src="@/assets/img/member/icon-14.png" alt srcset />
+                <div class="fz-12 c9">会员课程</div>
+              </div>
+            </van-grid-item> -->
+            <van-grid-item v-if="userInfo.grade > 1" @click="jump" :data-url="detail.code_url">
               <div slot="default" class="text-center">
                 <img class="member-icon" src="@/assets/img/member/icon-14.png" alt srcset />
                 <div class="fz-12 c9">会员课程</div>
@@ -258,12 +264,42 @@
     data() {
       return {
         userInfo: {},
-        isLoading: false
+        isLoading: false,
+        detail: {}
       };
     },
     watch: {},
     computed: {},
     methods: {
+      jump(e) {
+        let {
+          url
+        } = e.currentTarget.dataset;
+        this.$router.push({
+          path: "/webview",
+          query: {
+            url
+          }
+        })
+      },
+      async getDetail() {
+        let {
+          code,
+          data,
+          message
+        } = await window.axios.get(
+          "/user/upgrade/course"
+        );
+        if (code == 0) {
+          this.detail = data;
+        } else {
+          // window.console.log(message);
+          this.$toast.fail(message);
+          setTimeout(() => {
+            this.$router.back();
+          }, 1500);
+        }
+      },
       async getUserInfo() {
         this.$toast.loading({
           message: "加载中..."
@@ -276,7 +312,6 @@
         if (code == 0) {
           this.$toast.clear();
           this.userInfo = data;
-
           this.isLoading = false;
           if (data.is_bind == 0) {
             this.$dialog
@@ -292,6 +327,9 @@
               .catch(e => {
                 window.console.log(e);
               });
+          }
+          if (this.userInfo.grade > 1) {
+            this.getDetail();
           }
         } else {
           this.$toast.fail(message);
