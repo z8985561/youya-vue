@@ -148,8 +148,8 @@
         );
         this.loading = false;
         if (code == 0) {
-          this.payTest(data.id, data.rose_id);
-          // this.pay(data.id, data.rose_id);
+          // this.payTest(data.id, data.rose_id);
+          this.pay(data.id, data.rose_id);
         } else {
           window.console.error(message);
           this.$toast.fail(message);
@@ -230,16 +230,17 @@
           }
         );
         if (code == 0) {
-          window.console.log(data);
-          if (rose_id > 1) {
-            setTimeout(() => {
-              this.$router.replace("/");
-            }, 1500);
-          } else {
-            setTimeout(() => {
-              this.$router.replace("/upgrade_feedback?id=" + order_id);
-            }, 1500);
-          }
+          this.getDetail(order_id)
+          // window.console.log(data);
+          // if (rose_id > 1) {
+          //   setTimeout(() => {
+          //     this.$router.replace("/");
+          //   }, 1500);
+          // } else {
+          //   setTimeout(() => {
+          //     this.$router.replace("/upgrade_feedback?id=" + order_id);
+          //   }, 1500);
+          // }
         } else {
           window.console.error(message);
         }
