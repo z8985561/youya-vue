@@ -21,7 +21,7 @@ Vue.use(Vant);
 
 Vue.config.productionTip = false;
 
-const IS_TEST = true;
+const IS_TEST = false;
 
 // Axios 请求
 Axios.defaults.timeout = 20000;

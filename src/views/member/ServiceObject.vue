@@ -2,7 +2,11 @@
   <div>
     <van-tabs v-model="active" line-height="2px" title-active-color="#8DB9DF" title-inactive-color="#999999" color="#8DB9DF" line-width="26px" :sticky="true">
       <van-tab title="消费用户">
-        <van-search v-show="active == 0" @search="onSearch" shape="round" v-model="keyword" placeholder="请输入昵或真实姓名称搜索" />
+        <van-search v-show="active == 0" show-action @search="onSearch" shape="round" v-model="keyword" placeholder="请输入昵或真实姓名称搜索">
+          <template slot="action">
+            <div @click="onSearch">搜索</div>
+          </template>
+        </van-search>
         <van-list v-model="loading1" :finished="finished1" finished-text="没有更多了" @load="getList1">
           <div v-for="(item,index) in list1" :key="index">
             <van-cell :border="false">

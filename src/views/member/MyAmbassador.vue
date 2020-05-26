@@ -2,7 +2,11 @@
   <div>
     <van-tabs v-model="active" line-height="2px" title-active-color="#8DB9DF" title-inactive-color="#999999" color="#8DB9DF" line-width="26px" :sticky="true">
       <van-tab title="协助大使">
-        <van-search @search="onSearch1" shape="round" v-model="keyword1" placeholder="请输入昵称或真实姓名搜索" />
+        <van-search @search="onSearch1" show-action shape="round" v-model="keyword1" placeholder="请输入昵称或真实姓名搜索">
+          <template slot="action">
+            <div @click="onSearch1">搜索</div>
+          </template>
+        </van-search>
         <van-list v-model="loading1" :finished="finished1" finished-text="没有更多了" @load="getList1">
           <div v-for="(item,index) in list1" :key="index">
             <van-cell :border="false">
@@ -26,7 +30,11 @@
       </van-tab>
       <van-tab title="辅助大使">
         <van-list v-model="loading2" :finished="finished2" finished-text="没有更多了" @load="getList2">
-          <van-search @search="onSearch2" shape="round" v-model="keyword2" placeholder="请输入昵称或真实姓名搜索" />
+          <van-search @search="onSearch2" show-action shape="round" v-model="keyword2" placeholder="请输入昵称或真实姓名搜索">
+            <template slot="action">
+            <div @click="onSearch2">搜索</div>
+          </template>
+        </van-search>
           <div v-for="(item,index) in list2" :key="index">
             <van-cell :border="false">
               <div slot="title" class="flex flex-align-center">
@@ -85,7 +93,7 @@
         this.loading2 = false;
         this.finished2 = false;
         this.page[1] = 1;
-        // this.getList1();
+        // this.getList2();
       },
       async getList1() {
         let {
