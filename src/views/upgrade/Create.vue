@@ -171,12 +171,13 @@
         if (code == 0) {
           window.console.log(data)
           // 调整到小鹅通
-          this.$router.push({
-            path: "/webview",
-            query: {
-              url: data.code_url
-            }
-          })
+          window.location.href = data.code_url
+          // this.$router.push({
+          //   path: "/webview",
+          //   query: {
+          //     url: data.code_url
+          //   }
+          // })
         } else {
           window.console.log(message);
         }

@@ -272,12 +272,13 @@
     computed: {},
     methods: {
       jump(e) {
-        this.$router.push({
-          path: "/webview",
-          query: {
-            url: this.detail.code_url
-          }
-        })
+        window.location.href = this.detail.code_url
+        // this.$router.push({
+        //   path: "/webview",
+        //   query: {
+        //     url: this.detail.code_url
+        //   }
+        // })
       },
       async getDetail() {
         let {
