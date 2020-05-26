@@ -32,9 +32,9 @@
         <van-list v-model="loading2" :finished="finished2" finished-text="没有更多了" @load="getList2">
           <van-search @search="onSearch2" show-action shape="round" v-model="keyword2" placeholder="请输入昵称或真实姓名搜索">
             <template slot="action">
-            <div @click="onSearch2">搜索</div>
-          </template>
-        </van-search>
+              <div @click="onSearch2">搜索</div>
+            </template>
+          </van-search>
           <div v-for="(item,index) in list2" :key="index">
             <van-cell :border="false">
               <div slot="title" class="flex flex-align-center">
@@ -83,17 +83,17 @@
     methods: {
       onSearch1() {
         this.list1 = [];
+        this.page[0] = 1;
         this.loading1 = false;
         this.finished1 = false;
-        this.page[0] = 1;
-        // this.getList1();
+        this.getList1();
       },
       onSearch2() {
         this.list2 = [];
-        this.loading2 = false;
-        this.finished2 = false;
         this.page[1] = 1;
-        // this.getList2();
+        this.finished2 = false;
+        this.loading2 = false;
+        this.getList2();
       },
       async getList1() {
         let {
