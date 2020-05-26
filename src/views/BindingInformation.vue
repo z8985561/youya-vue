@@ -63,7 +63,7 @@
           messega
         } = await axios.post(`/user/verify-sms`, {
           phone: this.phone,
-          area_code: "+" + this.phoneCode
+          area_code: this.phoneCode
         });
         if (code == 0) {
           this.$toast("发送成功");
