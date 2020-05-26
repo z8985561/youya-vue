@@ -172,8 +172,8 @@
                 <div class="fz-12 c9">会员课程</div>
               </div>
             </van-grid-item> -->
-            <van-grid-item v-if="userInfo.grade > 1 && detail.code_url" @click="jump" :data-url="detail.code_url">
-              <div slot="default" class="text-center">
+            <van-grid-item v-if="userInfo.grade > 1 && detail.code_url">
+              <div @click="jump" slot="default" class="text-center">
                 <img class="member-icon" src="@/assets/img/member/icon-14.png" alt srcset />
                 <div class="fz-12 c9">会员课程</div>
               </div>
@@ -272,13 +272,10 @@
     computed: {},
     methods: {
       jump(e) {
-        let {
-          url
-        } = e.currentTarget.dataset;
         this.$router.push({
           path: "/webview",
           query: {
-            url
+            url: this.detail.code_url
           }
         })
       },
@@ -294,10 +291,10 @@
           this.detail = data;
         } else {
           // window.console.log(message);
-          this.$toast.fail(message);
-          setTimeout(() => {
-            this.$router.back();
-          }, 1500);
+          // this.$toast.fail(message);
+          // setTimeout(() => {
+          //   this.$router.back();
+          // }, 1500);
         }
       },
       async getUserInfo() {

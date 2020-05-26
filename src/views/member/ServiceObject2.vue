@@ -93,7 +93,7 @@
         } = await window.axios.get(
           "/user/superior/ambassador-first", {
             params: {
-              keyword: this.keyword,
+              nick_name: this.keyword,
               activation: 1,
               page: this.page[0]++
             }
@@ -117,7 +117,7 @@
         } = await window.axios.get(
           "/user/superior/ambassador-first", {
             params: {
-              keyword: this.keyword2,
+              nick_name: this.keyword2,
               activation: 0,
               page: this.page[1]++
             }

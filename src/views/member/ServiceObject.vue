@@ -69,7 +69,7 @@
         } = await window.axios.get(
           "/user/superior/first", {
             params: {
-              keyword: this.keyword,
+              nick_name: this.keyword,
               activation: 1,
               page: this.page[0]++
             }
