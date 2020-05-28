@@ -272,7 +272,7 @@
     computed: {},
     methods: {
       jump(e) {
-        window.location.href = this.detail.code_url
+        window.location.href = "https://wx5d0e0e0b94136634.h5.xiaoe-tech.com/content_page/eyJ0eXBlIjoxNSwicmVzb3VyY2VfdHlwZSI6MjMsInJlc291cmNlX2lkIjoiNTA2MiIsInByb2R1Y3RfaWQiOiIiLCJhcHBfaWQiOiJhcHBFZHowRDc3ZDEwNjMifQ"
         // this.$router.push({
         //   path: "/webview",
         //   query: {

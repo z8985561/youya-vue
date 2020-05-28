@@ -21,7 +21,7 @@
     </div>
     <!-- 课程信息 -->
     <div class="bar-10"></div>
-        <!-- <router-link to="/upgrade_feedback?id=134">111111111111</router-link> -->
+    <!-- <router-link to="/upgrade_feedback?id=134">111111111111</router-link> -->
     <!-- 课程详情和目录 -->
     <van-tabs v-model="active" title-active-color="#8DB9DF" title-inactive-color="#999999" color="#8DB9DF">
       <van-tab title="课程详情">
@@ -58,6 +58,27 @@
     </van-popup>
     <!-- 侧边客服购物车按钮 -->
 
+    <van-popup v-model="show" round>
+      <div class="xieyi-box">
+        <div class="title">购买协议</div>
+        <div class="content-box">
+          <div class="mb-10 fz-15 c6" v-html="UPGRADE_SERVICE_AGREEMENT.value"></div>
+          <div class="flex flex-align-center">
+            <div @click="flag = !flag" class="checked" :class="flag ? 'on' : ''"></div>
+            <div class="fz-14 c9">
+              同意并阅读
+              <span class="text-primary">《购买协议》</span>
+            </div>
+          </div>
+        </div>
+        <div class="btns">
+          <div class="btn-o" @click="show = false">关闭</div>
+          <div @click="confirmXY" class="btn" :class="flag ? '' :'disable'">确定</div>
+        </div>
+      </div>
+    </van-popup>
+
+
     <van-popup v-if="detail.share_info && detail.share_info.share_qr" v-model="isShowPoster">
       <img :src="imgUrl || this.detail.share_info.share_qr" class="poster" alt />
     </van-popup>
@@ -86,12 +107,154 @@
           share_info: {}
         },
         userinfo: {},
-        imgUrl: ""
+        imgUrl: "",
+        UPGRADE_SERVICE_AGREEMENT: {}
       };
     },
     watch: {},
     computed: {},
     methods: {
+      // 获取订单详情
+      async getDetail(order_id) {
+        let {
+          code,
+          data,
+          message
+        } = await window.axios.get(
+          "/user/upgrade/order-detail", {
+            params: {
+              order_id
+            }
+          }
+        );
+        if (code == 0) {
+          window.console.log(data)
+          if (data.code_url) {
+            // 调整到小鹅通
+            window.location.href = data.code_url
+          } else {
+            this.$toast.success("升级成功");
+            this.$router.go(-1);
+          }
+          // 调整到小鹅通
+          // window.location.href = data.code_url
+          // this.$router.push({
+          //   path: "/webview",
+          //   query: {
+          //     url: data.code_url
+          //   }
+          // })
+        } else {
+          window.console.log(message);
+        }
+      },
+      async createOrder() {
+        if (this.loading) {
+          return;
+        }
+        this.$toast.loading({
+          message: "支付中...",
+          forbidClick: true
+        });
+        this.loading = true;
+        let {
+          code,
+          data,
+          message
+        } = await window.axios.post(
+          "/user/upgrade/order", {
+            upgrade_id: this.detail.bug_info.id
+          }
+        );
+        this.loading = false;
+        if (code == 0) {
+          this.payTest(data.id, data.rose_id);
+          // this.pay(data.id, data.rose_id);
+        } else {
+          window.console.error(message);
+          this.$toast.fail(message);
+        }
+      },
+      async pay(order_id, rose_id) {
+        let {
+          data,
+          code,
+          message
+        } = await window.axios.get(
+          "/user/upgrade/order-pay?order_id=" + order_id
+        );
+        this.$toast.clear();
+        if (code == 0) {
+          wx.chooseWXPay({
+            timestamp: data.timeStamp, // 支付签名时间戳，注意微信jssdk中的所有使用timestamp字段均为小写。但最新版的支付后台生成签名使用的timeStamp字段名需大写其中的S字符
+            nonceStr: data.nonceStr, // 支付签名随机串，不长于 32 位
+            package: data.package, // 统一支付接口返回的prepay_id参数值，提交格式如：prepay_id=***）
+            signType: data.signType, // 签名方式，默认为'SHA1'，使用新版支付需传入'MD5'
+            paySign: data.paySign, // 支付签名
+            success: res => {
+              this.$toast.success("升级成功");
+              this.getDetail(order_id)
+              // if (rose_id > 1) {
+              //   setTimeout(() => {
+              //     this.$router.replace("/");
+              //   }, 1500);
+              // } else {
+              //   setTimeout(() => {
+              //     this.$router.replace("/upgrade_feedback?id=" + order_id);
+              //   }, 1500);
+              // }
+            },
+            fail: res => {
+              this.$toast.fail("支付失败");
+              // alert(JSON.stringify(res))
+            }
+          });
+        } else {
+          this.$toast.fail(message);
+        }
+      },
+      async payTest(order_id, rose_id) {
+        let {
+          code,
+          data,
+          message
+        } = await window.axios.post(
+          "/user/upgrade/order-payed", {
+            order_id
+          }
+        );
+        if (code == 0) {
+          this.getDetail(order_id)
+          // window.console.log(data);
+          // if (rose_id > 1) {
+          //   setTimeout(() => {
+          //     this.$router.replace("/");
+          //   }, 1500);
+          // } else {
+          //   setTimeout(() => {
+          //     this.$router.replace("/upgrade_feedback?id=" + order_id);
+          //   }, 1500);
+          // }
+        } else {
+          window.console.error(message);
+        }
+      },
+      async getXiyi() {
+        let {
+          code,
+          data,
+          message
+        } = await window.axios.get("/config/detail", {
+          params: {
+            key: "UPGRADE_SERVICE_AGREEMENT"
+          }
+        });
+        if (code == 0) {
+          this.UPGRADE_SERVICE_AGREEMENT = data;
+        } else {
+          window.console.log(message);
+        }
+      },
       async add() {
         if (!this.$route.query.share_id) {
           return;
@@ -126,6 +289,7 @@
             nonceStr: data.nonceStr, // 必填，生成签名的随机串
             signature: data.signature, // 必填，签名，见附录1
             jsApiList: [
+              "chooseWXPay",
               "onMenuShareTimeline",
               "onMenuShareAppMessage", //1.0分享到朋友圈
               "updateAppMessageShareData", //1.4 分享到朋友
@@ -185,13 +349,18 @@
               });
             return;
           } else {
-            this.$router.push({
-              name: "upgrade_create",
-              query: {
-                id: this.$route.query.id,
-                share_id: this.$route.query.share_id || ""
-              }
-            });
+            // this.$router.push({
+            //   name: "upgrade_create",
+            //   query: {
+            //     id: this.$route.query.id,
+            //     share_id: this.$route.query.share_id || ""
+            //   }
+            // });
+            if (this.detail.bug_info.protocol_show == 1) {
+              this.show = true;
+            } else {
+              this.createOrder();
+            }
           }
         } else if (code == 401) {
           this.$dialog
@@ -208,6 +377,13 @@
               window.console.log(e);
             });
         }
+      },
+      confirmXY() {
+        if (!this.flag) {
+          this.$toast("请阅读协议并同意协议");
+          return;
+        }
+        this.createOrder();
       },
       async getData() {
         this.$toast.loading({
@@ -347,6 +523,7 @@
       this.add();
       this.getData();
       this.getSDK();
+      this.getXiyi();
     },
     mounted() {}
   };

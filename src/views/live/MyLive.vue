@@ -2,6 +2,18 @@
   <div>
     <van-list v-model="loading" :finished="finished" finished-text="没有更多了" @load="getList">
       <div class="live-list">
+        <div v-if="detail" class="live-link">
+          <div class="flex mb-10">
+            <img class="thumb" :src="detail.with_info.image" alt />
+            <div class="flex flex-column flex-jus">
+              <div class="fz-15 c3">{{detail.with_info.name}}</div>
+              <div class="fz-13 c9">¥{{detail.pay_price}}</div>
+            </div>
+          </div>
+          <div class="flex flex-end">
+            <a class="btn-youya" :href="detail.code_url">去使用</a>
+          </div>
+        </div>
         <div class="live-link" v-for="(item,index) in list" :key="index">
           <div class="flex mb-10">
             <img class="thumb" :src="item.goods_image" alt />
@@ -11,9 +23,7 @@
             </div>
           </div>
           <div class="flex flex-end">
-            <router-link :to="{path:'/live/my_live_detail',query:{id:item.id}}">
-              <div class="btn-youya">去使用</div>
-            </router-link>
+            <div class="btn-youya" @click="jump" :data-index="index">去使用</div>
           </div>
         </div>
       </div>
@@ -31,13 +41,42 @@
         page: 1,
         list: [],
         loading: false,
-        finished: false
+        finished: false,
+        detail: null
       };
     },
     created() {
       this.class_id = this.$route.query.id;
     },
     methods: {
+      jump(e) {
+        let {
+          index
+        } = e.currentTarget.dataset;
+        if (this.list[index].code_url) {
+          window.location.href = this.list[index].code_url
+        } else {
+          this.$toast.fail("邀请链接不存在")
+        }
+      },
+      async getDetail() {
+        let {
+          code,
+          data,
+          message
+        } = await window.axios.get(
+          "/user/upgrade/course"
+        );
+        if (code == 0) {
+          this.detail = data;
+        } else {
+          // window.console.log(message);
+          // this.$toast.fail(message);
+          // setTimeout(() => {
+          //   this.$router.back();
+          // }, 1500);
+        }
+      },
       async getList() {
         let {
           code,
@@ -61,6 +100,9 @@
           this.$toast.fail(message);
         }
       }
+    },
+    created() {
+      this.getDetail();
     }
   };
 </script>

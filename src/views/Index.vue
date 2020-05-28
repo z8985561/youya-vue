@@ -288,7 +288,7 @@ export default {
       }
     },
     async login() {
-      let { code, data } = await window.axios.get("/user/login?id=354");
+      let { code, data } = await window.axios.get("/user/login?id=356");
       if (code == 0) {
         this.getData();
         this.getCourseHot();

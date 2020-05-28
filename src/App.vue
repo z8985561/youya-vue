@@ -17,7 +17,7 @@
     },
     mounted() {
       window.addEventListener('focusout', function() {
-        document.body.scrollTop = document.body.scrollHeight;
+        document.body.scrollTop = 0;
       })
     },
   }

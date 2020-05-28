@@ -8,7 +8,7 @@ module.exports = {
       '/': {
         // http://youya-test.chuncom.com/
         // http://youya.chuncom.com/
-        target: 'http://youya.chuncom.com/',
+        target: 'http://youya-test.chuncom.com/',
         ws: false,
         changeOrigin: true,
         pathRewrite: {
