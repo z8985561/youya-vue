@@ -69,6 +69,9 @@
               同意并阅读
               <span class="text-primary">《购买协议》</span>
             </div>
+            <div class="tips">
+              <span class="text-price">*</span>温馨提示：课程售出后，不支持退款哦
+            </div>
           </div>
         </div>
         <div class="btns">
