@@ -63,7 +63,7 @@
         <div class="title">购买协议</div>
         <div class="content-box">
           <div class="mb-10 fz-15 c6" v-html="UPGRADE_SERVICE_AGREEMENT.value"></div>
-          <div class="flex flex-align-center">
+          <div class="flex flex-align-center mb-10">
             <div @click="flag = !flag" class="checked" :class="flag ? 'on' : ''"></div>
             <div class="fz-14 c9">
               同意并阅读
