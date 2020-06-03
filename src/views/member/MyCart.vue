@@ -17,7 +17,7 @@
       </div>
     </div>
     <!-- 产品列表 -->
-    <div class="p-15 fz-15 c9 text-center">购物车暂无商品哦~！</div>
+    <div v-else class="p-15 fz-15 c9 text-center">购物车暂无商品哦~！</div>
 
 
     <div class="footer-bar">

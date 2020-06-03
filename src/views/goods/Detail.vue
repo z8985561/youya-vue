@@ -430,7 +430,7 @@
             }
           })
           // text 添加文字数据基础函数；
-          .text(name, {
+          .text(title, {
             width: 530,
             align: "left",
             normalStyle: {
