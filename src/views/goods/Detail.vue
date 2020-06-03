@@ -584,6 +584,6 @@
   }
 
   .poster {
-    width: 95vw;
+    width: 80vw;
   }
 </style>
