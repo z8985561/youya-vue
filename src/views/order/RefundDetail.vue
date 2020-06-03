@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="header" style="background-image: url(../../assets/img/order-status-bg.png);">
+    <div class="header" style="background-image: url(../../img/order-status-bg.png);">
       <div>
         <div class="fz-17 cf fw-700">待卖家处理申请</div>
       </div>
@@ -86,7 +86,7 @@
     padding: 0 40px;
     width: 100vw;
     height: 100px;
-    
+
     background-size: cover;
     background-position: center;
     box-sizing: border-box;

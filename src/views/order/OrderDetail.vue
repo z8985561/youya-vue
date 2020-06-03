@@ -1,13 +1,15 @@
 <template>
   <div>
     <div class="header" style="background-image: url(img/order-status-bg.png);">
-      <div>
+      <div v-if="detail.is_refund == 0">
         <div v-if="detail.status==0" class="fz-17 cf fw-700">等待买家付款</div>
         <div v-if="detail.status==1" class="fz-17 cf fw-700">等待卖家发货</div>
         <div v-if="detail.status==2" class="fz-17 cf fw-700">等待买家收货</div>
         <div v-if="detail.status==3" class="fz-17 cf fw-700">已完成</div>
         <div v-if="detail.status==5" class="fz-17 cf fw-700">已取消</div>
       </div>
+      <div v-if="detail.is_refund == 1" class="fz-17 cf fw-700">已申请退款</div>
+      <div v-if="detail.is_refund == 1 && detail.status==3" class="fz-17 cf fw-700">已退款</div>
       <img class="status" src="../../assets/img/icon-status-0.png" alt="">
     </div>
     <div v-if="detail.type==2" class="address-item">
@@ -63,19 +65,19 @@
 
 
     <div class="footer-bar">
-      <div v-if="detail.status==1 || detail.status==1" @click="refund" class="btn-youya-o">
-          申请退款
-        </div>
+      <div v-if="(detail.status==1 || detail.status==2) && detail.is_refund == 0" @click="refund" class="btn-youya-o">
+        申请退款
+      </div>
       <!-- <router-link v-if="detail.status!=0" :to="{name:'order_refund',query:{id:12}}">
         <div class="btn-youya-o">
           申请退款
         </div>
       </router-link> -->
-      <router-link v-if="false" :to="{name:'order_refund_detail',query:{id:12}}">
+      <!-- <router-link v-if="detail.is_refund == 1" :to="{name:'order_refund_detail',query:{id:12}}">
         <div class="btn-youya-o">
           退款详情
         </div>
-      </router-link>
+      </router-link> -->
       <div v-if="detail.status==0" @click="cancel" class="btn-youya-o">取消订单</div>
       <div v-if="detail.status==0" class="btn-youya" @click="pay">付款</div>
       <div v-if="detail.status==2" @click="complete" class="btn-youya">确认收货</div>
@@ -127,7 +129,7 @@
           this.$toast.fail(messege)
         }
       },
-      async complete(e){
+      async complete(e) {
         let flag = await this.$dialog.confirm({
             title: '提示',
             message: '是否要确认收货？'
@@ -158,7 +160,7 @@
           this.$toast.fail(messege)
         }
       },
-      async refund(){
+      async refund() {
         let flag = await this.$dialog.confirm({
             title: '提示',
             message: '是否要申请退款？'

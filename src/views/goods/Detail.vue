@@ -582,4 +582,8 @@
     left: 30px;
     right: 30px;
   }
+
+  .poster {
+    width: 95vw;
+  }
 </style>

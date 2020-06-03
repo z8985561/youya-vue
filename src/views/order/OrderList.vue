@@ -17,12 +17,13 @@
         <li v-for="(item,index) in list" :key="index" class="order-item">
           <div class="p-10 flex flex-jus">
             <div class="fz-13 c9">订单号：{{item.number}}</div>
-            <div v-if="item.status==0" class="fz-12 text-price">待付款</div>
-            <div v-if="item.status==1" class="fz-12 text-price">待发货</div>
-            <div v-if="item.status==2" class="fz-12 text-price">待收货</div>
-            <div v-if="item.status==3" class="fz-12 text-price">已完成</div>
+            <div v-if="item.status==0 && item.is_refund == 0" class="fz-12 text-price">待付款</div>
+            <div v-if="item.status==1 && item.is_refund == 0" class="fz-12 text-price">待发货</div>
+            <div v-if="item.status==2 && item.is_refund == 0" class="fz-12 text-price">待收货</div>
+            <div v-if="item.status==3 && item.is_refund == 0" class="fz-12 text-price">已完成</div>
             <div v-if="item.status==4" class="fz-12 text-price">已退款</div>
-            <div v-if="item.status==5" class="fz-12 c9">已取消</div>
+            <div v-if="item.status==5 && item.is_refund == 0" class="fz-12 c9">已取消</div>
+            <div v-if="item.is_refund == 1" class="fz-12 c9">退款申请中</div>
           </div>
           <router-link v-for="goods in item.with_detail" :key="goods.id" :to="{name:'order_detail',query:{id:item.id}}">
             <div class="flex p-10">
@@ -42,8 +43,11 @@
           <div class="flex flex-end p-10">
             <div v-if="item.status==0" @click="cancel" :data-index="index" :data-id="item.id" class="btn-youya-o">取消订单</div>
             <router-link :to="{name:'order_detail',query:{id:item.id}}">
-              <div v-if="item.status==1 || item.status==2" class="btn-youya-o">申请退款</div>
+              <div v-if="(item.status==1 || item.status==2) && item.is_refund == 0" class="btn-youya-o">申请退款</div>
             </router-link>
+            <!-- <router-link :to="{name:'order_refund_detail',query:{id:12}}">
+              <div v-if="item.is_refund == 1" class="btn-youya-o">申请退款</div>
+            </router-link> -->
             <router-link :to="{name:'order_detail',query:{id:item.id}}">
               <div v-if="item.status==0" class="btn-youya">去付款</div>
             </router-link>
