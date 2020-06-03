@@ -55,7 +55,7 @@
 </template>
 
 <script>
-  let isDev = process.env.NODE_ENV !== "development";
+  let isDev = process.env.NODE_ENV == "development";
   import wx from "weixin-js-sdk";
   export default {
     components: {},
