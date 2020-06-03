@@ -10,26 +10,26 @@
         </router-link>
       </div>
       <router-link v-else :to="{name:'address_list'}">
-      <div class="address">
-        <img src="img/icon-dingwei.png" alt="">
-        <div class="fz-15 ml-10 c3" style="width:80%;">
-          <div>{{address.name}} {{address.phone}}</div>
-          <div class="text-hide">{{address.province}}{{address.city}}{{address.area}}{{address.address}}</div>
+        <div class="address">
+          <img src="img/icon-dingwei.png" alt="">
+          <div class="fz-15 ml-10 c3" style="width:80%;">
+            <div>{{address.name}} {{address.phone}}</div>
+            <div class="text-hide">{{address.province}}{{address.city}}{{address.area}}{{address.address}}</div>
+          </div>
+          <van-icon name="arrow" size="15px" color="#999" />
         </div>
-        <van-icon name="arrow" size="15px" color="#999" />
-      </div>
       </router-link>
       <div class="bar-10"></div>
     </div>
     <!-- 产品列表 -->
     <div v-for="item in list" class="goods-item">
-      <img :src="item.image" alt="">
+      <img :src="item.with_goods.image" alt="">
       <div class="ml-10 flex flex-column flex-jus" style="flex:1;">
-        <div class="fz-15 c3">{{item.title}}</div>
-        <!-- <div class="fz-11 c9">颜色：色号#3</div> -->
+        <div class="fz-15 c3">{{item.with_goods.title}}</div>
+        <div v-if="item.with_format_price" class="fz-11 c9">{{item.with_format_price.format}}</div>
         <div class="flex flex-jus flex-align-end">
-          <div class="fz-15 c3">¥{{item.price}}</div>
-          <van-stepper v-model="item.quantity" @change="sumPriceEvent"  integer />
+          <div class="fz-15 c3">¥{{item.with_format_price ? item.with_format_price.price : item.with_goods.price}}</div>
+          <van-stepper v-model="item.quantity" @change="sumPriceEvent" integer />
         </div>
       </div>
     </div>
@@ -55,20 +55,23 @@
 </template>
 
 <script>
+  let isDev = process.env.NODE_ENV !== "development";
   import wx from "weixin-js-sdk";
   export default {
     components: {},
     props: {},
     data() {
       return {
-        address:"",
+        isSingle: false,
+        singleGoods: {},
+        address: "",
         value: 1,
         message: "",
-        type: "",
-        list:[],
+        type: "2",
+        list: [],
         goods: [],
         order_id: "",
-        sumPrice:0,
+        sumPrice: 0,
       };
     },
     watch: {},
@@ -76,18 +79,18 @@
 
     },
     methods: {
-      sumPriceEvent(){
+      sumPriceEvent() {
         var sum = 0
-        if(this.list.length){
-          this.list.forEach(item=>{
-            sum = (parseFloat(item.price) * 100 * item.quantity) / 100 + sum;
+        if (this.list.length) {
+          this.list.forEach(item => {
+            sum = (parseFloat(item.with_format_price ? item.with_format_price.price : item.with_goods.price) * 100 * item.quantity) / 100 + sum;
           })
           this.sumPrice = sum;
-        }else{
+        } else {
           this.sumPrice = 0;
         }
       },
-      async getGoods(goods_id,index) {
+      async getGoods(goods_id, index) {
         this.$toast.loading({
           message: '加载中...'
         });
@@ -107,20 +110,29 @@
           this.$toast.fail(message)
         }
       },
-      async getAddress(){
-        let {code,data,message} = await axios.get("/user/address-first");
-        if(code==0){
+      async getAddress() {
+        let {
+          code,
+          data,
+          message
+        } = await axios.get("/user/address-first");
+        if (code == 0) {
           this.address = data
         }
       },
       async submit() {
         let goods = []
-        this.list.forEach(item=>{
-          goods.push({
-            goods_id:item.goods_id,
-            quantity:item.quantity
-          })
+        this.list.forEach((item, index) => {
+          let g = {
+            goods_id: item.goods_id,
+            quantity: item.quantity
+          }
+          if (item.price_id) {
+            g.price_id = item.price_id;
+          }
+          goods.push(g)
         })
+
         this.$toast.loading({
           message: '提交中...'
         });
@@ -128,11 +140,17 @@
           type: this.type,
           goods: JSON.stringify(goods)
         }
-        if(this.$route.query.share_id && this.$route.query.share_id !="undefined"){
+        if (this.$route.query.share_id && this.$route.query.share_id != "undefined") {
           params.share_id = this.$route.query.share_id
         }
-        if(params.type==2){
-          params.address_id = this.address.id
+        if (params.type == 2) {
+          if (this.address) {
+            params.address_id = this.address.id
+          } else {
+            this.$toast.fail("请选择地址");
+            return
+          }
+
         }
         let {
           code,
@@ -142,7 +160,10 @@
         if (code == 0) {
           this.$toast.clear()
           this.order_id = data.id
-          if(data.status==1){
+
+          this.$store.commit('setCreateOrderGoodsList', [])
+
+          if (data.status == 1) {
             this.$toast.success("支付成功");
             this.$router.push({
               name: "goods_pay_feedback",
@@ -150,11 +171,15 @@
                 order_id: this.order_id
               }
             })
-          }else{
-            this.pay(data.id)
+          } else {
+            if (isDev) {
+              this.payed(data.id)
+            } else {
+              this.pay(data.id)
+            }
           }
         } else {
-          this.$toast.fail(message||"下单失败，请联系客服！")
+          this.$toast.fail(message || "下单失败，请联系客服！")
         }
       },
       // 支付（测试）
@@ -217,7 +242,7 @@
         } = await axios.get("/user/mall-order/pay?order_id=" + order_id)
         if (code == 0) {
           wx.chooseWXPay({
-            appId:data.appId,
+            appId: data.appId,
             timestamp: data.timeStamp, // 支付签名时间戳，注意微信jssdk中的所有使用timestamp字段均为小写。但最新版的支付后台生成签名使用的timeStamp字段名需大写其中的S字符
             nonceStr: data.nonceStr, // 支付签名随机串，不长于 32 位
             package: data.package, // 统一支付接口返回的prepay_id参数值，提交格式如：prepay_id=***）
@@ -230,7 +255,7 @@
                 query: {
                   order_id: this.order_id
                 }
-          })
+              })
             },
             fail: (res) => {
               this.$toast.fail('支付失败');
@@ -241,21 +266,26 @@
       },
     },
     created() {
-      console.log( this.$route.query)
-      if(this.$route.query.list){
-        this.list = JSON.parse(this.$route.query.list)
-      }else{
-        this.list.push({
-          goods_id:this.$route.query.goods_id,
-          quantity:this.$route.query.quantity
-        })
+      // if (this.$route.query.isSingle == 1) {
+      //   this.isSingle = true;
+      //   this.list[0] = this.$route.params.goods;
+      //   this.singleGoods = this.$route.params.goods;
+      //   this.list.forEach((item, index) => {
+      //     this.getGoods(item.goods_id, index)
+      //   })
+      //   localStorage.setItem("singleGoods", JSON.stringify(this.singleGoods));
+      // }else{
+
+      // }
+      // this.type = this.$route.params.type;
+      this.list = this.$store.state.createOrderGoodsList;
+      if (this.list.length == 0) {
+        this.$router.go(-1);
       }
-      this.list.forEach((item,index)=>{
-        this.getGoods(item.goods_id,index)
-      })
-      this.type = this.$route.query.type;
+      this.sumPriceEvent();
       this.getSDK()
-      if(this.type==2){
+      this.type = this.$route.query.type || 2;
+      if (this.type == 2) {
         this.getAddress()
       }
 

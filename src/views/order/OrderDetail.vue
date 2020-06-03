@@ -26,6 +26,7 @@
         <img class="thumb" :src="item.goods_image" alt="">
         <div class="ml-10 flex flex-column flex-jus" style="flex:1;">
           <div class="fz-15 c3 text-hide2">{{item.goods_title}}</div>
+          <div v-if="item.format" class="fz-11 c9">{{item.format}}</div>
           <div class="flex flex-jus">
             <div class="fz-15 c3">¥{{item.goods_price}}</div>
             <div class="fz-14 c9">x{{item.quantity}}</div>

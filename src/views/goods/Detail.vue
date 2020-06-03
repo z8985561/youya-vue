@@ -14,7 +14,7 @@
           <span class="fz-12 c9 text-line">原价¥{{detail.original_price}}</span>
         </div>
       </div>
-      <div v-if="detail.is_share != 0" class="course-share flex flex-align-start">
+      <div v-if="detail.is_share != 0" @click="isShowPoster = true" class="course-share flex flex-align-start">
         <div class="flex flex-column flex-jus flex-align-center">
           <img src="../../assets/img/icon-wallet.png" alt="">
           <div class="fz-11 c9">分享获得</div>
@@ -51,8 +51,8 @@
       <img src="../../assets/img/btn-cart.png" alt="">
     </div> -->
     <div class="side-btn">
-      <img @click="showContact" class="mb-5"  src="../../assets/img/btn-service.png" alt="">
-      <img @click="addCart" src="../../assets/img/btn-cart.png" alt="">
+      <img @click="showContact" class="mb-5" src="../../assets/img/btn-service.png" alt="">
+      <img v-if="detail.type == 2" @click="toCart" src="../../assets/img/btn-cart.png" alt="">
     </div>
     <van-popup v-model="isShowContact">
       <img style="width:70vw;" :src="this.$store.getters.getContact" alt="">
@@ -74,49 +74,184 @@
             <van-stepper :max="detail.inventory" v-model="quantity" />
           </van-cell>
         </van-cell-group>
-        <div class="btn-youya bottom" @click="onBuyClicked">立即购买</div>
+        <div class="btn-youya bottom" @click="changBuy">立即购买</div>
       </div>
     </van-popup>
+
+    <van-popup v-if="detail.share_info && detail.share_info.share_qr" v-model="isShowPoster">
+      <img :src="imgUrl || this.detail.share_info.share_qr" class="poster" alt />
+    </van-popup>
+
+
+    <!-- 规格选择 -->
+    <van-sku v-model="isShowOptions" :sku="sku" :goods="goods" :goods-id="detail.id" @buy-clicked="onBuyClicked" @add-cart="onAddCartClicked">
+      <template slot="sku-actions" slot-scope="props">
+        <div class="van-sku-actions">
+          <div v-if="detail.type == 2" style="flex:1;" @click="props.skuEventBus.$emit('sku:addCart')" class="btn-youya-o">加入购物车</div>
+          <div style="flex:1;" @click="props.skuEventBus.$emit('sku:buy')" class="btn-youya">立即购买</div>
+        </div>
+      </template>
+    </van-sku>
+    <!-- 规格选择 -->
   </div>
 </template>
 
 <script>
-import wx from "weixin-js-sdk";
+  import MCanvas from "mcanvas";
+  import wx from "weixin-js-sdk";
   export default {
     components: {},
     props: {},
     data() {
       return {
-        isShowContact:false,
-        isBuy:false,
-        userInfo:{},
+        isShowOptions: false,
+        sku: {
+          // 所有sku规格类目与其值的从属关系，比如商品有颜色和尺码两大类规格，颜色下面又有红色和蓝色两个规格值。
+          // 可以理解为一个商品可以有多个规格类目，一个规格类目下可以有多个规格值。
+          tree: [],
+          // 所有 sku 的组合列表，比如红色、M 码为一个 sku 组合，红色、S 码为另一个组合
+          list: [],
+          initialSku: {},
+          price: "1001.00", // 默认价格（单位元）
+          stock_num: 227, // 商品总库存
+          collection_id: 2261, // 无规格商品 skuId 取 collection_id，否则取所选 sku 组合对应的 id
+          none_sku: false, // 是否无规格商品
+          hide_stock: true // 是否隐藏剩余库存
+        },
+        goods: {
+          // 商品标题
+          title: "测试商品",
+          // 默认商品 sku 缩略图
+          picture: "/images/goods-01.png"
+        },
+        isShowContact: false,
+        isBuy: false,
+        userInfo: {},
         detail: {},
-        quantity:1,
+        quantity: 1,
         images: [
           'https://img.yzcdn.cn/vant/apple-1.jpg',
           'https://img.yzcdn.cn/vant/apple-2.jpg'
         ],
-        show: false
+        show: false,
+        imgUrl: "",
+        isShowPoster: false
       };
     },
     watch: {},
     computed: {},
     methods: {
-      // 加入购物车
-      async addCart(){
-        let {code,data,message} = await axios.post("/user/mall-cart/add",{
-          goods_id:this.detail.id
-        });
-        if(code==0){
-          console.log(data)
+      changBuy(e) {
+        let {
+          type
+        } = e.currentTarget.dataset;
+        this.type = type;
+        this.show = true;
+      },
+      async onAddCartClicked(e) {
+        let params = {
+          goods_id: e.goodsId,
+          quantity: e.selectedNum
+        }
+        if (e.selectedSkuComb.s1) {
+          params.price_id = e.selectedSkuComb.id
+        }
+        let {
+          data,
+          code,
+          message
+        } = await window.axios.post("/user/mall-cart/add", params)
+        if (code == 0) {
+          console.log(data);
           this.$toast.success("成功加入购物车")
-        }else if(code==401){
-          this.$toast.fail("您还未登录！")
-        }else{
-          this.$toast.fail(message)
+          this.isShowOptions = false;
+        } else {
+          this.$toast.fail(message);
         }
       },
-      showContact(){
+      onBuyClicked(e) {
+        console.log(e)
+        var goods = {
+          goods_id: e.goodsId,
+          price_id: e.selectedSkuComb.id,
+          quantity: e.selectedNum,
+          with_goods: this.detail
+        };
+        if (e.selectedSkuComb.s1) {
+          goods.with_format_price = {
+            price_id: e.selectedSkuComb.id,
+            format: e.selectedSkuComb.optionsName,
+            price: e.selectedSkuComb.price / 100,
+          }
+        }
+        this.$store.commit("setCreateOrderGoodsList", [goods])
+        this.$router.push({
+          name: "goods_create_order",
+          query: {
+            type: this.detail.type
+          }
+        });
+      },
+      async addCart(goods) {
+        let {
+          code,
+          message
+        } = await window.axios.post("/user/cart/add", goods);
+        if (code == 0) {
+          this.$toast.success("成功加入购物车");
+          this.show = false;
+        } else {
+          this.$toast.fail(message);
+        }
+      },
+      init(data) {
+        this.goods.title = data.name;
+        this.sku.collection_id = data.id;
+        this.sku.price = data.price;
+        this.goods.picture = data.image;
+        this.sku.stock_num = data.inventory;
+        if (data.format != null) {
+          this.formatSKU(data.format, data.format_price);
+        } else {
+          this.sku.none_sku = true;
+        }
+      },
+      formatSKU(format, formatPrice) {
+        let tree = [];
+        let list = [];
+        format.forEach((item, index) => {
+          tree.push({
+            k: item.name,
+            v: item.with_format.map(citem => {
+              return {
+                id: citem.id,
+                name: citem.name
+                // imgUrl: this.detail.image,
+                // previewImgUrl: this.detail.image
+              };
+            }),
+            k_s: "s" + (index + 1)
+          });
+        });
+        formatPrice.forEach(item => {
+          var arr = item.formats_id;
+          var s = {};
+          arr.forEach((item, index) => {
+            s["s" + (index + 1)] = item;
+          });
+          list.push({
+            id: item.id, // skuId，下单时后端需要
+            price: item.price * 100, // 价格（单位分）
+            stock_num: +item.quantity, // 当前 sku 组合对应的库存
+            ...s, //规格类目 k_s 为 s1 的对应规格值 id
+            optionsName: item.format
+          });
+        });
+        // window.console.log(tree, list);
+        this.sku.tree = tree;
+        this.sku.list = list;
+      },
+      showContact() {
         this.isShowContact = true
       },
       async getSDK() {
@@ -152,9 +287,9 @@ import wx from "weixin-js-sdk";
             desc: this.detail.subtitle, //这里请特别注意是要去除html
             imgUrl: this.detail.image || "http://youya.chuncom.com/youya-h5/img/logo.png"
           }
-          if(this.detail.is_share == 1 && this.userInfo.id ){
+          if (this.detail.is_share == 1 && this.userInfo.id) {
             shareData.link = `http://youya.chuncom.com/youya-h5/?type=3&id=${this.detail.id}&share_id=${this.userInfo.id}`
-          }else{
+          } else {
             shareData.link = `http://youya.chuncom.com/youya-h5/?type=3&id=${this.detail.id}`
           }
           if (wx.onMenuShareAppMessage) { //微信文档中提到这两个接口即将弃用，故判断
@@ -171,33 +306,39 @@ import wx from "weixin-js-sdk";
           });
         })
       },
-      async getUserInfo(){
-        let {code,data,message} = await axios.get("/user");
+      async getUserInfo() {
+        let {
+          code,
+          data,
+          message
+        } = await axios.get("/user");
         this.getSDK()
-        if(code == 0){
+        if (code == 0) {
           this.userInfo = data;
-          if(data.is_bind==0){
+          if (data.is_bind == 0) {
             this.$dialog.confirm({
-              title:"提示",
-              message:"您还未绑定手机号，是否前往绑定？"
-            })
-              .then(res=>{
-                this.$router.push({name:"binding_information"})
+                title: "提示",
+                message: "您还未绑定手机号，是否前往绑定？"
               })
-              .catch(e=>{})
+              .then(res => {
+                this.$router.push({
+                  name: "binding_information"
+                })
+              })
+              .catch(e => {})
             return;
           }
           this.isBuy = true;
-        }else if(code==401){
+        } else if (code == 401) {
           this.isBuy = false;
           this.$dialog.confirm({
-              title:"提示",
-              message:"您还未授权登录，无法进行购买，是否前往授权？"
+              title: "提示",
+              message: "您还未授权登录，无法进行购买，是否前往授权？"
             })
-              .then(res=>{
-                 window.location.href = `http://youya.chuncom.com/user/authorization?url=${encodeURIComponent(window.location.href)}`
-              })
-              .catch(e=>{})
+            .then(res => {
+              window.location.href = `http://youya.chuncom.com/user/authorization?url=${encodeURIComponent(window.location.href)}`
+            })
+            .catch(e => {})
           // this.$toast.fail("您还未授权登录，无法进行购买")
         }
       },
@@ -212,42 +353,131 @@ import wx from "weixin-js-sdk";
         } = await axios.get(`/mall/detail?id=${this.$route.query.id}`)
         if (code == 0) {
           this.$toast.clear()
-          this.detail = data
+          this.detail = data;
+          this.init(this.detail);
           this.wxShare()
+          this.compoundImg();
         } else {
           this.$toast.fail(message)
         }
       },
       buying() {
-        if(!this.isBuy){
+        if (!this.isBuy) {
           this.$toast.fail("您还未授权登录，无法进行购买")
           return;
         }
-        this.show = true
+        this.isShowOptions = true
       },
-      onBuyClicked() {
-        if(this.userInfo.is_bind==0){
-            this.$dialog.confirm({
-              title:"提示",
-              message:"您还未绑定手机号，是否前往绑定？"
-            })
-              .then(res=>{
-                this.$router.push({name:"binding_information"})
-              })
-              .catch(e=>{})
-          return;
-        }
-        this.$router.push({
-          name: "goods_create_order",
-          query:{
-            type:this.detail.type,
-            goods_id:this.detail.id,
-            quantity:this.quantity,
-            share_id: this.$route.query.share_id || ""
-          }
-        })
+      async compoundImg() {
+        let {
+          poster,
+          image,
+          share_info,
+          title
+        } = this.detail;
+        if (!poster) return
+        // window.console.log(poster, image, share_info);
+        let mc = new MCanvas({
+          width: 750,
+          height: 1334,
+          backgroundColor: "white"
+        });
+        // 海报背景图 this.list[this.active].image ../img/poster-psd.jpg
+        mc.background(poster, {
+            left: 0,
+            top: 0,
+            color: "#000000",
+            type: "crop"
+          })
+          // 模板背景图连接
+          // .add("../img/poster-bg.pn
+          // hg",{
+          //     width:610,
+          //     height:642,
+          //     pos:{
+          //         x:70,
+          //         y:160,
+          //         scale:1
+          //     },
+          // })
+          // 产品图连接 this.detail.image ../img/banner2-01.png
+          .add(image, {
+            width: 570,
+            height: 321,
+            pos: {
+              x: 90,
+              y: 180,
+              scale: 1
+            }
+          })
+          // 二维码连接 this.createShareImage.share_qr ../img/erweima.png
+          .add(share_info.share_qr, {
+            width: 126,
+            height: 126,
+            pos: {
+              x: 110,
+              y: 635,
+              scale: 1
+            }
+          })
+          .add("/youya-h5/img/logo.png", {
+            width: 162,
+            height: 168,
+            pos: {
+              x: 487,
+              y: 620,
+              scale: 1
+            }
+          })
+          // text 添加文字数据基础函数；
+          .text(name, {
+            width: 530,
+            align: "left",
+            normalStyle: {
+              font: `30px Microsoft YaHei,sans-serif`,
+              lineHeight: 32
+            },
+            pos: {
+              x: 110,
+              y: 525
+            }
+          })
+          // text 添加文字数据基础函数；
+          .text("加入学习", {
+            width: 96,
+            align: "left",
+            normalStyle: {
+              font: `24px Microsoft YaHei,sans-serif`,
+              lineHeight: 28,
+              color: "#999"
+            },
+            pos: {
+              x: 254,
+              y: 660
+            }
+          })
+          // text 添加文字数据基础函数；
+          .text("长按识别二维码", {
+            width: 168,
+            align: "left",
+            normalStyle: {
+              font: `24px Microsoft YaHei,sans-serif`,
+              lineHeight: 28,
+              color: "#999"
+            },
+            pos: {
+              x: 254,
+              y: 708
+            }
+          })
+          .draw(b64 => {
+            // window.console.log(b64);
+            this.imgUrl = b64;
+          });
       },
-      onAddCartClicked() {}
+      toCart() {
+        this.$router.push("/member/my_cart")
+      }
     },
     created() {
       this.getData()
@@ -300,6 +530,19 @@ import wx from "weixin-js-sdk";
     box-shadow: 1px 5px 6px rgba(131, 179, 219, .2);
   }
 
+  .btn-youya-o {
+    width: 260px;
+    height: 40px;
+    line-height: 40px;
+    border-radius: 20px;
+    color: #999;
+    font-size: 15px;
+    text-align: center;
+    border: 1px solid #999;
+    margin-right: 15px;
+    box-sizing: border-box;
+  }
+
   .back-home {
     width: 90px;
     text-align: center;
@@ -331,7 +574,8 @@ import wx from "weixin-js-sdk";
       height: 90px;
     }
   }
-  .btn-youya.bottom{
+
+  .btn-youya.bottom {
     position: absolute;
     bottom: 10px;
     width: auto;

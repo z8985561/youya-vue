@@ -5,21 +5,31 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    customer_contact:"",
-    router_active:1
+    customer_contact: "",
+    router_active: 1,
+    createOrderGoodsList: []
   },
   mutations: {
-    setContact(state,imgUrl){
+    setCreateOrderGoodsList(state, list) {
+      state.createOrderGoodsList = list;
+    },
+    setContact(state, imgUrl) {
       state.customer_contact = imgUrl
     }
   },
   actions: {
-    setContact(context,imgUrl){
-      context.commit("setContact",imgUrl)
+    setCreateOrderGoodsList(state, list) {
+      state.createOrderGoodsList = list;
+    },
+    setContact(context, imgUrl) {
+      context.commit("setContact", imgUrl)
     }
   },
-  getters:{
-    getContact: state =>{
+  getters: {
+    getCreateOrderGoodsList(state) {
+      return state.createOrderGoodsList;
+    },
+    getContact: state => {
       return state.customer_contact;
     }
   }

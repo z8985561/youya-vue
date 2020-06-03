@@ -20,7 +20,7 @@
     <div class="bar-10"></div>
     <div class="p-10">
       <div class="fz-15 c3">提现方式</div>
-      <van-cell @click="type = 1">
+      <!-- <van-cell @click="type = 1">
         <div slot="title" class="flex flex-align-center">
           <img class="member-icon mr-5" src="@/assets/img/member/weixin.png" alt srcset />
           <div class="fz-14 c9">提现到微信零钱</div>
@@ -28,7 +28,7 @@
         <div slot="right-icon">
           <div class="checked" :class="type == 1 ? 'on':''"></div>
         </div>
-      </van-cell>
+      </van-cell> -->
       <van-collapse :border="false" v-model="type" accordion>
         <!-- <van-collapse-item name="1">
           <div slot="title" class="flex flex-align-center">
@@ -39,7 +39,7 @@
             <div class="checked" :class="type == 1 ? 'on':''"></div>
           </div>
         </van-collapse-item>-->
-        <van-collapse-item name="2">
+        <!-- <van-collapse-item name="2">
           <div slot="title" class="flex flex-align-center">
             <img class="member-icon mr-5" src="@/assets/img/member/zhifubao.png" alt srcset />
             <div class="fz-14 c9">提现到支付宝</div>
@@ -51,14 +51,14 @@
             <van-field v-model="name" label="姓名" placeholder="请输入姓名" />
             <van-field v-model="account" label="账号" placeholder="请输入账号" />
           </div>
-        </van-collapse-item>
-        <van-collapse-item name="3">
+        </van-collapse-item> -->
+        <van-collapse-item name="1">
           <div slot="title" class="flex flex-align-center">
             <img class="member-icon mr-5" src="@/assets/img/member/yinhangka.png" alt srcset />
             <div class="fz-14 c9">提现的银行卡</div>
           </div>
           <div slot="right-icon">
-            <div class="checked" :class="type == 3 ? 'on':''"></div>
+            <div class="checked" :class="type == 1 ? 'on':''"></div>
           </div>
           <div>
             <van-field v-model="name" label="姓名" placeholder="请输入姓名" />

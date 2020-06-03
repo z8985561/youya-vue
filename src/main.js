@@ -7,8 +7,7 @@ import Axios from "axios";
 // 适配方案
 import "lib-flexible/flexible.js";
 
-// 公共样式
-import "./assets/css/common.css";
+
 
 import VueLazyload from "vue-lazyload";
 
@@ -18,6 +17,10 @@ Vue.use(VueLazyload);
 import Vant from "vant";
 import "vant/lib/index.css";
 Vue.use(Vant);
+
+
+// 公共样式
+import "./assets/css/common.css";
 
 Vue.config.productionTip = false;
 
