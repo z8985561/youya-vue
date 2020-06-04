@@ -11,11 +11,11 @@
         <input class="ml-10" type="number" v-model="amount" />
       </div>
       <div class="bar-1 mb-5"></div>
-      <div class="fz-13 mb-5" style="color:#C7C7CE">
+      <div class="fz-13 mb-40" style="color:#C7C7CE">
         当前可提现金额
         <span class="text-price">{{withdrawal}}</span>元
       </div>
-      <div class="fz-13 mb-40" style="color:#C7C7CE">元低于200自动提现到微信，高于200提现需要后台审核</div>
+      <!-- <div class="fz-13 mb-40" style="color:#C7C7CE">元低于200自动提现到微信，高于200提现需要后台审核</div> -->
     </div>
     <div class="bar-10"></div>
     <div class="p-10">
