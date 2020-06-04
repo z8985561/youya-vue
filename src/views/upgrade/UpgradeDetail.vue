@@ -89,6 +89,7 @@
 </template>
 
 <script>
+  let isDev = process.env.NODE_ENV == "development";
   import MCanvas from "mcanvas";
   // require styles
   import wx from "weixin-js-sdk";
@@ -171,8 +172,11 @@
         );
         this.loading = false;
         if (code == 0) {
-          this.payTest(data.id, data.rose_id);
-          // this.pay(data.id, data.rose_id);
+          if (isDev) {
+            this.payTest(data.id, data.rose_id);
+          } else {
+            this.pay(data.id, data.rose_id);
+          }
         } else {
           window.console.error(message);
           this.$toast.fail(message);
