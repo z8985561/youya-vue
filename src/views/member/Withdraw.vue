@@ -112,26 +112,26 @@
           this.$toast.fail("提现金额不能小于 1");
           return;
         }
-        params.type = this.type;
-        if (this.type == 1 && params.amount > 200) {
-          this.$toast("微信提现金额不能大于200元");
-          return;
-        }
-        if (this.type == 2) {
-          params.type = this.type;
-          if (!this.name) {
-            this.$toast("请输入支付账号真实名称");
-            return;
-          }
-          if (!this.account) {
-            this.$toast("请输入支付宝账号");
-            return;
-          }
-          params.name = this.name;
-          params.account = this.account;
-        }
+        params.type = 3;
+        // if (this.type == 1 && params.amount > 200) {
+        //   this.$toast("微信提现金额不能大于200元");
+        //   return;
+        // }
+        // if (this.type == 2) {
+        //   params.type = this.type;
+        //   if (!this.name) {
+        //     this.$toast("请输入支付账号真实名称");
+        //     return;
+        //   }
+        //   if (!this.account) {
+        //     this.$toast("请输入支付宝账号");
+        //     return;
+        //   }
+        //   params.name = this.name;
+        //   params.account = this.account;
+        // }
 
-        if (this.type == 3) {
+        if (this.type == 1) {
           params.type = this.type;
           if (!this.name) {
             this.$toast("请输入银行卡真实名称");
