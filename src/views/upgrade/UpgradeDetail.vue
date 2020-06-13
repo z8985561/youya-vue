@@ -46,7 +46,7 @@
         </div>
       </a>
       <div v-if="detail.is_bug == 0" class="btn-youya" @click="buying">购买课程</div>
-      <div v-else class="btn-youya disable">已购买</div>
+      <div v-else class="btn-youya disable" @click="buying">已购买</div>
     </div>
     <!-- footer -->
     <!-- 侧边客服购物车按钮 -->
@@ -71,7 +71,13 @@
             </div>
           </div>
           <div class="tips">
-            <span class="text-price">*</span>温馨提示：课程售出后，不支持退款哦
+            <div class="mb-5">
+              <span class="text-price">*</span>温馨提示：
+            </div>
+            <div>
+              <div class="mb-5">1.付款后请不要<span class="fz-16" style="color:#D7736D;">退出页面</span>，请耐心等待<span class="fz-16" style="color:#D7736D;">“激活会员”</span>提示！</div>
+              <div>2.课程不支持7天无理由退款哦。</div>
+            </div>
           </div>
         </div>
         <div class="btns">
