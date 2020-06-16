@@ -326,7 +326,7 @@ export default new Router({
     name: 'verification_index',
     component: () => import('./views/verification/Index.vue'),
     meta: {
-      title: "香港皇家优雅女子学堂"
+      title: "皇家优雅女子学堂"
     }
   },
   // OrderManage.vue
