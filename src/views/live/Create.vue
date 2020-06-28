@@ -120,8 +120,8 @@ export default {
           this.getDetail(data.id);
           // this.$router.replace("/live/feedback?id=" + data.id);
         } else {
-          this.payed(data.id);
-          // this.pay(data.id);
+          // this.payed(data.id);
+          this.pay(data.id);
         }
       } else {
         this.$toast.fail(message || "下单失败，请联系客服！");

@@ -181,8 +181,8 @@
           if (isDev) {
             this.payTest(data.id, data.rose_id);
           } else {
-            this.payTest(data.id, data.rose_id);
-            // this.pay(data.id, data.rose_id);
+            // this.payTest(data.id, data.rose_id);
+            this.pay(data.id, data.rose_id);
           }
         } else {
           window.console.error(message);
