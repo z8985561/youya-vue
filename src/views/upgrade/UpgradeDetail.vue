@@ -458,15 +458,15 @@
           //     },
           // })
           // 产品图连接 this.detail.image ../img/banner2-01.png
-          .add(image, {
-            width: 570,
-            height: 321,
-            pos: {
-              x: 90,
-              y: 180,
-              scale: 1
-            }
-          })
+          // .add(image, {
+          //   width: 570,
+          //   height: 321,
+          //   pos: {
+          //     x: 90,
+          //     y: 180,
+          //     scale: 1
+          //   }
+          // })
           // 二维码连接 this.createShareImage.share_qr ../img/erweima.png
           .add(share_info.share_qr, {
             width: 126,
@@ -487,18 +487,18 @@
             }
           })
           // text 添加文字数据基础函数；
-          .text(name, {
-            width: 530,
-            align: "left",
-            normalStyle: {
-              font: `30px Microsoft YaHei,sans-serif`,
-              lineHeight: 32
-            },
-            pos: {
-              x: 110,
-              y: 525
-            }
-          })
+          // .text(name, {
+          //   width: 530,
+          //   align: "left",
+          //   normalStyle: {
+          //     font: `30px Microsoft YaHei,sans-serif`,
+          //     lineHeight: 32
+          //   },
+          //   pos: {
+          //     x: 110,
+          //     y: 525
+          //   }
+          // })
           // text 添加文字数据基础函数；
           .text("加入学习", {
             width: 96,

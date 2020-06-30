@@ -132,7 +132,7 @@
         // }
 
         if (this.type == 1) {
-          params.type = this.type;
+          params.type = 3;
           if (!this.name) {
             this.$toast("请输入银行卡真实名称");
             return;
