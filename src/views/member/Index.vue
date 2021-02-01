@@ -214,7 +214,7 @@
           </van-grid>
         </div>
       </div>
-
+      <TechnicalSupport></TechnicalSupport>
       <!-- <div class="earnings" style="background-image: url(img/earnings-bg.png);">
         <div class="flex flex-align-center">
           <img src="img/icon-wallet2.png" alt />
@@ -259,7 +259,11 @@
 </template>
 
 <script>
+  import TechnicalSupport from "@/components/TechnicalSupport"
   export default {
+    components: {
+      TechnicalSupport,
+    },
     props: {},
     data() {
       return {

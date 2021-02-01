@@ -43,11 +43,16 @@
         </div>
       </van-tab>
     </van-tabs>
+    <TechnicalSupport></TechnicalSupport>
   </div>
 </template>
 <script>
   import wx from "weixin-js-sdk";
+  import TechnicalSupport from "@/components/TechnicalSupport"
   export default {
+    components: {
+      TechnicalSupport,
+    },
     data() {
       return {
         active: 0,
@@ -160,7 +165,7 @@
             title: "优雅课程",
             desc: "优雅线上视频教程列表", //这里请特别注意是要去除html
             link: `http://youya.chuncom.com/youya-h5/video`,
-            imgUrl:"http://youya.chuncom.com/youya-h5/img/logo.png"
+            imgUrl: "http://youya.chuncom.com/youya-h5/img/logo.png"
           }
           if (wx.onMenuShareAppMessage) { //微信文档中提到这两个接口即将弃用，故判断
             wx.onMenuShareAppMessage(shareData); //1.0 分享到朋友
@@ -218,11 +223,13 @@
       }
     }
   }
+
   .goods-list {
     .goods-item {
       display: flex;
       padding: 15px 0;
       border-bottom: 1px solid #eee;
+
       .thumb {
         margin-right: 10px;
         width: 75px;

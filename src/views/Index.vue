@@ -158,12 +158,17 @@
       <p>（万凌汇旁）西座三楼</p>-->
     </div>
     <!-- 联系我们 -->
+    <TechnicalSupport></TechnicalSupport>
   </div>
 </template>
 <script>
   let isDev = process.env.NODE_ENV == "development";
   import wx from "weixin-js-sdk";
+  import TechnicalSupport from "@/components/TechnicalSupport"
   export default {
+    components: {
+      TechnicalSupport,
+    },
     data() {
       return {
         active: 1,

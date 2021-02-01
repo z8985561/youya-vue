@@ -41,12 +41,17 @@
       </ul>
     </van-list>
     <div v-if="!list.length" class="text-center fz-15 p-10 c9">暂时数据</div>
+    <TechnicalSupport></TechnicalSupport>
   </div>
 </template>
 
 <script>
   const Mock = require("mockjs");
+  import TechnicalSupport from "@/components/TechnicalSupport"
   export default {
+    components: {
+      TechnicalSupport,
+    },
     props: {},
     data() {
       return {
